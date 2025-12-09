@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const RoleUtilisateur = require('../enums/roles');
 const StatutChauffeur = require('../enums/status');
 
@@ -47,16 +47,16 @@ const utilisateurSchema = new mongoose.Schema({
     timestamps: true
 });
 
+
 // le hashage de mot de passe avant de sauvergadrer
-utilisateurSchema.pre('save', async function(next) {
-    if (!this.isModified('motDePasse')) return next();
+utilisateurSchema.pre('save', async function() {
+    if (!this.isModified('motDePasse')) return;
     
     try {
         const salt = await bcrypt.genSalt(10);
         this.motDePasse = await bcrypt.hash(this.motDePasse, salt);
-        next();
     } catch (error) {
-        next(error);
+        throw error;
     }
 });
 
