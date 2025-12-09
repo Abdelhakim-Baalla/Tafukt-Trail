@@ -1,0 +1,25 @@
+{
+	"_type": "Project",
+	"_id": "AAAAAAFF+h6SjaM2Hec=",
+	"name": "Untitled",
+	"ownedElements": [
+		{
+			"_type": "UMLModel",
+			"_id": "AAAAAAGa/qvUiHRG0b4=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Model1",
+			"ownedElements": [
+				{
+					"_type": "UMLClassDiagram",
+					"_id": "AAAAAAGa/qvUjXRHIPk=",
+					"_parent": {
+						"$ref": "AAAAAAGa/qvUiHRG0b4="
+					},
+					"name": "Class-diagramme-Tafukt-Trial"
+				}
+			]
+		}
+	]
+}
