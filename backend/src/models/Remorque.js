@@ -25,10 +25,6 @@ const remorqueSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true
-    },
-    camion: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Camion'
     }
 }, {
     timestamps: true

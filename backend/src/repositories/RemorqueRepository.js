@@ -7,9 +7,7 @@ class RemorqueRepository {
     }
 
     async findAll(filter = {}) {
-        const remorques = await Remorque.find(filter)
-            .populate('camion', 'matricule marque model')
-            .lean();
+        const remorques = await Remorque.find(filter).lean();
 
         const statusPriority = {
             'HORS_SERVICE': 5,
@@ -27,15 +25,15 @@ class RemorqueRepository {
 
     async findByStatut(statut) {
         statut = statut.toUpperCase();
-        return await Remorque.find({ statut }).populate('camion', 'matricule marque model');
+        return await Remorque.find({ statut });
     }
 
     async findById(id) {
-        return await Remorque.findById(id).populate('camion', 'matricule marque model');
+        return await Remorque.findById(id);
     }
 
     async update(id, data) {
-        return await Remorque.findByIdAndUpdate(id, data, { new: true }).populate('camion', 'matricule marque model');
+        return await Remorque.findByIdAndUpdate(id, data, { new: true });
     }
 
     async delete(id) {
