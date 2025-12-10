@@ -18,6 +18,24 @@ exports.getAllTrajets = async (req, res) => {
     }
 };
 
+exports.getTrajetByChauffeurId = async (req, res) => {
+    try {
+        const trajets = await trajetService.getTrajetByChauffeurId(req.user.id);
+        res.status(200).json(trajets);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getTrajetByStatut = async (req, res) => {
+    try {
+        const trajets = await trajetService.getTrajetByStatut(req.params.statut);
+        res.status(200).json(trajets);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.getTrajetById = async (req, res) => {
     try {
         const trajet = await trajetService.getTrajetById(req.params.id);

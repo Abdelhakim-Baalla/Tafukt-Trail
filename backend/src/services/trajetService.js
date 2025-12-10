@@ -1,5 +1,5 @@
 const trajetRepository = require('../repositories/TrajetRepository');
-
+const StatutTrajet = require('../enums/tripStatus');
 class TrajetService {
     async createTrajet(data) {
         return await trajetRepository.create(data);
@@ -12,6 +12,14 @@ class TrajetService {
             filter = { chauffeur: user.id };
         }
         return await trajetRepository.findAll(filter);
+    }
+
+    async getTrajetByChauffeurId(id) {
+        return await trajetRepository.findByChauffeurId(id);
+    }
+
+    async getTrajetByStatut(statut) {
+        return await trajetRepository.findByStatut(statut);
     }
 
     async getTrajetById(id, user) {

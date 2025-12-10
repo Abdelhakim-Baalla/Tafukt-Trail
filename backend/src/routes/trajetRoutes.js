@@ -7,6 +7,8 @@ const RoleUtilisateur = require('../enums/roles');
 
 router.post('/', authenticate, authorize([RoleUtilisateur.ADMIN]), validateTrajet, trajetController.createTrajet);
 router.get('/', authenticate, trajetController.getAllTrajets);
+router.get('/chauffeur/:id', authenticate, trajetController.getTrajetByChauffeurId);
+router.get('/statut/:statut', authenticate, trajetController.getTrajetByStatut);
 router.get('/:id', authenticate, trajetController.getTrajetById);
 router.patch('/:id/statut', authenticate, trajetController.updateStatut);
 router.put('/:id', authenticate, trajetController.updateTrajet);
