@@ -4303,6 +4303,24 @@
 											"height": 13,
 											"text": "+matricule: String",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGbCI5rCabM+zI=",
+											"_parent": {
+												"$ref": "AAAAAAGbApuL28sM2yA="
+											},
+											"model": {
+												"$ref": "AAAAAAGbCI5q5abJXS4="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 389,
+											"top": 864,
+											"width": 215,
+											"height": 13,
+											"text": "+camion: Camion",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
@@ -4310,7 +4328,7 @@
 									"left": 384,
 									"top": 769,
 									"width": 225,
-									"height": 98
+									"height": 113
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -4324,7 +4342,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 384,
-									"top": 867,
+									"top": 882,
 									"width": 225,
 									"height": 10
 								},
@@ -4369,7 +4387,7 @@
 							"left": 384,
 							"top": 744,
 							"width": 224,
-							"height": 133,
+							"height": 148,
 							"nameCompartment": {
 								"$ref": "AAAAAAGbApuL28sHAJY="
 							},
@@ -7410,7 +7428,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 657,
+									"left": 660,
 									"top": 546,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -7432,7 +7450,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 645,
+									"left": 648,
 									"top": 537,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -7454,7 +7472,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 682,
+									"left": 685,
 									"top": 563,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -7476,7 +7494,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 545,
+									"left": 550,
 									"top": 707,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -7498,7 +7516,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 536,
+									"left": 540,
 									"top": 697,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -7519,7 +7537,7 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 555,
+									"left": 560,
 									"top": 726,
 									"width": 21.68359375,
 									"height": 13,
@@ -7543,7 +7561,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 770,
+									"left": 771,
 									"top": 386,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -7564,8 +7582,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 758,
-									"top": 380,
+									"left": 759,
+									"top": 381,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -7584,7 +7602,7 @@
 									},
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 785,
+									"left": 786,
 									"top": 398,
 									"width": 21.68359375,
 									"height": 13,
@@ -7635,7 +7653,7 @@
 								"$ref": "AAAAAAGbApuL28sG6SM="
 							},
 							"lineStyle": 1,
-							"points": "543:743;798:380",
+							"points": "548:743;799:380",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGbArqOdcCdZBQ="
@@ -9032,6 +9050,17 @@
 							},
 							"name": "matricule",
 							"type": "String"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGbCI5q5abJXS4=",
+							"_parent": {
+								"$ref": "AAAAAAGbApuL2ssEHIo="
+							},
+							"name": "camion",
+							"type": {
+								"$ref": "AAAAAAGbApWAJVjmr9o="
+							}
 						}
 					]
 				},
