@@ -1,0 +1,9 @@
+const PositionPneu = {
+    AVANT_GAUCHE: 'AVANT_GAUCHE',
+    AVANT_DROIT: 'AVANT_DROIT',
+    ARRIERE_GAUCHE: 'ARRIERE_GAUCHE',
+    ARRIERE_DROIT: 'ARRIERE_DROIT',
+    ROULE_DE_SECOURS: 'ROULE_DE_SECOURS'
+};
+
+module.exports = PositionPneu;
