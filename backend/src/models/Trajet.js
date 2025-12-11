@@ -51,6 +51,12 @@ const trajetSchema = new mongoose.Schema({
     },
     urlPDF: {
         type: String
+    },
+    carburantNiveauxDepart: {
+        type: Number
+    },
+    carburantNiveauxArrivee: {
+        type: Number
     }
 }, {
     timestamps: true

@@ -35,6 +35,10 @@ const camionSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true
+    },
+    reservoire: {
+        type: Number,
+        required: true
     }
 }, {
     timestamps: true
