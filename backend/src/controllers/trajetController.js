@@ -6,6 +6,9 @@ exports.createTrajet = async (req, res) => {
         const trajet = await trajetService.createTrajet(req.body);
         res.status(201).json(trajet);
     } catch (error) {
+        if (error.message.includes('non disponible')) {
+            return res.status(400).json({ message: error.message });
+        }
         res.status(400).json({ message: error.message });
     }
 };

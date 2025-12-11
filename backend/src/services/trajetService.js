@@ -1,15 +1,61 @@
 const trajetRepository = require('../repositories/TrajetRepository');
 const StatutTrajet = require('../enums/tripStatus');
-const pdfService = require('./pdfService');
+const StatutVehicule = require('../enums/vehicleStatus');
+const StatutChauffeur = require('../enums/status');
+const Camion = require('../models/Camion');
+const Remorque = require('../models/Remorque');
+const Utilisateur = require('../models/Utilisateur');
 
 class TrajetService {
+    // Mettre camion, remorque et chauffeur EN_MISSION
+    async setEnMission(camionId, remorqueId, chauffeurId) {
+        await Camion.findByIdAndUpdate(camionId, { statut: StatutVehicule.EN_MISSION });
+        if (remorqueId) await Remorque.findByIdAndUpdate(remorqueId, { statut: StatutVehicule.EN_MISSION });
+        await Utilisateur.findByIdAndUpdate(chauffeurId, { statut: StatutChauffeur.EN_MISSION });
+    }
+
+    // Remettre camion, remorque et chauffeur DISPONIBLE
+    async setDisponible(camionId, remorqueId, chauffeurId) {
+        await Camion.findByIdAndUpdate(camionId, { statut: StatutVehicule.DISPONIBLE });
+        if (remorqueId) await Remorque.findByIdAndUpdate(remorqueId, { statut: StatutVehicule.DISPONIBLE });
+        await Utilisateur.findByIdAndUpdate(chauffeurId, { statut: StatutChauffeur.DISPONIBLE });
+    }
+
+    // Verifier si camion, remorque et chauffeur sont disponibles
+    async checkDisponibilite(camionId, remorqueId, chauffeurId) {
+        const camion = await Camion.findById(camionId);
+        if (!camion || camion.statut !== StatutVehicule.DISPONIBLE) {
+            throw new Error('Camion non disponible');
+        }
+
+        if (remorqueId) {
+            const remorque = await Remorque.findById(remorqueId);
+            if (!remorque || remorque.statut !== StatutVehicule.DISPONIBLE) {
+                throw new Error('Remorque non disponible');
+            }
+        }
+
+        const chauffeur = await Utilisateur.findById(chauffeurId);
+        if (!chauffeur || chauffeur.statut !== StatutChauffeur.DISPONIBLE) {
+            throw new Error('Chauffeur non disponible');
+        }
+    }
+
     async createTrajet(data) {
-        return await trajetRepository.create(data);
+        // Verifier disponibilite
+        await this.checkDisponibilite(data.camion, data.remorque, data.chauffeur);
+        
+        // Creer le trajet
+        const trajet = await trajetRepository.create(data);
+        
+        // Mettre en mission
+        await this.setEnMission(data.camion, data.remorque, data.chauffeur);
+        
+        return trajet;
     }
 
     async getAllTrajets(user) {
         let filter = {};
-        
         if (user.role === 'CHAUFFEUR') {
             filter = { chauffeur: user.id };
         }
@@ -26,32 +72,19 @@ class TrajetService {
 
     async getTrajetById(id, user) {
         const trajet = await trajetRepository.findById(id);
-        const userRole = user.role;
+        if (!trajet) throw new Error('Trajet non trouvé');
 
-        if (!trajet) {
-            throw new Error('Trajet non trouvé');
-        }
-
-        if (userRole === 'ADMIN') {
-            return trajet;
-        }
-
-        if (userRole === 'CHAUFFEUR' && trajet.chauffeur.toString() === user.id) {
-            return trajet;
-        }
+        if (user.role === 'ADMIN') return trajet;
+        if (user.role === 'CHAUFFEUR' && trajet.chauffeur.toString() === user.id) return trajet;
 
         throw new Error('Accès non autorisé');
     }
 
     async updateTrajet(id, data, user) {
         const trajet = await trajetRepository.findById(id);
-        const userRole = user.role;
+        if (!trajet) throw new Error('Trajet non trouvé');
 
-        if (!trajet) {
-            throw new Error('Trajet non trouvé');
-        }
-
-        if (userRole === 'ADMIN' || (userRole === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+        if (user.role === 'ADMIN' || (user.role === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
             return await trajetRepository.update(id, data);
         }
 
@@ -68,14 +101,16 @@ class TrajetService {
         if (carburantNiveauxArrivee) updateData.carburantNiveauxArrivee = carburantNiveauxArrivee;
 
         const trajet = await trajetRepository.findById(id);
-        const userRole = user.role;
+        if (!trajet) throw new Error('Trajet non trouvé');
 
-        if (!trajet) {
-            throw new Error('Trajet non trouvé');
-        }
-
-        if (userRole === 'ADMIN' || (userRole === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
-            return await trajetRepository.update(id, updateData);
+        if (user.role === 'ADMIN' || (user.role === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+            const updatedTrajet = await trajetRepository.update(id, updateData);
+            
+            if (statut === StatutTrajet.TERMINE || statut === StatutTrajet.ANNULE) {
+                await this.setDisponible(trajet.camion._id, trajet.remorque?._id, trajet.chauffeur._id);
+            }
+            
+            return updatedTrajet;
         }
 
         throw new Error('Accès non autorisé');
@@ -83,13 +118,10 @@ class TrajetService {
 
     async deleteTrajet(id, user) {
         const trajet = await trajetRepository.findById(id);
-        const userRole = user.role;
+        if (!trajet) throw new Error('Trajet non trouvé');
 
-        if (!trajet) {
-            throw new Error('Trajet non trouvé');
-        }
-
-        if (userRole === 'ADMIN' || (userRole === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+        if (user.role === 'ADMIN' || (user.role === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+            await this.setDisponible(trajet.camion._id, trajet.remorque?._id, trajet.chauffeur._id);
             return await trajetRepository.delete(id);
         }
 
@@ -98,13 +130,9 @@ class TrajetService {
 
     async generatePdf(id, user) {
         const trajet = await trajetRepository.findById(id);
-        const userRole = user.role;
+        if (!trajet) throw new Error('Trajet non trouvé');
 
-        if (!trajet) {
-            throw new Error('Trajet non trouvé');
-        }
-
-        if (userRole === 'ADMIN' || (userRole === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+        if (user.role === 'ADMIN' || (user.role === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
             return trajet;
         }
 
@@ -113,5 +141,3 @@ class TrajetService {
 }
 
 module.exports = new TrajetService();
-
-
