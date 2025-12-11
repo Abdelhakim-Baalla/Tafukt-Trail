@@ -1,5 +1,6 @@
 const pleinCarburantRepository = require('../repositories/PleinCarburantRepository');
 const PleinCarburant = require('../models/PleinCarburant');
+const Trajet = require('../models/Trajet');
 
 class PleinCarburantService {
     async createPlein(data) {
@@ -38,15 +39,99 @@ class PleinCarburantService {
         return plein;
     }
 
+    async getOptimisationCouts() {
+        const pleins = await PleinCarburant.find().populate('camion').sort({ date: -1 });
+        const trajets = await Trajet.find({ statut: 'TERMINE' }).populate('camion');
+        
+        // Analyse des prix par station
+        const stationsAnalyse = {};
+        pleins.forEach(p => {
+            if (!stationsAnalyse[p.nomStation]) {
+                stationsAnalyse[p.nomStation] = { prix: [], total: 0, count: 0 };
+            }
+            stationsAnalyse[p.nomStation].prix.push(p.prixLitre);
+            stationsAnalyse[p.nomStation].total += p.prixLitre;
+            stationsAnalyse[p.nomStation].count++;
+        });
+        
+        const stationsOptimales = Object.entries(stationsAnalyse)
+            .map(([nom, data]) => ({
+                nom,
+                prixMoyen: data.total / data.count,
+                nombrePleins: data.count
+            }))
+            .sort((a, b) => a.prixMoyen - b.prixMoyen);
+        
+        // Consommation excessive par camion
+        const camionsConsommation = {};
+        trajets.forEach(t => {
+            const camionId = t.camion._id.toString();
+            if (!camionsConsommation[camionId]) {
+                camionsConsommation[camionId] = {
+                    camion: t.camion,
+                    totalKm: 0,
+                    totalCarburant: 0
+                };
+            }
+            if (t.kilometrageArrivee && t.kilometrageDepart) {
+                camionsConsommation[camionId].totalKm += (t.kilometrageArrivee - t.kilometrageDepart);
+            }
+            if (t.carburantNiveauxDepart && t.carburantNiveauxArrivee) {
+                camionsConsommation[camionId].totalCarburant += (t.carburantNiveauxDepart - t.carburantNiveauxArrivee);
+            }
+        });
+        
+        const camionsAlerte = Object.values(camionsConsommation)
+            .map(c => ({
+                ...c,
+                consommation: c.totalKm > 0 ? (c.totalCarburant / c.totalKm) * 100 : 0
+            }))
+            .filter(c => c.consommation > 35) // Seuil d'alerte
+            .sort((a, b) => b.consommation - a.consommation);
+        
+        return {
+            stationsOptimales,
+            camionsAlerte,
+            economiesPotentielles: this.calculerEconomies(pleins, stationsOptimales)
+        };
+    }
+    
+    calculerEconomies(pleins, stations) {
+        if (stations.length < 2) return 0;
+        
+        const stationMoinsChere = stations[0];
+        const prixMoyenActuel = pleins.reduce((sum, p) => sum + p.prixLitre, 0) / pleins.length;
+        const litresTotal = pleins.reduce((sum, p) => sum + p.quantiteLitre, 0);
+        
+        return Math.round((prixMoyenActuel - stationMoinsChere.prixMoyen) * litresTotal * 100) / 100;
+    }
+
     async getRapports() {
-        const pleins = await PleinCarburant.find().populate('camion', 'matricule marque model');
+        const pleins = await PleinCarburant.find().populate('camion', 'matricule marque model reservoire');
+        const trajets = await Trajet.find({ statut: 'TERMINE' }).populate('camion', 'matricule reservoire');
         
         const totalLitres = pleins.reduce((sum, p) => sum + p.quantiteLitre, 0);
         const totalMontant = pleins.reduce((sum, p) => sum + p.montantTotal, 0);
         const nombrePleins = pleins.length;
-        const prixMoyenLitre = nombrePleins > 0 ? totalMontant / totalLitres : 0;
+
+        let totalKilometrage = 0;
+        let totalCarburantConsomme = 0;
+
+        trajets.forEach(t => {
+            if (t.kilometrageArrivee && t.kilometrageDepart) {
+                totalKilometrage += (t.kilometrageArrivee - t.kilometrageDepart);
+            }
+            if (t.carburantNiveauxDepart && t.carburantNiveauxArrivee) {
+                totalCarburantConsomme += (t.carburantNiveauxDepart - t.carburantNiveauxArrivee);
+            }
+        });
+
+        const consommationMoyenne = totalKilometrage > 0 
+            ? Math.round((totalCarburantConsomme / totalKilometrage) * 100 * 100) / 100 
+            : 0;
 
         const parCamion = {};
+        
         pleins.forEach(p => {
             const camionId = p.camion?._id?.toString() || 'inconnu';
             if (!parCamion[camionId]) {
@@ -54,7 +139,9 @@ class PleinCarburantService {
                     camion: p.camion,
                     totalLitres: 0,
                     totalMontant: 0,
-                    nombrePleins: 0
+                    nombrePleins: 0,
+                    kilometrage: 0,
+                    carburantConsomme: 0
                 };
             }
             parCamion[camionId].totalLitres += p.quantiteLitre;
@@ -62,12 +149,32 @@ class PleinCarburantService {
             parCamion[camionId].nombrePleins += 1;
         });
 
+        trajets.forEach(t => {
+            const camionId = t.camion?._id?.toString() || 'inconnu';
+            if (parCamion[camionId]) {
+                if (t.kilometrageArrivee && t.kilometrageDepart) {
+                    parCamion[camionId].kilometrage += (t.kilometrageArrivee - t.kilometrageDepart);
+                }
+                if (t.carburantNiveauxDepart && t.carburantNiveauxArrivee) {
+                    parCamion[camionId].carburantConsomme += (t.carburantNiveauxDepart - t.carburantNiveauxArrivee);
+                }
+            }
+        });
+
+        Object.values(parCamion).forEach(c => {
+            c.consommationMoyenne = c.kilometrage > 0 
+                ? Math.round((c.carburantConsomme / c.kilometrage) * 100 * 100) / 100 
+                : 0;
+        });
+
         return {
             global: {
                 totalLitres,
                 totalMontant,
                 nombrePleins,
-                prixMoyenLitre: Math.round(prixMoyenLitre * 100) / 100
+                totalKilometrage,
+                totalCarburantConsomme,
+                consommationMoyenne
             },
             parCamion: Object.values(parCamion)
         };
@@ -75,4 +182,3 @@ class PleinCarburantService {
 }
 
 module.exports = new PleinCarburantService();
-

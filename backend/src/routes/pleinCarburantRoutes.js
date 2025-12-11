@@ -11,6 +11,7 @@ router.post('/', authenticate, authorize([RoleUtilisateur.ADMIN, RoleUtilisateur
 // Admin only
 router.get('/', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getAllPleins);
 router.get('/rapports', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getRapports);
+router.get('/optimisation', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getOptimisation);
 router.get('/camion/:camionId', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getPleinsByCamion);
 router.get('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getPleinById);
 router.put('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), validatePleinCarburantUpdate, pleinCarburantController.updatePlein);

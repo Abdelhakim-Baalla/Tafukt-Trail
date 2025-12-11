@@ -71,3 +71,12 @@ exports.getRapports = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.getOptimisation = async (req, res) => {
+    try {
+        const optimisation = await pleinCarburantService.getOptimisationCouts();
+        res.status(200).json(optimisation);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
