@@ -4,7 +4,7 @@ class TrajetRepository {
     async create(trajetData) {
         const trajet = new Trajet(trajetData);
         await trajet.save();
-        trajet.urlPdf = `${process.env.BASE_URL}/api/v1/trajets/${trajet._id}/pdf`;
+        trajet.urlPDF = `${process.env.BASE_URL}/api/v1/trajets/${trajet._id}/pdf`;
         await trajet.save();
         return trajet;
     }
