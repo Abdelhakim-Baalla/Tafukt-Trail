@@ -57,12 +57,13 @@ class TrajetService {
     }
 
     async updateStatut(id, data, user) {
-        const { statut, kilometrageArrivee, dateHeureArrivee, commentairesChauffeur } = data;
+        const { statut, kilometrageArrivee, dateHeureArrivee, commentairesChauffeur, carburantNiveauxArrivee } = data;
         const updateData = {};
         if (statut) updateData.statut = statut;
         if (kilometrageArrivee) updateData.kilometrageArrivee = kilometrageArrivee;
         if (dateHeureArrivee) updateData.dateHeureArrivee = dateHeureArrivee;
         if (commentairesChauffeur) updateData.commentairesChauffeur = commentairesChauffeur;
+        if (carburantNiveauxArrivee) updateData.carburantNiveauxArrivee = carburantNiveauxArrivee;
 
         const trajet = await trajetRepository.findById(id);
         const userRole = user.role;

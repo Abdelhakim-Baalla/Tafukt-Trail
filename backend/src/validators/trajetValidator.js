@@ -14,7 +14,9 @@ const validateTrajet = (req, res, next) => {
         kilometrageArrivee: Joi.number().optional(),
         statut: Joi.string().valid(...Object.values(StatutTrajet)).default(StatutTrajet.PLANIFIE),
         commentairesChauffeur: Joi.string().optional(),
-        notesAdministratives: Joi.string().optional()
+        notesAdministratives: Joi.string().optional(),
+        carburantNiveauxDepart: Joi.number().optional(),
+        carburantNiveauxArrivee: Joi.number().optional()
     });
 
     const { error } = schema.validate(req.body);
