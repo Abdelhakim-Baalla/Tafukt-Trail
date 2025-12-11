@@ -12,6 +12,7 @@ router.get('/statut/:statut', authenticate, trajetController.getTrajetByStatut);
 router.get('/:id', authenticate, trajetController.getTrajetById);
 router.patch('/:id/statut', authenticate, trajetController.updateStatut);
 router.put('/:id', authenticate, trajetController.updateTrajet);
+router.get('/:id/pdf', authenticate, trajetController.generatePdf);
 router.delete('/:id', authenticate, trajetController.deleteTrajet);
 
 module.exports = router;

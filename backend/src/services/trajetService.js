@@ -1,5 +1,7 @@
 const trajetRepository = require('../repositories/TrajetRepository');
 const StatutTrajet = require('../enums/tripStatus');
+const pdfService = require('./pdfService');
+
 class TrajetService {
     async createTrajet(data) {
         return await trajetRepository.create(data);
@@ -93,6 +95,23 @@ class TrajetService {
 
         throw new Error('Accès non autorisé');
     }
+
+    async generatePdf(id, user) {
+        const trajet = await trajetRepository.findById(id);
+        const userRole = user.role;
+
+        if (!trajet) {
+            throw new Error('Trajet non trouvé');
+        }
+
+        if (userRole === 'ADMIN' || (userRole === 'CHAUFFEUR' && trajet.chauffeur._id.toString() === user.id)) {
+            return trajet;
+        }
+
+        throw new Error('Accès non autorisé');
+    }
 }
 
 module.exports = new TrajetService();
+
+
