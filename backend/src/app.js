@@ -9,6 +9,7 @@ const trajetRoutes = require('./routes/trajetRoutes');
 const camionRoutes = require('./routes/camionRoutes');
 const remorqueRoutes = require('./routes/remorqueRoutes');
 const pneuRoutes = require('./routes/pneuRoutes');
+const pleinCarburantRoutes = require('./routes/pleinCarburantRoutes');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/api/v1/trajets', trajetRoutes);
 app.use('/api/v1/camions', camionRoutes);
 app.use('/api/v1/remorques', remorqueRoutes);
 app.use('/api/v1/pneus', pneuRoutes);
+app.use('/api/v1/pleins-carburant', pleinCarburantRoutes);
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to Tafukt Trail' });
 });
