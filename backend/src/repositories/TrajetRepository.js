@@ -3,7 +3,10 @@ const Trajet = require('../models/Trajet');
 class TrajetRepository {
     async create(trajetData) {
         const trajet = new Trajet(trajetData);
-        return await trajet.save();
+        await trajet.save();
+        trajet.urlPDF = `${process.env.BASE_URL}/api/v1/trajets/${trajet._id}/pdf`;
+        await trajet.save();
+        return trajet;
     }
 
     async findAll(filter = {}) {

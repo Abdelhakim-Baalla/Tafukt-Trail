@@ -1,10 +1,14 @@
 const trajetService = require('../services/trajetService');
+const pdfService = require('../services/pdfService');
 
 exports.createTrajet = async (req, res) => {
     try {
         const trajet = await trajetService.createTrajet(req.body);
         res.status(201).json(trajet);
     } catch (error) {
+        if (error.message.includes('non disponible')) {
+            return res.status(400).json({ message: error.message });
+        }
         res.status(400).json({ message: error.message });
     }
 };
@@ -82,6 +86,21 @@ exports.deleteTrajet = async (req, res) => {
     try {
         await trajetService.deleteTrajet(req.params.id, req.user);
         res.status(204).send();
+    } catch (error) {
+        if (error.message === 'Trajet non trouvé') {
+            return res.status(404).json({ message: error.message });
+        }
+        if (error.message === 'Accès non autorisé') {
+            return res.status(403).json({ message: error.message });
+        }
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.generatePdf = async (req, res) => {
+    try {
+        const trajet = await trajetService.generatePdf(req.params.id, req.user);
+        pdfService.generateOrdreMission(trajet, res);
     } catch (error) {
         if (error.message === 'Trajet non trouvé') {
             return res.status(404).json({ message: error.message });
