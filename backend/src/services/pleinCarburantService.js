@@ -1,9 +1,23 @@
 const pleinCarburantRepository = require('../repositories/PleinCarburantRepository');
 const PleinCarburant = require('../models/PleinCarburant');
 const Trajet = require('../models/Trajet');
+const Camion = require('../models/Camion');
 
 class PleinCarburantService {
     async createPlein(data) {
+        const camion = await Camion.findById(data.camion);
+        if (!camion) {
+            throw new Error('Camion non trouvé');
+        }
+
+        if(!camion.reservoire){
+            camion.reservoire = data.quantiteLitre;
+            await camion.save();
+            return await pleinCarburantRepository.create(data);
+        }
+                
+        camion.reservoire = camion.reservoire + data.quantiteLitre;
+        await camion.save();
         return await pleinCarburantRepository.create(data);
     }
 
@@ -24,11 +38,33 @@ class PleinCarburantService {
     }
 
     async updatePlein(id, data) {
-        const plein = await pleinCarburantRepository.update(id, data);
-        if (!plein) {
+        const oldPlein = await PleinCarburant.findById(id);
+        if (!oldPlein) {
             throw new Error('Plein non trouvé');
         }
-        return plein;
+        if (!data.quantiteLitre) {
+            throw new Error('Quantité de litre non trouvée');
+        }
+
+        const oldQuantiteLitre = oldPlein.quantiteLitre;
+        const newQuantiteLitre = data.quantiteLitre;
+
+        const updatedPlein = await pleinCarburantRepository.update(id, data);
+
+        const camion = await Camion.findById(oldPlein.camion);
+        if (!camion) {
+            throw new Error('Camion non trouvé');
+        }
+
+        if (camion.reservoire !== undefined && camion.reservoire !== null) {
+            
+            const difference = newQuantiteLitre - oldQuantiteLitre;
+            
+            camion.reservoire += difference;
+            await camion.save();
+        }
+        
+        return updatedPlein;
     }
 
     async deletePlein(id) {

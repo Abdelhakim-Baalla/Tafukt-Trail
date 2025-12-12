@@ -19,10 +19,11 @@ class TrajetService {
         await Camion.findByIdAndUpdate(camionId, { statut: StatutVehicule.DISPONIBLE });
         if (remorqueId) await Remorque.findByIdAndUpdate(remorqueId, { statut: StatutVehicule.DISPONIBLE });
         await Utilisateur.findByIdAndUpdate(chauffeurId, { statut: StatutChauffeur.DISPONIBLE });
+
     }
 
     // Verifier si camion, remorque et chauffeur sont disponibles
-    async checkDisponibilite(camionId, remorqueId, chauffeurId) {
+    async checkDisponibilite(camionId, remorqueId, chauffeurId, data) {
         const camion = await Camion.findById(camionId);
         if (!camion || camion.statut !== StatutVehicule.DISPONIBLE) {
             throw new Error('Camion non disponible');
@@ -39,11 +40,24 @@ class TrajetService {
         if (!chauffeur || chauffeur.statut !== StatutChauffeur.DISPONIBLE) {
             throw new Error('Chauffeur non disponible');
         }
+
+        if(!data.kilometrageDepart){
+            throw new Error('Kilometrage depart non fourni!');
+        }
+
+        if (!camion.reservoire){
+            camion.reservoire = 0;
+            await camion.save();
+        }
+
+        if(!data.carburantNiveauxDepart){
+            throw new Error('Niveau de carburant depart non fourni!');
+        }
     }
 
     async createTrajet(data) {
         // Verifier disponibilite
-        await this.checkDisponibilite(data.camion, data.remorque, data.chauffeur);
+        await this.checkDisponibilite(data.camion, data.remorque, data.chauffeur, data);
         
         // Creer le trajet
         const trajet = await trajetRepository.create(data);
@@ -108,6 +122,33 @@ class TrajetService {
             
             if (statut === StatutTrajet.TERMINE || statut === StatutTrajet.ANNULE) {
                 await this.setDisponible(trajet.camion._id, trajet.remorque?._id, trajet.chauffeur._id);
+            }
+
+            if (statut === StatutTrajet.TERMINE && !updateData.carburantNiveauxArrivee) {
+                throw new Error('Niveau de carburant arrivee non fourni!');
+            }else{
+                const camion = await Camion.findById(trajet.camion._id);
+                if(!camion){
+                    throw new Error('Camion non trouvé!');
+                }
+                camion.reservoire = updateData.carburantNiveauxArrivee;
+                await camion.save();
+            }
+
+            if(statut === StatutTrajet.TERMINE && !updateData.dateHeureArrivee){
+                throw new Error('Date et heure arrivee non fourni!');
+            }else{
+                if(new Date(updateData.dateHeureArrivee) <= new Date(trajet.dateHeureDepart)){
+                    throw new Error('Date et heure arrivee inferieur ou egale a la date et heure depart!');
+                }
+            }
+
+            if(statut === StatutTrajet.TERMINE && !updateData.kilometrageArrivee){
+                throw new Error('Kilometrage arrivee non fourni!');
+            }else{
+                if(updateData.kilometrageArrivee <= trajet.kilometrageDepart){
+                    throw new Error('Kilometrage arrivee inferieur ou egale au kilometrage depart!');
+                }
             }
             
             return updatedTrajet;

@@ -1,0 +1,22 @@
+/* Layout - Minimal */
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--gray-50);
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 24px 16px;
+  }
+}

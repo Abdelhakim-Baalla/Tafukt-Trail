@@ -5,10 +5,13 @@ class AuthService {
     async register(userData) {
         const existingUser = await utilisateurRepository.findByEmail(userData.email);
         if (existingUser) {
-            throw new Error('Un utilisateur avec cet email existe déjàa.');
+            throw new Error('Un utilisateur avec cet email existe déjà.');
         }
         
-        return await utilisateurRepository.create(userData);
+        const user = await utilisateurRepository.create(userData);
+        const token = this.generateToken(user);
+        
+        return { user, token };
     }
 
     async login(email, motDePasse) {
