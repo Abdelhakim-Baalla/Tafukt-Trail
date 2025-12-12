@@ -131,7 +131,7 @@
   border-radius: 1px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1008px) {
   .nav-links {
     display: none;
     position: absolute;
