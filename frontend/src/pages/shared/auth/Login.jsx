@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../../services/api';
 import { getUserRole, isAuthenticated } from '../../../utils/auth';
+import './Auth.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [motDePasse, setMotDePasse] = useState('');
-  const [message, setMessage] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,56 +20,70 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
+    setError('');
+    setLoading(true);
+    
     try {
-      const data = await login(email, motDePasse);
+      const data = await login(email, password);
       if (data.token) {
         localStorage.setItem('token', data.token);
-        setMessage('Connexion réussie!');
-        setTimeout(() => {
-          const role = getUserRole();
-          navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
-        }, 1000);
+        const role = getUserRole();
+        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
       } else {
-        setMessage(data.message || 'Erreur de connexion');
+        setError(data.message || 'Identifiants incorrects');
       }
-    } catch (error) {
-      setMessage('Erreur de connexion');
+    } catch {
+      setError('Erreur de connexion');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '900px', margin: '70px auto', padding: '20px' }}>
-      <h2>Connexion</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          value={motDePasse}
-          onChange={(e) => setMotDePasse(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-          required
-        />
-        <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none' }}>
-          Se connecter
-        </button>
-      </form>
-      {message && (
-        <p style={{ textAlign: 'center', marginTop: '10px', color: message.includes('réussie') ? 'green' : 'red' }}>
-          {message}
+    <div className="auth">
+      <div className="auth-container">
+        <div className="auth-header">
+          <Link to="/" className="auth-logo">T</Link>
+          <h1 className="auth-title">Connexion</h1>
+          <p className="auth-subtitle">Accédez à votre espace de gestion</p>
+        </div>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {error && <div className="auth-error">{error}</div>}
+          
+          <div className="auth-field">
+            <label className="auth-label">Email</label>
+            <input
+              type="email"
+              className="auth-input"
+              placeholder="nom@exemple.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <label className="auth-label">Mot de passe</label>
+            <input
+              type="password"
+              className="auth-input"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? 'Connexion...' : 'Se connecter'}
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          Pas de compte ? <Link to="/register" className="auth-link">S'inscrire</Link>
         </p>
-      )}
-      <p style={{ textAlign: 'center', marginTop: '15px' }}>
-        <Link to="/register">Pas de compte ? S'inscrire</Link>
-      </p>
+      </div>
     </div>
   );
 };

@@ -1,44 +1,84 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { getUserRole, isAuthenticated } from '../utils/auth';
+import './Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const userRole = getUserRole();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
+  // Masquer sur les pages auth
+  if (['/login', '/register'].includes(location.pathname)) {
+    return null;
+  }
+
+  const adminLinks = [
+    { path: '/admin', label: 'Dashboard' },
+    { path: '/admin/camions', label: 'Camions' },
+    { path: '/admin/remorques', label: 'Remorques' },
+    { path: '/admin/pneus', label: 'Pneus' },
+    { path: '/admin/maintenance', label: 'Maintenance' },
+    { path: '/admin/rapports', label: 'Rapports' },
+  ];
+
+  const chauffeurLinks = [
+    { path: '/chauffeur', label: 'Dashboard' },
+    { path: '/chauffeur/trajets', label: 'Trajets' },
+    { path: '/chauffeur/carburant', label: 'Carburant' },
+  ];
+
+  const links = userRole === 'ADMIN' ? adminLinks : userRole === 'CHAUFFEUR' ? chauffeurLinks : [];
+
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#f8f9fa', borderBottom: '1px solid #dee2e6' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ textDecoration: 'none', fontSize: '20px', fontWeight: 'bold' }}>
-          Tafukt Trail
+    <nav className="nav">
+      <div className="nav-inner">
+        <Link to="/" className="nav-logo">
+          <span className="nav-logo-icon">T</span>
+          <span className="nav-logo-text">Tafukt</span>
         </Link>
-        <div>
-          {userRole === 'ADMIN' && (
-            <>
-              <Link to="/admin" style={{ margin: '0 5px', textDecoration: 'none' }}>Dashboard</Link>
-              <Link to="/admin/camions" style={{ margin: '0 5px', textDecoration: 'none' }}>Camions</Link>
-              <Link to="/admin/remorques" style={{ margin: '0 5px', textDecoration: 'none' }}>Remorques</Link>
-              <Link to="/admin/pneus" style={{ margin: '0 5px', textDecoration: 'none' }}>Pneus</Link>
-              <Link to="/admin/maintenance" style={{ margin: '0 5px', textDecoration: 'none' }}>Maintenance</Link>
-              <Link to="/admin/rapports" style={{ margin: '0 5px', textDecoration: 'none' }}>Rapports</Link>
-            </>
-          )}
-          {userRole === 'CHAUFFEUR' && (
-            <>
-              <Link to="/chauffeur" style={{ margin: '0 5px', textDecoration: 'none' }}>Dashboard</Link>
-              <Link to="/chauffeur/trajets" style={{ margin: '0 5px', textDecoration: 'none' }}>Trajets</Link>
-              <Link to="/chauffeur/carburant" style={{ margin: '0 5px', textDecoration: 'none' }}>Carburant</Link>
-            </>
-          )}
+
+        <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          {links.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="nav-actions">
           {isAuthenticated() ? (
-            <button onClick={handleLogout} style={{ margin: '0 10px', padding: '5px 10px' }}>Déconnexion</button>
+            <>
+              <span className="nav-role">{userRole}</span>
+              <button onClick={handleLogout} className="nav-btn">
+                Déconnexion
+              </button>
+            </>
           ) : (
-            <Link to="/login" style={{ margin: '0 10px', textDecoration: 'none', fontWeight: 'bold' }}>Login</Link>
+            <Link to="/login" className="nav-btn nav-btn-primary">
+              Connexion
+            </Link>
           )}
+          
+          <button 
+            className="nav-menu-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
     </nav>

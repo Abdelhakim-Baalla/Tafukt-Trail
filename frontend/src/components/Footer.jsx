@@ -1,13 +1,24 @@
+import { useLocation } from 'react-router-dom';
+import './Footer.css';
+
 const Footer = () => {
+  const location = useLocation();
+
+  if (['/login', '/register'].includes(location.pathname)) {
+    return null;
+  }
+
   return (
-    <footer style={{ 
-      padding: '20px', 
-      backgroundColor: '#f8f9fa', 
-      borderTop: '1px solid #dee2e6',
-      textAlign: 'center',
-      marginTop: 'auto'
-    }}>
-      <p>&copy; 2024 Tafukt Trail - Gestion de flotte</p>
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <span className="footer-logo">Tafukt</span>
+          <span className="footer-tagline">Gestion de flotte simplifiée</span>
+        </div>
+        <div className="footer-copyright">
+          © 2025 Tafukt. Tous droits réservés.
+        </div>
+      </div>
     </footer>
   );
 };

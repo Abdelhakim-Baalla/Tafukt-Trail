@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { register } from '../../../services/api';
 import { getUserRole, isAuthenticated } from '../../../utils/auth';
+import './Auth.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,8 @@ const Register = () => {
     motDePasse: '',
     telephone: ''
   });
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,21 +25,22 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
+    setError('');
+    setLoading(true);
+    
     try {
       const data = await register({ ...formData, role: 'CHAUFFEUR' });
       if (data.token) {
         localStorage.setItem('token', data.token);
-        setMessage('Inscription réussie!');
-        setTimeout(() => {
-          const role = getUserRole();
-          navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
-        }, 1000);
+        const role = getUserRole();
+        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
       } else {
-        setMessage(data.message || 'Erreur d\'inscription');
+        setError(data.message || 'Erreur d\'inscription');
       }
-    } catch (error) {
-      setMessage('Erreur d\'inscription');
+    } catch {
+      setError('Erreur d\'inscription');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,63 +49,92 @@ const Register = () => {
   };
 
   return (
-    <div style={{ maxWidth: '100%', margin: '50px auto', padding: '20px' }}>
-      <h2>Inscription</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="nom"
-          placeholder="Nom"
-          value={formData.nom}
-          onChange={handleChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
-          required
-        />
-        <input
-          name="prenom"
-          placeholder="Prénom"
-          value={formData.prenom}
-          onChange={handleChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
-          required
-        />
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
-          required
-        />
-        <input
-          name="motDePasse"
-          type="password"
-          placeholder="Mot de passe"
-          value={formData.motDePasse}
-          onChange={handleChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
-          required
-        />
-        <input
-          name="telephone"
-          placeholder="Téléphone"
-          value={formData.telephone}
-          onChange={handleChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '8px' }}
-        />
+    <div className="auth">
+      <div className="auth-container">
+        <div className="auth-header">
+          <Link to="/" className="auth-logo">T</Link>
+          <h1 className="auth-title">Inscription</h1>
+          <p className="auth-subtitle">Créez votre compte chauffeur</p>
+        </div>
 
-        <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none' }}>
-          S'inscrire
-        </button>
-      </form>
-      {message && (
-        <p style={{ textAlign: 'center', marginTop: '10px', color: message.includes('réussie') ? 'green' : 'red' }}>
-          {message}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {error && <div className="auth-error">{error}</div>}
+          
+          <div className="auth-row">
+            <div className="auth-field">
+              <label className="auth-label">Nom</label>
+              <input
+                type="text"
+                name="nom"
+                className="auth-input"
+                placeholder="Nom"
+                value={formData.nom}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="auth-field">
+              <label className="auth-label">Prénom</label>
+              <input
+                type="text"
+                name="prenom"
+                className="auth-input"
+                placeholder="Prénom"
+                value={formData.prenom}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="auth-field">
+            <label className="auth-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="auth-input"
+              placeholder="nom@exemple.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="auth-field">
+            <label className="auth-label">Téléphone</label>
+            <input
+              type="tel"
+              name="telephone"
+              className="auth-input"
+              placeholder="+212 6XX XXX XXX"
+              value={formData.telephone}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="auth-field">
+            <label className="auth-label">Mot de passe</label>
+            <input
+              type="password"
+              name="motDePasse"
+              className="auth-input"
+              placeholder="••••••••"
+              value={formData.motDePasse}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? 'Inscription...' : 'S\'inscrire'}
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          Déjà un compte ? <Link to="/login" className="auth-link">Se connecter</Link>
         </p>
-      )}
-      <p style={{ textAlign: 'center', marginTop: '15px' }}>
-        <Link to="/login">Déjà un compte ? Se connecter</Link>
-      </p>
+      </div>
     </div>
   );
 };

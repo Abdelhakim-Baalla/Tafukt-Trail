@@ -1,11 +1,20 @@
+import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import './Layout.css';
 
 const Layout = ({ children }) => {
+  const location = useLocation();
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
+
+  if (isAuthPage) {
+    return <>{children}</>;
+  }
+
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="layout">
       <Navbar />
-      <main style={{ flex: 1, padding: '20px' }}>
+      <main className="main">
         {children}
       </main>
       <Footer />
