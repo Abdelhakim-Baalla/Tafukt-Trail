@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import Login from './pages/shared/auth/Login';
+import Register from './pages/shared/auth/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CamionsList from './pages/admin/camions/CamionsList';
 import RemorquesList from './pages/admin/remorques/RemorquesList';
@@ -19,16 +21,17 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/camions" element={<CamionsList />} />
-          <Route path="/admin/remorques" element={<RemorquesList />} />
-          <Route path="/admin/pneus" element={<PneusList />} />
-          <Route path="/admin/maintenance" element={<MaintenanceList />} />
-          <Route path="/admin/rapports" element={<RapportsList />} />
-          <Route path="/chauffeur" element={<ChauffeurDashboard />} />
-          <Route path="/chauffeur/trajets" element={<TrajetsList />} />
-          <Route path="/chauffeur/carburant" element={<CarburantList />} />
+          <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/camions" element={<ProtectedRoute requiredRole="ADMIN"><CamionsList /></ProtectedRoute>} />
+          <Route path="/admin/remorques" element={<ProtectedRoute requiredRole="ADMIN"><RemorquesList /></ProtectedRoute>} />
+          <Route path="/admin/pneus" element={<ProtectedRoute requiredRole="ADMIN"><PneusList /></ProtectedRoute>} />
+          <Route path="/admin/maintenance" element={<ProtectedRoute requiredRole="ADMIN"><MaintenanceList /></ProtectedRoute>} />
+          <Route path="/admin/rapports" element={<ProtectedRoute requiredRole="ADMIN"><RapportsList /></ProtectedRoute>} />
+          <Route path="/chauffeur" element={<ProtectedRoute requiredRole="CHAUFFEUR"><ChauffeurDashboard /></ProtectedRoute>} />
+          <Route path="/chauffeur/trajets" element={<ProtectedRoute requiredRole="CHAUFFEUR"><TrajetsList /></ProtectedRoute>} />
+          <Route path="/chauffeur/carburant" element={<ProtectedRoute requiredRole="CHAUFFEUR"><CarburantList /></ProtectedRoute>} />
         </Routes>
       </Layout>
     </Router>
