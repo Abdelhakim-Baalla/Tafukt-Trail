@@ -38,36 +38,33 @@ class PleinCarburantService {
     }
 
     async updatePlein(id, data) {
-        const plein = await PleinCarburant.findById(id);
-        let switcher = '';
-        if(!plein){
+        const oldPlein = await PleinCarburant.findById(id);
+        if (!oldPlein) {
             throw new Error('Plein non trouvé');
         }
-        if(!data.quantiteLitre){
+        if (!data.quantiteLitre) {
             throw new Error('Quantité de litre non trouvée');
         }
-        if(data.quantiteLitre < plein.quantiteLitre){
-            switcher = 'negative';
-        }else{
-            switcher = 'positive';
-        }
 
-        await pleinCarburantRepository.update(id, data);
+        const oldQuantiteLitre = oldPlein.quantiteLitre;
+        const newQuantiteLitre = data.quantiteLitre;
 
-        const camion = await Camion.findById(data.camion);
-        if(!camion){
+        const updatedPlein = await pleinCarburantRepository.update(id, data);
+
+        const camion = await Camion.findById(oldPlein.camion);
+        if (!camion) {
             throw new Error('Camion non trouvé');
         }
-        if(camion.reservoire){
-            if(switcher === 'negative'){
-                camion.reservoire = camion.reservoire - data.quantiteLitre;
-            }else{
-                camion.reservoire = camion.reservoire + data.quantiteLitre;
-            }
+
+        if (camion.reservoire !== undefined && camion.reservoire !== null) {
+            
+            const difference = newQuantiteLitre - oldQuantiteLitre;
+            
+            camion.reservoire += difference;
             await camion.save();
         }
         
-        return plein;
+        return updatedPlein;
     }
 
     async deletePlein(id) {
