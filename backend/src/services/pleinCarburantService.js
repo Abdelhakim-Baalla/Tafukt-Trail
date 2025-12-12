@@ -1,9 +1,23 @@
 const pleinCarburantRepository = require('../repositories/PleinCarburantRepository');
 const PleinCarburant = require('../models/PleinCarburant');
 const Trajet = require('../models/Trajet');
+const Camion = require('../models/Camion');
 
 class PleinCarburantService {
     async createPlein(data) {
+        const camion = await Camion.findById(data.camion);
+        if (!camion) {
+            throw new Error('Camion non trouvé');
+        }
+
+        if(!camion.reservoire){
+            camion.reservoire = data.quantiteLitre;
+            await camion.save();
+            return await pleinCarburantRepository.create(data);
+        }
+                
+        camion.reservoire = camion.reservoire + data.quantiteLitre;
+        await camion.save();
         return await pleinCarburantRepository.create(data);
     }
 
@@ -24,10 +38,35 @@ class PleinCarburantService {
     }
 
     async updatePlein(id, data) {
-        const plein = await pleinCarburantRepository.update(id, data);
-        if (!plein) {
+        const plein = await PleinCarburant.findById(id);
+        let switcher = '';
+        if(!plein){
             throw new Error('Plein non trouvé');
         }
+        if(!data.quantiteLitre){
+            throw new Error('Quantité de litre non trouvée');
+        }
+        if(data.quantiteLitre < plein.quantiteLitre){
+            switcher = 'negative';
+        }else{
+            switcher = 'positive';
+        }
+
+        await pleinCarburantRepository.update(id, data);
+
+        const camion = await Camion.findById(data.camion);
+        if(!camion){
+            throw new Error('Camion non trouvé');
+        }
+        if(camion.reservoire){
+            if(switcher === 'negative'){
+                camion.reservoire = camion.reservoire - data.quantiteLitre;
+            }else{
+                camion.reservoire = camion.reservoire + data.quantiteLitre;
+            }
+            await camion.save();
+        }
+        
         return plein;
     }
 
