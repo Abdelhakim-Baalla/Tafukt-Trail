@@ -13,7 +13,6 @@ const Footer = () => {
       <div className="footer-inner">
         <div className="footer-brand">
           <span className="footer-logo">Tafukt</span>
-          <span className="footer-tagline">Gestion de flotte simplifiée</span>
         </div>
         <div className="footer-copyright">
           © 2025 Tafukt. Tous droits réservés.
