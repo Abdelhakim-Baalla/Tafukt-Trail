@@ -43,7 +43,9 @@ const Login = () => {
     <div className="auth">
       <div className="auth-container">
         <div className="auth-header">
-          <Link to="/" className="auth-logo">T</Link>
+          <Link to="/" className="auth-logo">
+            <img src="/TafuktTrail-icon.png" alt="Tafukt" />
+          </Link>
           <h1 className="auth-title">Connexion</h1>
           <p className="auth-subtitle">Accédez à votre espace de gestion</p>
         </div>

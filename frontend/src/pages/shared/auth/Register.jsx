@@ -52,7 +52,9 @@ const Register = () => {
     <div className="auth">
       <div className="auth-container">
         <div className="auth-header">
-          <Link to="/" className="auth-logo">T</Link>
+          <Link to="/" className="auth-logo">
+            <img src="/TafuktTrail-icon.png" alt="Tafukt" />
+          </Link>
           <h1 className="auth-title">Inscription</h1>
           <p className="auth-subtitle">Créez votre compte chauffeur</p>
         </div>

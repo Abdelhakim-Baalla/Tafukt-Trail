@@ -40,8 +40,8 @@ const Navbar = () => {
     <nav className="nav">
       <div className="nav-inner">
         <Link to="/" className="nav-logo">
-          <span className="nav-logo-icon">T</span>
-          <span className="nav-logo-text">Tafukt</span>
+          <img src="/TafuktTrail-icon.png" className="w-10" alt="Tafukt" />
+          <span className="nav-logo-text">Tafukt Trailer</span>
         </Link>
 
         <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
