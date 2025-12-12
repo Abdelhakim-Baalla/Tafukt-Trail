@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../../services/api';
 import { getUserRole, isAuthenticated } from '../../../utils/auth';
 
@@ -53,6 +53,9 @@ const Login = () => {
           Se connecter
         </button>
       </form>
+      <p style={{ textAlign: 'center', marginTop: '15px' }}>
+        <Link to="/register">Pas de compte ? S'inscrire</Link>
+      </p>
     </div>
   );
 };

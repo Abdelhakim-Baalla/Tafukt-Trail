@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import Login from './pages/shared/auth/Login';
+import Register from './pages/shared/auth/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CamionsList from './pages/admin/camions/CamionsList';
 import RemorquesList from './pages/admin/remorques/RemorquesList';
@@ -20,6 +21,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/camions" element={<ProtectedRoute requiredRole="ADMIN"><CamionsList /></ProtectedRoute>} />
