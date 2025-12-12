@@ -3,11 +3,12 @@ const authService = require('../services/authService');
 class AuthController {
     async register(req, res) {
         try {
-            const user = await authService.register(req.body);
+            const { user, token } = await authService.register(req.body);
             const { motDePasse, ...userResponse } = user.toObject();
 
             res.status(201).json({
                 message: 'Utilisateur créé avec succès',
+                token,
                 user: userResponse
             });
         } catch (error) {

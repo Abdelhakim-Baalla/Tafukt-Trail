@@ -11,6 +11,7 @@ const Register = () => {
     motDePasse: '',
     telephone: ''
   });
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,15 +23,21 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
     try {
       const data = await register({ ...formData, role: 'CHAUFFEUR' });
       if (data.token) {
         localStorage.setItem('token', data.token);
-        const role = getUserRole();
-        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        setMessage('Inscription réussie!');
+        setTimeout(() => {
+          const role = getUserRole();
+          navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        }, 1000);
+      } else {
+        setMessage(data.message || 'Erreur d\'inscription');
       }
     } catch (error) {
-      alert('Erreur d\'inscription');
+      setMessage('Erreur d\'inscription');
     }
   };
 
@@ -88,6 +95,11 @@ const Register = () => {
           S'inscrire
         </button>
       </form>
+      {message && (
+        <p style={{ textAlign: 'center', marginTop: '10px', color: message.includes('réussie') ? 'green' : 'red' }}>
+          {message}
+        </p>
+      )}
       <p style={{ textAlign: 'center', marginTop: '15px' }}>
         <Link to="/login">Déjà un compte ? Se connecter</Link>
       </p>

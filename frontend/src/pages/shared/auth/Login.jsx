@@ -6,6 +6,7 @@ import { getUserRole, isAuthenticated } from '../../../utils/auth';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,15 +18,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
     try {
       const data = await login(email, motDePasse);
       if (data.token) {
         localStorage.setItem('token', data.token);
-        const role = getUserRole();
-        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        setMessage('Connexion réussie!');
+        setTimeout(() => {
+          const role = getUserRole();
+          navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        }, 1000);
+      } else {
+        setMessage(data.message || 'Erreur de connexion');
       }
     } catch (error) {
-      alert('Erreur de connexion');
+      setMessage('Erreur de connexion');
     }
   };
 
@@ -53,6 +60,11 @@ const Login = () => {
           Se connecter
         </button>
       </form>
+      {message && (
+        <p style={{ textAlign: 'center', marginTop: '10px', color: message.includes('réussie') ? 'green' : 'red' }}>
+          {message}
+        </p>
+      )}
       <p style={{ textAlign: 'center', marginTop: '15px' }}>
         <Link to="/register">Pas de compte ? S'inscrire</Link>
       </p>
