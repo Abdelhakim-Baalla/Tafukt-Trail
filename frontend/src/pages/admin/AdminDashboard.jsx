@@ -2,6 +2,17 @@ import { useState, useEffect } from 'react';
 import { getDashboardStats } from '../../services/dashboard';
 import './AdminDashboard.css';
 
+// Icônes SVG inline
+const Icons = {
+  truck: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 17h4V5H2v12h3m15-5h2v5h-2M7 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0m10 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/><path d="M14 17V5h5l3 5v7"/></svg>,
+  trailer: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="6" width="18" height="10" rx="2"/><circle cx="6" cy="16" r="2"/><circle cx="14" cy="16" r="2"/><path d="M19 11h4"/></svg>,
+  route: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>,
+  users: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  chart: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>,
+  fuel: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 22V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 10h12"/><path d="M15 22V10l4-2v8l-4 2"/><circle cx="9" cy="6" r="0"/></svg>,
+  team: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+};
+
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -43,40 +54,53 @@ const AdminDashboard = () => {
 
   return (
     <div className="dash">
-      <div className="dash-header">
-        <h1>Gestion de Flotte</h1>
-        <p>Supervision en temps réel</p>
-      </div>
+      <header className="dash-header">
+        <div>
+          <h1>Tableau de bord</h1>
+          <p>Gestion de flotte • Supervision en temps réel</p>
+        </div>
+      </header>
 
-      {/* Métriques principales */}
+      {/* Métriques */}
       <div className="metrics">
         <div className="metric">
-          <div className="metric-value">{camions.total}</div>
-          <div className="metric-label">Camions</div>
-          <div className="metric-sub">{camions.disponibles} opérationnels</div>
+          <div className="metric-icon">{Icons.truck}</div>
+          <div className="metric-content">
+            <span className="metric-value">{camions.total}</span>
+            <span className="metric-label">Camions</span>
+            <span className="metric-sub">{camions.disponibles} disponibles</span>
+          </div>
         </div>
         <div className="metric">
-          <div className="metric-value">{remorques.total}</div>
-          <div className="metric-label">Remorques</div>
-          <div className="metric-sub">{remorques.disponibles} disponibles</div>
+          <div className="metric-icon">{Icons.trailer}</div>
+          <div className="metric-content">
+            <span className="metric-value">{remorques.total}</span>
+            <span className="metric-label">Remorques</span>
+            <span className="metric-sub">{remorques.disponibles} disponibles</span>
+          </div>
         </div>
         <div className="metric">
-          <div className="metric-value">{stats.trajets.enCours}</div>
-          <div className="metric-label">En route</div>
-          <div className="metric-sub">sur {stats.trajets.total} trajets</div>
+          <div className="metric-icon">{Icons.route}</div>
+          <div className="metric-content">
+            <span className="metric-value">{stats.trajets.enCours}</span>
+            <span className="metric-label">En route</span>
+            <span className="metric-sub">sur {stats.trajets.total} trajets</span>
+          </div>
         </div>
         <div className="metric">
-          <div className="metric-value">{stats.chauffeurs.disponibles}</div>
-          <div className="metric-label">Chauffeurs libres</div>
-          <div className="metric-sub">sur {stats.chauffeurs.total} au total</div>
+          <div className="metric-icon">{Icons.users}</div>
+          <div className="metric-content">
+            <span className="metric-value">{stats.chauffeurs.disponibles}</span>
+            <span className="metric-label">Chauffeurs</span>
+            <span className="metric-sub">sur {stats.chauffeurs.total} au total</span>
+          </div>
         </div>
       </div>
 
       {/* Sections */}
       <div className="sections">
-        {/* Flotte */}
         <div className="section">
-          <h2>État de la flotte</h2>
+          <h2>{Icons.chart} État de la flotte</h2>
           <div className="bars">
             <div className="bar-item">
               <div className="bar-header">
@@ -84,10 +108,7 @@ const AdminDashboard = () => {
                 <span>{camions.disponibles}/{camions.total}</span>
               </div>
               <div className="bar">
-                <div 
-                  className="bar-fill bar-green" 
-                  style={{ width: `${camions.total ? (camions.disponibles / camions.total) * 100 : 0}%` }}
-                />
+                <div className="bar-fill bar-green" style={{ width: `${camions.total ? (camions.disponibles / camions.total) * 100 : 0}%` }} />
               </div>
             </div>
             <div className="bar-item">
@@ -96,10 +117,7 @@ const AdminDashboard = () => {
                 <span>{chauffeursMission}/{stats.chauffeurs.total}</span>
               </div>
               <div className="bar">
-                <div 
-                  className="bar-fill bar-blue" 
-                  style={{ width: `${stats.chauffeurs.total ? (chauffeursMission / stats.chauffeurs.total) * 100 : 0}%` }}
-                />
+                <div className="bar-fill bar-blue" style={{ width: `${stats.chauffeurs.total ? (chauffeursMission / stats.chauffeurs.total) * 100 : 0}%` }} />
               </div>
             </div>
             <div className="bar-item">
@@ -108,22 +126,18 @@ const AdminDashboard = () => {
                 <span>{trajetsTermines}/{stats.trajets.total}</span>
               </div>
               <div className="bar">
-                <div 
-                  className="bar-fill bar-dark" 
-                  style={{ width: `${stats.trajets.total ? (trajetsTermines / stats.trajets.total) * 100 : 0}%` }}
-                />
+                <div className="bar-fill bar-gray" style={{ width: `${stats.trajets.total ? (trajetsTermines / stats.trajets.total) * 100 : 0}%` }} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Carburant */}
         <div className="section">
-          <h2>Consommation carburant</h2>
+          <h2>{Icons.fuel} Carburant</h2>
           <div className="data-grid">
             <div className="data-box">
               <span className="data-value">{stats.carburant.totalLitres}</span>
-              <span className="data-unit">litres</span>
+              <span className="data-unit">Litres</span>
             </div>
             <div className="data-box">
               <span className="data-value">{stats.carburant.totalMontant}</span>
@@ -131,21 +145,21 @@ const AdminDashboard = () => {
             </div>
             <div className="data-box">
               <span className="data-value">{stats.carburant?.nombrePleins || 0}</span>
-              <span className="data-unit">pleins</span>
+              <span className="data-unit">Pleins</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Tableau chauffeurs */}
-      <div className="section section-wide">
-        <h2>Équipe</h2>
+      {/* Équipe */}
+      <div className="section">
+        <h2>{Icons.team} Équipe</h2>
         {stats.chauffeurs.liste?.length > 0 ? (
           <table className="data-table">
             <thead>
               <tr>
                 <th>Chauffeur</th>
-                <th>Contact</th>
+                <th>Email</th>
                 <th>Statut</th>
               </tr>
             </thead>
