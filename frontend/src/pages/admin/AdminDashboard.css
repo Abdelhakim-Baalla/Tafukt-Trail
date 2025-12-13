@@ -1,0 +1,288 @@
+/* Dashboard - Minimal Fleet Theme */
+
+.dash {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 2.5rem;
+}
+
+.dash-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e9ecef;
+  border-top-color: #212529;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.dash-empty {
+  text-align: center;
+  padding: 4rem;
+  color: #adb5bd;
+}
+
+/* Header */
+.dash-header {
+  margin-bottom: 3rem;
+}
+
+.dash-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.dash-header p {
+  margin: 0.5rem 0 0;
+  color: #868e96;
+  font-size: 0.9375rem;
+}
+
+/* Metrics */
+.metrics {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.metric {
+  flex: 1;
+  min-width: 160px;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.metric-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #212529;
+  line-height: 1;
+  display: block;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #495057;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.metric-sub {
+  font-size: 0.75rem;
+  color: #adb5bd;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.metric-alert {
+  background: #fff5f5;
+  border-color: #ffc9c9;
+}
+
+.metric-alert .metric-value {
+  color: #e03131;
+}
+
+/* Sections */
+.sections {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .sections { grid-template-columns: 1fr; }
+  .metrics { flex-direction: column; }
+}
+
+.section {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.75rem;
+}
+
+.section-wide {
+  grid-column: 1 / -1;
+}
+
+.section h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+/* Bars */
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: #495057;
+}
+
+.bar-header span:last-child {
+  font-weight: 600;
+  color: #212529;
+}
+
+.bar {
+  height: 6px;
+  background: #f1f3f5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.bar-green { background: #40c057; }
+.bar-blue { background: #339af0; }
+.bar-dark { background: #495057; }
+
+/* Data Grid */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.data-box {
+  background: #f8f9fa;
+  padding: 1.25rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.data-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+  display: block;
+}
+
+.data-unit {
+  font-size: 0.75rem;
+  color: #868e96;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #868e96;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.data-table td {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #495057;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover {
+  background: #f8f9fa;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: #212529;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.text-muted {
+  color: #adb5bd;
+}
+
+/* Status */
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-ok {
+  background: #ebfbee;
+  color: #2f9e44;
+}
+
+.status-busy {
+  background: #fff4e6;
+  color: #e8590c;
+}
+
+.empty {
+  text-align: center;
+  padding: 3rem;
+  color: #adb5bd;
+  font-size: 0.875rem;
+}
