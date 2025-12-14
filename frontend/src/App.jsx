@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import Login from './pages/shared/auth/Login';
 import Register from './pages/shared/auth/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminTrajetsList from './pages/admin/trajets/TrajetsList';
 import CamionsList from './pages/admin/camions/CamionsList';
 import RemorquesList from './pages/admin/remorques/RemorquesList';
 import PneusList from './pages/admin/pneus/PneusList';
@@ -24,6 +25,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/trajets" element={<ProtectedRoute requiredRole="ADMIN"><AdminTrajetsList /></ProtectedRoute>} />
           <Route path="/admin/camions" element={<ProtectedRoute requiredRole="ADMIN"><CamionsList /></ProtectedRoute>} />
           <Route path="/admin/remorques" element={<ProtectedRoute requiredRole="ADMIN"><RemorquesList /></ProtectedRoute>} />
           <Route path="/admin/pneus" element={<ProtectedRoute requiredRole="ADMIN"><PneusList /></ProtectedRoute>} />

@@ -21,6 +21,7 @@ const Navbar = () => {
 
   const adminLinks = [
     { path: '/admin', label: 'Dashboard' },
+    { path: '/admin/trajets', label: 'Trajets' },
     { path: '/admin/camions', label: 'Camions' },
     { path: '/admin/remorques', label: 'Remorques' },
     { path: '/admin/pneus', label: 'Pneus' },

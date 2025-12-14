@@ -530,3 +530,98 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==================== TRAJETS SPECIFIC ==================== */
+
+/* Trajet route display */
+.trajet-route {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.375rem;
+}
+
+.trajet-lieu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.trajet-lieu svg {
+  color: #94a3b8;
+}
+
+.trajet-arrow {
+  color: #cbd5e1;
+}
+
+/* Card footer for actions */
+.card-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Small button variant */
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* Modal large variant */
+.modal-lg {
+  max-width: 650px;
+}
+
+/* Textarea */
+.form-group textarea {
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-group textarea:focus {
+  border-color: #1e293b;
+}
+
+/* Info label with icon */
+.info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.info-label svg {
+  color: #94a3b8;
+}
+
+/* Error styles */
+.error-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.form-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 0.625rem 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+}

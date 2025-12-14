@@ -61,8 +61,12 @@ const AdminDashboard = () => {
 
   const camions = stats.vehicules?.camions || { total: 0, disponibles: 0 };
   const remorques = stats.vehicules?.remorques || { total: 0, disponibles: 0 };
+  const trajetsTotal = stats.trajets?.total || 0;
+  const trajetsEnCours = stats.trajets?.enCours || 0;
   const trajetsTermines = stats.trajets?.termines || 0;
-  const chauffeursMission = stats.chauffeurs.total - stats.chauffeurs.disponibles;
+  const chauffeursTotal = stats.chauffeurs?.total || 0;
+  const chauffeursDisponibles = stats.chauffeurs?.disponibles || 0;
+  const chauffeursMission = chauffeursTotal - chauffeursDisponibles;
   const derniersTrajets = stats.trajets?.derniers || [];
 
   return (
@@ -103,17 +107,17 @@ const AdminDashboard = () => {
         <div className="metric">
           <div className="metric-icon">{Icons.route}</div>
           <div className="metric-content">
-            <span className="metric-value">{stats.trajets.enCours}</span>
+            <span className="metric-value">{trajetsEnCours}</span>
             <span className="metric-label">En route</span>
-            <span className="metric-sub">sur {stats.trajets.total} trajets</span>
+            <span className="metric-sub">sur {trajetsTotal} trajets</span>
           </div>
         </div>
         <div className="metric">
           <div className="metric-icon">{Icons.users}</div>
           <div className="metric-content">
-            <span className="metric-value">{stats.chauffeurs.disponibles}</span>
+            <span className="metric-value">{chauffeursDisponibles}</span>
             <span className="metric-label">Chauffeurs</span>
-            <span className="metric-sub">sur {stats.chauffeurs.total} au total</span>
+            <span className="metric-sub">sur {chauffeursTotal} au total</span>
           </div>
         </div>
       </div>
@@ -135,19 +139,19 @@ const AdminDashboard = () => {
             <div className="bar-item">
               <div className="bar-header">
                 <span>Chauffeurs en mission</span>
-                <span>{chauffeursMission}/{stats.chauffeurs.total}</span>
+                <span>{chauffeursMission}/{chauffeursTotal}</span>
               </div>
               <div className="bar">
-                <div className="bar-fill bar-blue" style={{ width: `${stats.chauffeurs.total ? (chauffeursMission / stats.chauffeurs.total) * 100 : 0}%` }} />
+                <div className="bar-fill bar-blue" style={{ width: `${chauffeursTotal ? (chauffeursMission / chauffeursTotal) * 100 : 0}%` }} />
               </div>
             </div>
             <div className="bar-item">
               <div className="bar-header">
                 <span>Trajets terminés</span>
-                <span>{trajetsTermines}/{stats.trajets.total}</span>
+                <span>{trajetsTermines}/{trajetsTotal}</span>
               </div>
               <div className="bar">
-                <div className="bar-fill bar-gray" style={{ width: `${stats.trajets.total ? (trajetsTermines / stats.trajets.total) * 100 : 0}%` }} />
+                <div className="bar-fill bar-gray" style={{ width: `${trajetsTotal ? (trajetsTermines / trajetsTotal) * 100 : 0}%` }} />
               </div>
             </div>
           </div>
@@ -201,7 +205,7 @@ const AdminDashboard = () => {
 
         <div className="section">
           <h2>{Icons.team} Équipe</h2>
-          {stats.chauffeurs.liste?.length > 0 ? (
+          {stats.chauffeurs?.liste?.length > 0 ? (
             <div className="team-list">
               {stats.chauffeurs.liste.slice(0, 5).map((c) => (
                 <div className="team-item" key={c._id}>
