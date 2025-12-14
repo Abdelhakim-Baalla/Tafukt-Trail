@@ -303,6 +303,16 @@ export const getAllUsers = async () => {
   return Array.isArray(data) ? data : [];
 };
 
+// ==================== PLEINS CARBURANT ====================
+
+export const getAllPleinsCarburant = async () => {
+  const response = await fetch(`${API_URL}/pleins-carburant`, {
+    headers: getHeaders(),
+  });
+  const data = await response.json();
+  return Array.isArray(data) ? data : [];
+};
+
 // Statut Trajet Enum
 export const STATUT_TRAJET = {
   PLANIFIE: "PLANIFIE",
