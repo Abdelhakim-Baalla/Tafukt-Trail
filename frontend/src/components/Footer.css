@@ -1,13 +1,13 @@
-/* Footer - Minimal */
+/* Footer - Dark Mode */
 
 .footer {
   margin-top: auto;
-  border-top: 1px solid var(--gray-200);
-  background: var(--white);
+  border-top: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
 }
 
 .footer-inner {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 24px;
   display: flex;
@@ -26,17 +26,17 @@
 .footer-logo {
   font-size: 16px;
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--text-primary);
 }
 
 .footer-tagline {
   font-size: 14px;
-  color: var(--gray-500);
+  color: var(--text-muted);
 }
 
 .footer-copyright {
   font-size: 14px;
-  color: var(--gray-500);
+  color: var(--text-muted);
 }
 
 @media (max-width: 640px) {

@@ -1,4 +1,4 @@
-/* TAFUKT - Minimal Design System */
+/* TAFUKT - Dark Mode Design System */
 
 * {
   margin: 0;
@@ -7,26 +7,55 @@
 }
 
 :root {
-  --white: #ffffff;
-  --black: #0a0a0a;
-  --gray-50: #fafafa;
-  --gray-100: #f4f4f5;
-  --gray-200: #e4e4e7;
-  --gray-300: #d4d4d8;
-  --gray-400: #a1a1aa;
-  --gray-500: #71717a;
-  --gray-600: #52525b;
-  --gray-700: #3f3f46;
-  --gray-800: #27272a;
-  --gray-900: #18181b;
+  /* Dark Mode Colors */
+  --bg-primary: #0a0a0b;
+  --bg-secondary: #111113;
+  --bg-tertiary: #18181b;
+  --bg-card: #1a1a1d;
+  --bg-hover: #232326;
+  --bg-input: #18181b;
   
-  --blue-50: #eff6ff;
+  --border-primary: #27272a;
+  --border-secondary: #3f3f46;
+  --border-hover: #52525b;
+  
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-inverse: #0a0a0b;
+  
+  --accent-primary: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.1);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+  
+  /* Legacy variables for compatibility */
+  --white: #fafafa;
+  --black: #0a0a0b;
+  --gray-50: #18181b;
+  --gray-100: #1a1a1d;
+  --gray-200: #27272a;
+  --gray-300: #3f3f46;
+  --gray-400: #52525b;
+  --gray-500: #71717a;
+  --gray-600: #a1a1aa;
+  --gray-700: #d4d4d8;
+  --gray-800: #e4e4e7;
+  --gray-900: #fafafa;
+  
+  --blue-50: rgba(59, 130, 246, 0.1);
   --blue-500: #3b82f6;
   --blue-600: #2563eb;
-  --green-50: #f0fdf4;
+  --green-50: rgba(34, 197, 94, 0.1);
   --green-500: #22c55e;
   --green-600: #16a34a;
-  --red-50: #fef2f2;
+  --red-50: rgba(239, 68, 68, 0.1);
   --red-500: #ef4444;
   --red-600: #dc2626;
 }
@@ -36,9 +65,9 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--white);
-  color: var(--gray-900);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
 }
