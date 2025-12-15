@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { getUserRole, isAuthenticated } from '../utils/auth';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const userRole = getUserRole();
+  const { user, isAuthenticated, logout, isAdmin, isChauffeur } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     navigate('/login');
   };
 
@@ -21,6 +21,7 @@ const Navbar = () => {
 
   const adminLinks = [
     { path: '/admin', label: 'Dashboard' },
+    { path: '/admin/trajets', label: 'Trajets' },
     { path: '/admin/camions', label: 'Camions' },
     { path: '/admin/remorques', label: 'Remorques' },
     { path: '/admin/pneus', label: 'Pneus' },
@@ -34,14 +35,14 @@ const Navbar = () => {
     { path: '/chauffeur/carburant', label: 'Carburant' },
   ];
 
-  const links = userRole === 'ADMIN' ? adminLinks : userRole === 'CHAUFFEUR' ? chauffeurLinks : [];
+  const links = isAdmin ? adminLinks : isChauffeur ? chauffeurLinks : [];
 
   return (
     <nav className="nav">
       <div className="nav-inner">
         <Link to="/" className="nav-logo">
           <img src="/TafuktTrail-icon.png" className="w-10" alt="Tafukt" />
-          <span className="nav-logo-text">Tafukt Trailer</span>
+          <span className="nav-logo-text">Tafukt Trail</span>
         </Link>
 
         <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
@@ -60,19 +61,19 @@ const Navbar = () => {
         <div className="nav-actions">
           {isAuthenticated() ? (
             <>
-              <span className="nav-role">{userRole}</span>
-              <button onClick={handleLogout} className="nav-btn">
+              <span className="nav-user-name">{user?.prenom || user?.nom || 'Utilisateur'}</span>
+              <button onClick={handleLogout} className="nav-btn nav-btn-logout">
                 Déconnexion
               </button>
             </>
           ) : (
             <>
-            <Link to="/login" className="nav-btn nav-btn-primary">
-              Connexion
-            </Link>
-            <Link to="/register" className="nav-btn nav-btn-secondary">
-              S'inscrire
-            </Link>
+              <Link to="/login" className="nav-btn nav-btn-primary">
+                Connexion
+              </Link>
+              <Link to="/register" className="nav-btn nav-btn-secondary">
+                S'inscrire
+              </Link>
             </>
           )}
           

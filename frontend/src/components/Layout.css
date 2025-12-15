@@ -1,18 +1,17 @@
-/* Layout - Minimal */
+/* Layout - Dark Mode */
 
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--gray-50);
+  background: var(--bg-primary);
 }
 
 .main {
   flex: 1;
-  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 32px 24px;
+  background: var(--bg-primary);
 }
 
 @media (max-width: 640px) {

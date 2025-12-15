@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { register } from '../../../services/api';
-import { getUserRole, isAuthenticated } from '../../../utils/auth';
+import { register as registerApi } from '../../../services/api';
+import { useAuth } from '../../../context/AuthContext';
 import './Auth.css';
 
 const Register = () => {
@@ -15,13 +15,13 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated()) {
-      const role = getUserRole();
-      navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+      navigate(user?.role === 'ADMIN' ? '/admin' : '/chauffeur');
     }
-  }, [navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,16 +29,15 @@ const Register = () => {
     setLoading(true);
     
     try {
-      const data = await register({ ...formData, role: 'CHAUFFEUR' });
+      const data = await registerApi({ ...formData, role: 'CHAUFFEUR' });
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        const role = getUserRole();
-        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        login(data.token, data.user);
+        // La redirection est gérée par useEffect
       } else {
         setError(data.message || 'Erreur d\'inscription');
       }
-    } catch {
-      setError('Erreur d\'inscription');
+    } catch (err) {
+      setError(err.message || 'Erreur d\'inscription');
     } finally {
       setLoading(false);
     }
