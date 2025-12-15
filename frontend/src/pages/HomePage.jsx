@@ -12,6 +12,9 @@ const HomePage = () => {
           <source src="/1215.mp4" type="video/mp4" />
         </video>
         <div className="hero__overlay" />
+        <div className="hero__glow hero__glow--1" />
+        <div className="hero__glow hero__glow--2" />
+        <div className="hero__particles" />
         
         <div className="hero__container">
           <div className="hero__content">
@@ -27,7 +30,7 @@ const HomePage = () => {
 
             <div className="hero__cta">
               {isAuthenticated() ? (
-                <Link to={isAdmin ? '/admin' : '/chauffeur'} className="btn btn--primary btn--lg">
+                <Link to={isAdmin ? '/admin' : '/chauffeur'} className="btn btn--glow btn--lg">
                   <span>Accéder au Dashboard</span>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -35,24 +38,43 @@ const HomePage = () => {
                 </Link>
               ) : (
                 <>
-                  <Link to="/register" className="btn btn--primary btn--lg">
+                  <Link to="/register" className="btn btn--glow btn--lg">
                     <span>Démarrer maintenant</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                   </Link>
-                  <Link to="/login" className="btn btn--outline btn--lg">
-                    Connexion
+                  <Link to="/login" className="btn btn--ghost btn--lg">
+                    <span>Connexion</span>
                   </Link>
                 </>
               )}
+            </div>
+
+            <div className="hero__stats">
+              <div className="hero__stat">
+                <span className="hero__stat-value">500+</span>
+                <span className="hero__stat-label">Véhicules gérés</span>
+              </div>
+              <div className="hero__stat-divider" />
+              <div className="hero__stat">
+                <span className="hero__stat-value">98%</span>
+                <span className="hero__stat-label">Satisfaction</span>
+              </div>
+              <div className="hero__stat-divider" />
+              <div className="hero__stat">
+                <span className="hero__stat-value">24/7</span>
+                <span className="hero__stat-label">Support</span>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="hero__scroll">
-          <span>Découvrir</span>
-          <div className="hero__scroll-line" />
+          <div className="hero__scroll-mouse">
+            <div className="hero__scroll-wheel" />
+          </div>
+          <span>Scroll</span>
         </div>
       </section>
 
