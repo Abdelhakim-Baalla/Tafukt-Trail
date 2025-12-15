@@ -79,10 +79,26 @@
   gap: 16px;
 }
 
+.nav-user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.nav-user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
 .nav-role {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  color: var(--gray-500);
+  color: var(--white);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  padding: 2px 8px;
+  border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -96,6 +112,8 @@
   border: 1px solid var(--gray-300);
   border-radius: 6px;
   transition: all 0.15s ease;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .nav-btn:hover {
@@ -111,6 +129,27 @@
 
 .nav-btn-primary:hover {
   background: var(--gray-800);
+}
+
+.nav-btn-secondary {
+  color: var(--gray-700);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+}
+
+.nav-btn-secondary:hover {
+  background: var(--gray-100);
+}
+
+.nav-btn-logout {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.nav-btn-logout:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
 }
 
 .nav-menu-btn {

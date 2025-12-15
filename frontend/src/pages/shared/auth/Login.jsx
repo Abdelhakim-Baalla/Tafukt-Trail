@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../../../services/api';
-import { getUserRole, isAuthenticated } from '../../../utils/auth';
+import { login as loginApi } from '../../../services/api';
+import { useAuth } from '../../../context/AuthContext';
 import './Auth.css';
 
 const Login = () => {
@@ -10,13 +10,13 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated()) {
-      const role = getUserRole();
-      navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+      navigate(user?.role === 'ADMIN' ? '/admin' : '/chauffeur');
     }
-  }, [navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,16 +24,15 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const data = await login(email, password);
+      const data = await loginApi(email, password);
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        const role = getUserRole();
-        navigate(role === 'ADMIN' ? '/admin' : '/chauffeur');
+        login(data.token, data.user);
+        // La redirection est gérée par useEffect
       } else {
         setError(data.message || 'Identifiants incorrects');
       }
-    } catch {
-      setError('Erreur de connexion');
+    } catch (err) {
+      setError(err.message || 'Erreur de connexion');
     } finally {
       setLoading(false);
     }

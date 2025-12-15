@@ -1,13 +1,24 @@
 import { Navigate } from 'react-router-dom';
-import { getUserRole, isAuthenticated } from '../utils/auth';
+import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-  if (!isAuthenticated()) return <Navigate to="/login" />;
+  const { isAuthenticated, user, loading } = useAuth();
   
-  const userRole = getUserRole();
+  // Afficher un loader pendant la vérification
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="loader"></div>
+      </div>
+    );
+  }
   
-  if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to={userRole === 'ADMIN' ? '/admin' : '/chauffeur'} />;
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (requiredRole && user?.role !== requiredRole) {
+    return <Navigate to={user?.role === 'ADMIN' ? '/admin' : '/chauffeur'} replace />;
   }
   
   return children;
