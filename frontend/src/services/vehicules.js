@@ -5,24 +5,34 @@ const getHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
+// Helper pour gérer les réponses et erreurs
+const handleResponse = async (response) => {
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || `Erreur ${response.status}`);
+  }
+  return data;
+};
+
+// ==================== CAMIONS ====================
 
 export const getAllCamions = async () => {
   const response = await fetch(`${API_URL}/camions`, { headers: getHeaders() });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getCamionById = async (id) => {
   const response = await fetch(`${API_URL}/camions/${id}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getCamionsByStatut = async (statut) => {
   const response = await fetch(`${API_URL}/camions/statut/${statut}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const createCamion = async (data) => {
@@ -31,7 +41,7 @@ export const createCamion = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const updateCamion = async (id, data) => {
@@ -40,7 +50,7 @@ export const updateCamion = async (id, data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const deleteCamion = async (id) => {
@@ -48,29 +58,34 @@ export const deleteCamion = async (id) => {
     method: "DELETE",
     headers: getHeaders(),
   });
-  return response.json();
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || `Erreur ${response.status}`);
+  }
+  return { success: true };
 };
 
+// ==================== REMORQUES ====================
 
 export const getAllRemorques = async () => {
   const response = await fetch(`${API_URL}/remorques`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getRemorqueById = async (id) => {
   const response = await fetch(`${API_URL}/remorques/${id}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getRemorquesByStatut = async (statut) => {
   const response = await fetch(`${API_URL}/remorques/statut/${statut}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const createRemorque = async (data) => {
@@ -79,7 +94,7 @@ export const createRemorque = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const updateRemorque = async (id, data) => {
@@ -88,7 +103,7 @@ export const updateRemorque = async (id, data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const deleteRemorque = async (id) => {
@@ -96,27 +111,32 @@ export const deleteRemorque = async (id) => {
     method: "DELETE",
     headers: getHeaders(),
   });
-  return response.json();
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || `Erreur ${response.status}`);
+  }
+  return { success: true };
 };
 
+// ==================== PNEUS ====================
 
 export const getAllPneus = async () => {
   const response = await fetch(`${API_URL}/pneus`, { headers: getHeaders() });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getPneuById = async (id) => {
   const response = await fetch(`${API_URL}/pneus/${id}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getPneusByPosition = async (position) => {
   const response = await fetch(`${API_URL}/pneus/position/${position}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const createPneu = async (data) => {
@@ -125,7 +145,7 @@ export const createPneu = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const updatePneu = async (id, data) => {
@@ -134,7 +154,7 @@ export const updatePneu = async (id, data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const deletePneu = async (id) => {
@@ -142,9 +162,12 @@ export const deletePneu = async (id) => {
     method: "DELETE",
     headers: getHeaders(),
   });
-  return response.json();
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || `Erreur ${response.status}`);
+  }
+  return { success: true };
 };
-
 
 export const STATUT_VEHICULE = {
   DISPONIBLE: "DISPONIBLE",
@@ -211,31 +234,32 @@ export const POSITION_PNEU_LABELS = {
   ROULE_DE_SECOURS: "Roue de secours",
 };
 
+// ==================== TRAJETS ====================
 
 export const getAllTrajets = async () => {
   const response = await fetch(`${API_URL}/trajets`, { headers: getHeaders() });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getTrajetById = async (id) => {
   const response = await fetch(`${API_URL}/trajets/${id}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getTrajetsByChauffeur = async (chauffeurId) => {
   const response = await fetch(`${API_URL}/trajets/chauffeur/${chauffeurId}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const getTrajetsByStatut = async (statut) => {
   const response = await fetch(`${API_URL}/trajets/statut/${statut}`, {
     headers: getHeaders(),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const createTrajet = async (data) => {
@@ -244,7 +268,7 @@ export const createTrajet = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const updateTrajet = async (id, data) => {
@@ -253,7 +277,7 @@ export const updateTrajet = async (id, data) => {
     headers: getHeaders(),
     body: JSON.stringify(data),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const updateTrajetStatut = async (id, statut) => {
@@ -262,7 +286,7 @@ export const updateTrajetStatut = async (id, statut) => {
     headers: getHeaders(),
     body: JSON.stringify({ statut }),
   });
-  return response.json();
+  return handleResponse(response);
 };
 
 export const deleteTrajet = async (id) => {
@@ -270,21 +294,32 @@ export const deleteTrajet = async (id) => {
     method: "DELETE",
     headers: getHeaders(),
   });
-  return response.json();
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.message || `Erreur ${response.status}`);
+  }
+  return { success: true };
 };
 
 export const getTrajetPdf = async (id) => {
   const response = await fetch(`${API_URL}/trajets/${id}/pdf`, {
     headers: getHeaders(),
   });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la génération du PDF");
+  }
   return response.blob();
 };
 
+// ==================== CHAUFFEURS & USERS ====================
 
 export const getAllChauffeurs = async () => {
   const response = await fetch(`${API_URL}/auth/chauffeurs`, {
     headers: getHeaders(),
   });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des chauffeurs");
+  }
   const data = await response.json();
   return Array.isArray(data) ? data : [];
 };
@@ -293,19 +328,27 @@ export const getAllUsers = async () => {
   const response = await fetch(`${API_URL}/auth/users`, {
     headers: getHeaders(),
   });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des utilisateurs");
+  }
   const data = await response.json();
   return Array.isArray(data) ? data : [];
 };
 
+// ==================== PLEINS CARBURANT ====================
 
 export const getAllPleinsCarburant = async () => {
   const response = await fetch(`${API_URL}/pleins-carburant`, {
     headers: getHeaders(),
   });
+  if (!response.ok) {
+    throw new Error("Erreur lors de la récupération des pleins carburant");
+  }
   const data = await response.json();
   return Array.isArray(data) ? data : [];
 };
 
+// ==================== MAINTENANCE - INTERVENTIONS ====================
 
 export const getAllInterventions = async () => {
   const response = await fetch(`${API_URL}/maintenance/interventions`, {
@@ -369,7 +412,6 @@ export const deleteIntervention = async (id) => {
   return response.json();
 };
 
-
 export const getAllRegles = async () => {
   const response = await fetch(`${API_URL}/maintenance/regles`, {
     headers: getHeaders(),
@@ -418,7 +460,6 @@ export const deleteRegle = async (id) => {
     throw new Error("Erreur lors de la suppression de la règle");
   return response.json();
 };
-
 
 export const getMaintenanceAlertes = async () => {
   const response = await fetch(`${API_URL}/maintenance/alertes`, {

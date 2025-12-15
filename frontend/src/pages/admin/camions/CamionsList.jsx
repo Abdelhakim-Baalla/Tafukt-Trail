@@ -29,6 +29,8 @@ const CamionsList = () => {
   const [editingCamion, setEditingCamion] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatut, setFilterStatut] = useState('');
+  const [error, setError] = useState(null);
+  const [formError, setFormError] = useState(null);
   const [formData, setFormData] = useState({
     marque: '',
     model: '',
@@ -44,11 +46,13 @@ const CamionsList = () => {
   }, []);
 
   const fetchCamions = async () => {
+    setError(null);
     try {
       const data = await getAllCamions();
       setCamions(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Erreur:', error);
+      setError(error.message || 'Erreur lors du chargement des camions');
     } finally {
       setLoading(false);
     }
@@ -56,6 +60,7 @@ const CamionsList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null);
     try {
       if (editingCamion) {
         await updateCamion(editingCamion._id, formData);
@@ -66,16 +71,19 @@ const CamionsList = () => {
       closeModal();
     } catch (error) {
       console.error('Erreur:', error);
+      setFormError(error.message || 'Erreur lors de l\'enregistrement');
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Supprimer ce camion ?')) {
+      setError(null);
       try {
         await deleteCamion(id);
         fetchCamions();
       } catch (error) {
         console.error('Erreur:', error);
+        setError(error.message || 'Erreur lors de la suppression');
       }
     }
   };
@@ -145,6 +153,13 @@ const CamionsList = () => {
           {Icons.plus} <span>Ajouter</span>
         </button>
       </header>
+
+      {/* Affichage des erreurs */}
+      {error && (
+        <div className="alert alert-error" onClick={() => setError(null)}>
+          {error} <span style={{cursor: 'pointer', marginLeft: '10px'}}>✕</span>
+        </div>
+      )}
 
       {/* Filtres */}
       <div className="filters">
@@ -224,6 +239,11 @@ const CamionsList = () => {
               <button className="btn-icon" onClick={closeModal}>{Icons.x}</button>
             </div>
             <form onSubmit={handleSubmit}>
+              {error && (
+                <div className="alert alert-error" style={{margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
+                  {error}
+                </div>
+              )}
               <div className="form-grid">
                 <div className="form-group">
                   <label>Matricule *</label>

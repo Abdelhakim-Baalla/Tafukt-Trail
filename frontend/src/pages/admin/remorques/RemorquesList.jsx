@@ -42,6 +42,7 @@ const formatDate = (dateString) => {
 const RemorquesList = () => {
   const [remorques, setRemorques] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingRemorque, setEditingRemorque] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -61,10 +62,12 @@ const RemorquesList = () => {
 
   const fetchRemorques = async () => {
     try {
+      setError(null);
       const data = await getAllRemorques();
       setRemorques(data);
     } catch (error) {
       console.error('Erreur lors du chargement des remorques:', error);
+      setError(error.message || 'Erreur lors du chargement des remorques');
     } finally {
       setLoading(false);
     }
@@ -72,6 +75,7 @@ const RemorquesList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       if (editingRemorque) {
         await updateRemorque(editingRemorque._id, formData);
@@ -82,21 +86,25 @@ const RemorquesList = () => {
       closeModal();
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement:', error);
+      setError(error.message || 'Erreur lors de l\'enregistrement');
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette remorque ?')) {
       try {
+        setError(null);
         await deleteRemorque(id);
         fetchRemorques();
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
+        setError(error.message || 'Erreur lors de la suppression');
       }
     }
   };
 
   const openModal = (remorque = null) => {
+    setError(null);
     if (remorque) {
       setEditingRemorque(remorque);
       setFormData({
@@ -143,6 +151,14 @@ const RemorquesList = () => {
 
   return (
     <div className="page">
+      {/* Error Alert */}
+      {error && (
+        <div className="alert alert-error" style={{margin: '1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
+          {error}
+          <button onClick={() => setError(null)} style={{marginLeft: '1rem', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem'}}>×</button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="page-header">
         <div className="page-header-left">
@@ -242,6 +258,11 @@ const RemorquesList = () => {
               <button className="btn-icon" onClick={closeModal}>{Icons.x}</button>
             </div>
             <form onSubmit={handleSubmit}>
+              {error && (
+                <div className="alert alert-error" style={{margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
+                  {error}
+                </div>
+              )}
               <div className="form-grid">
                 <div className="form-group">
                   <label>Matricule *</label>

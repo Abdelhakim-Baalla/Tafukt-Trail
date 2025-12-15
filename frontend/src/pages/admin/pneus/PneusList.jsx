@@ -31,6 +31,7 @@ const PneusList = () => {
   const [pneus, setPneus] = useState([]);
   const [camions, setCamions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingPneu, setEditingPneu] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,6 +54,7 @@ const PneusList = () => {
 
   const fetchData = async () => {
     try {
+      setError(null);
       const [pneusData, camionsData] = await Promise.all([
         getAllPneus(),
         getAllCamions()
@@ -61,6 +63,7 @@ const PneusList = () => {
       setCamions(camionsData);
     } catch (error) {
       console.error('Erreur lors du chargement:', error);
+      setError(error.message || 'Erreur lors du chargement des données');
     } finally {
       setLoading(false);
     }
@@ -68,6 +71,7 @@ const PneusList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       const dataToSend = { ...formData };
       if (!dataToSend.camion) delete dataToSend.camion;
@@ -81,21 +85,25 @@ const PneusList = () => {
       closeModal();
     } catch (error) {
       console.error('Erreur lors de l\'enregistrement:', error);
+      setError(error.message || 'Erreur lors de l\'enregistrement');
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer ce pneu ?')) {
       try {
+        setError(null);
         await deletePneu(id);
         fetchData();
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
+        setError(error.message || 'Erreur lors de la suppression');
       }
     }
   };
 
   const openModal = (pneu = null) => {
+    setError(null);
     if (pneu) {
       setEditingPneu(pneu);
       setFormData({
@@ -160,6 +168,14 @@ const PneusList = () => {
 
   return (
     <div className="page">
+      {/* Error Alert */}
+      {error && (
+        <div className="alert alert-error" style={{margin: '1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
+          {error}
+          <button onClick={() => setError(null)} style={{marginLeft: '1rem', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem'}}>×</button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="page-header">
         <div className="page-header-left">
@@ -269,6 +285,11 @@ const PneusList = () => {
               <button className="btn-icon" onClick={closeModal}>{Icons.x}</button>
             </div>
             <form onSubmit={handleSubmit}>
+              {error && (
+                <div className="alert alert-error" style={{margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
+                  {error}
+                </div>
+              )}
               <div className="form-grid">
                 <div className="form-group">
                   <label>Numéro de série *</label>
