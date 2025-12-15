@@ -1,0 +1,84 @@
+/* Chauffeur pages - shared styles (dark mode) */
+
+.chauffeur-page {
+  padding: 24px;
+  color: var(--tt-white);
+  background: transparent;
+}
+
+.chauffeur-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.chauffeur-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.chauffeur-subtitle {
+  font-size: 14px;
+  color: var(--tt-gray-400);
+  margin: 4px 0 0;
+}
+
+.stats-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--tt-gray-800);
+  border: 1px solid var(--tt-gray-700);
+  padding: 12px 16px;
+  border-radius: 12px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--tt-gray-400);
+}
+
+.card {
+  background: var(--tt-gray-800);
+  border: 1px solid var(--tt-gray-700);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.table-placeholder {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-placeholder th,
+.table-placeholder td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--tt-gray-700);
+}
+
+.empty-note {
+  color: var(--tt-gray-400);
+  padding: 12px 0;
+}
+
+@media (min-width: 768px) {
+  .chauffeur-title { font-size: 24px; }
+  .stat-card { min-width: 180px; }
+}
