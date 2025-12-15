@@ -7,7 +7,6 @@ const HomePage = () => {
 
   return (
     <main className="landing">
-      {/* HERO */}
       <section className="hero">
         <video className="hero__video" autoPlay loop muted playsInline>
           <source src="/1215.mp4" type="video/mp4" />
@@ -59,7 +58,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* FEATURES */}
       <section className="features" id="features">
         <div className="container">
           <header className="section-header">
@@ -153,7 +151,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ABOUT SPLIT */}
       <section className="split">
         <div className="split__media">
           <img src="/Homme-Debout-Devant-Un-Camion.jpg" alt="Professionnel du transport" loading="lazy" />
@@ -197,7 +194,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* STATS */}
       <section className="stats">
         <div className="container">
           <div className="stats__grid">
@@ -221,7 +217,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* SPLIT REVERSE */}
       <section className="split split--reverse">
         <div className="split__content">
           <span className="section-header__tag">Expérience</span>
@@ -246,7 +241,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="cta">
         <div className="container">
           <div className="cta__card">

@@ -325,7 +325,6 @@ const RapportsList = () => {
 
   return (
     <div className="page-container rapports-page">
-      {/* Header */}
       <div className="page-header">
         <div className="header-content">
           <div className="header-icon">{Icons.chart}</div>
@@ -346,7 +345,6 @@ const RapportsList = () => {
 
       {error && <div className="error-banner">{error}</div>}
 
-      {/* Filtres période */}
       <div className="filters-bar">
         <div className="filter-group">
           <label>{Icons.calendar} Période :</label>
@@ -368,7 +366,6 @@ const RapportsList = () => {
         </div>
       </div>
 
-      {/* Cartes statistiques principales */}
       <div className="stats-grid">
         <div className="stat-card stat-blue">
           <div className="stat-icon">{Icons.route}</div>
@@ -416,9 +413,7 @@ const RapportsList = () => {
         </div>
       </div>
 
-      {/* Sections détaillées */}
       <div className="rapports-sections">
-        {/* Section Trajets */}
         <div className="rapport-section">
           <div className="section-header">
             <h2>{Icons.route} Rapport des Trajets</h2>
@@ -476,7 +471,6 @@ const RapportsList = () => {
               </div>
             </div>
 
-            {/* Tableau des derniers trajets */}
             <div className="table-container">
               <h3>Derniers trajets</h3>
               <table className="data-table">
@@ -524,7 +518,6 @@ const RapportsList = () => {
           </div>
         </div>
 
-        {/* Section Flotte */}
         <div className="rapport-section">
           <div className="section-header">
             <h2>{Icons.truck} Rapport de la Flotte</h2>
@@ -605,7 +598,6 @@ const RapportsList = () => {
           </div>
         </div>
 
-        {/* Section Carburant */}
         <div className="rapport-section">
           <div className="section-header">
             <h2>{Icons.fuel} Rapport Carburant</h2>

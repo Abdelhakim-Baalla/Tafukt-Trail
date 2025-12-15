@@ -154,14 +154,12 @@ const CamionsList = () => {
         </button>
       </header>
 
-      {/* Affichage des erreurs */}
       {error && (
         <div className="alert alert-error" onClick={() => setError(null)}>
           {error} <span style={{cursor: 'pointer', marginLeft: '10px'}}>✕</span>
         </div>
       )}
 
-      {/* Filtres */}
       <div className="filters">
         <div className="search-box">
           {Icons.search}
@@ -183,7 +181,6 @@ const CamionsList = () => {
         </div>
       </div>
 
-      {/* Liste */}
       {filteredCamions.length > 0 ? (
         <div className="cards-grid">
           {filteredCamions.map((camion) => (
@@ -230,7 +227,6 @@ const CamionsList = () => {
         </div>
       )}
 
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

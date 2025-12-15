@@ -268,7 +268,6 @@ const MaintenanceList = () => {
   return (
     <div className="page">
       <div className="page-container">
-        {/* Header */}
         <div className="page-header">
           <div className="page-header-left">
             <h1>{Icons.wrench} Maintenance</h1>
@@ -284,7 +283,6 @@ const MaintenanceList = () => {
         {error && <div className="alert alert-error">{error}</div>}
         {successMessage && <div className="alert alert-success">{Icons.check} {successMessage}</div>}
 
-        {/* Stats */}
         <div className="maintenance-stats">
           <div className="stat-card-mini stat-info">
             <div className="stat-mini-icon">{Icons.list}</div>
@@ -309,7 +307,6 @@ const MaintenanceList = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="tabs">
           <button 
             className={`tab ${activeTab === 'interventions' ? 'active' : ''}`}
@@ -331,9 +328,7 @@ const MaintenanceList = () => {
           </button>
         </div>
 
-        {/* Tab Content */}
         <div className="tab-content">
-          {/* ==================== INTERVENTIONS TAB ==================== */}
           {activeTab === 'interventions' && (
             <div className="section-card">
               <div className="section-header">
@@ -399,7 +394,6 @@ const MaintenanceList = () => {
             </div>
           )}
 
-          {/* ==================== REGLES TAB ==================== */}
           {activeTab === 'regles' && (
             <div className="section-card">
               <div className="section-header">
@@ -461,7 +455,6 @@ const MaintenanceList = () => {
             </div>
           )}
 
-          {/* ==================== ALERTES TAB ==================== */}
           {activeTab === 'alertes' && (
             <div className="section-card">
               <div className="section-header">
@@ -542,7 +535,6 @@ const MaintenanceList = () => {
           )}
         </div>
 
-        {/* ==================== MODALS ==================== */}
         {showModal && (
           <div className="modal-overlay" onClick={() => setShowModal(false)}>
             <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>
@@ -557,7 +549,6 @@ const MaintenanceList = () => {
                 </button>
               </div>
 
-              {/* Intervention Form */}
               {modalType === 'intervention' && (
                 <form onSubmit={handleInterventionSubmit}>
                   <div className="modal-body">
@@ -651,7 +642,6 @@ const MaintenanceList = () => {
                 </form>
               )}
 
-              {/* Regle Form */}
               {modalType === 'regle' && (
                 <form onSubmit={handleRegleSubmit}>
                   <div className="modal-body">
@@ -712,7 +702,6 @@ const MaintenanceList = () => {
                 </form>
               )}
 
-              {/* Planifier Form */}
               {modalType === 'planifier' && (
                 <form onSubmit={handlePlanifierSubmit}>
                   <div className="modal-body">
@@ -765,7 +754,6 @@ const MaintenanceList = () => {
           </div>
         )}
 
-        {/* Delete Confirmation Modal */}
         {deleteConfirm && (
           <div className="modal-overlay" onClick={() => setDeleteConfirm(null)}>
             <div className="modal modal-sm" onClick={(e) => e.stopPropagation()}>

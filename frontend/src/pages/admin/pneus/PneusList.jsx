@@ -168,7 +168,6 @@ const PneusList = () => {
 
   return (
     <div className="page">
-      {/* Error Alert */}
       {error && (
         <div className="alert alert-error" style={{margin: '1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
           {error}
@@ -176,7 +175,6 @@ const PneusList = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="page-header">
         <div className="page-header-left">
           <h1>{Icons.tire} Gestion des Pneus</h1>
@@ -188,7 +186,6 @@ const PneusList = () => {
         </button>
       </div>
 
-      {/* Filters */}
       <div className="filters">
         <div className="search-box">
           {Icons.search}
@@ -219,7 +216,6 @@ const PneusList = () => {
         </div>
       </div>
 
-      {/* Cards Grid */}
       {filteredPneus.length === 0 ? (
         <div className="empty-state">
           <p>Aucun pneu trouvé</p>
@@ -276,7 +272,6 @@ const PneusList = () => {
         </div>
       )}
 
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>

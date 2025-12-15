@@ -86,7 +86,6 @@ const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* Métriques */}
       <div className="metrics">
         <div className="metric">
           <div className="metric-icon">{Icons.truck}</div>
@@ -122,7 +121,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Sections */}
       <div className="sections">
         <div className="section">
           <h2>{Icons.chart} État de la flotte</h2>
@@ -176,7 +174,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Derniers trajets + Équipe */}
       <div className="sections">
         <div className="section">
           <h2>{Icons.clock} Derniers trajets</h2>

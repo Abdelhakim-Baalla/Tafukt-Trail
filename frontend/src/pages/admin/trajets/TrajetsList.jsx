@@ -257,7 +257,6 @@ const TrajetsList = () => {
 
   return (
     <div className="page">
-      {/* Header */}
       <div className="page-header">
         <div className="page-header-left">
           <h1>{Icons.route} Gestion des Trajets</h1>
@@ -269,7 +268,6 @@ const TrajetsList = () => {
         </button>
       </div>
 
-      {/* Filters */}
       <div className="filters">
         <div className="search-box">
           {Icons.search}
@@ -291,10 +289,8 @@ const TrajetsList = () => {
         </div>
       </div>
 
-      {/* Error */}
       {error && <div className="error-banner">{error}</div>}
 
-      {/* Cards */}
       {filteredTrajets.length === 0 ? (
         <div className="empty-state">
           <p>Aucun trajet trouvé</p>
@@ -359,7 +355,6 @@ const TrajetsList = () => {
         </div>
       )}
 
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal modal-lg" onClick={(e) => e.stopPropagation()}>

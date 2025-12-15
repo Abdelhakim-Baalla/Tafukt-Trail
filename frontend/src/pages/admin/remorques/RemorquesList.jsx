@@ -151,7 +151,6 @@ const RemorquesList = () => {
 
   return (
     <div className="page">
-      {/* Error Alert */}
       {error && (
         <div className="alert alert-error" style={{margin: '1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
           {error}
@@ -159,7 +158,6 @@ const RemorquesList = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="page-header">
         <div className="page-header-left">
           <h1>{Icons.trailer} Gestion des Remorques</h1>
@@ -171,7 +169,6 @@ const RemorquesList = () => {
         </button>
       </div>
 
-      {/* Filters */}
       <div className="filters">
         <div className="search-box">
           {Icons.search}
@@ -202,7 +199,6 @@ const RemorquesList = () => {
         </div>
       </div>
 
-      {/* Cards Grid */}
       {filteredRemorques.length === 0 ? (
         <div className="empty-state">
           <p>Aucune remorque trouvée</p>
@@ -249,7 +245,6 @@ const RemorquesList = () => {
         </div>
       )}
 
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
