@@ -8,17 +8,15 @@ const HomePage = () => {
   return (
     <main className="landing">
       <section className="hero">
-        <video className="hero__video" autoPlay loop muted playsInline>
+        <video className="hero__video" autoPlay loop muted playsInline poster="/hero-poster.jpg">
           <source src="/1215.mp4" type="video/mp4" />
         </video>
         <div className="hero__overlay" />
         
         <div className="hero__container">
           <div className="hero__content">
-            
             <h1 className="hero__title">
               Pilotez votre flotte.
-              <br />
               <span>Optimisez vos trajets.</span>
             </h1>
             
