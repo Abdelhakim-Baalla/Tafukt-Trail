@@ -5,7 +5,6 @@ const getHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-// ==================== CAMIONS ====================
 
 export const getAllCamions = async () => {
   const response = await fetch(`${API_URL}/camions`, { headers: getHeaders() });
@@ -52,7 +51,6 @@ export const deleteCamion = async (id) => {
   return response.json();
 };
 
-// ==================== REMORQUES ====================
 
 export const getAllRemorques = async () => {
   const response = await fetch(`${API_URL}/remorques`, {
@@ -101,7 +99,6 @@ export const deleteRemorque = async (id) => {
   return response.json();
 };
 
-// ==================== PNEUS ====================
 
 export const getAllPneus = async () => {
   const response = await fetch(`${API_URL}/pneus`, { headers: getHeaders() });
@@ -148,7 +145,6 @@ export const deletePneu = async (id) => {
   return response.json();
 };
 
-// ==================== ENUMS ====================
 
 export const STATUT_VEHICULE = {
   DISPONIBLE: "DISPONIBLE",
@@ -215,7 +211,6 @@ export const POSITION_PNEU_LABELS = {
   ROULE_DE_SECOURS: "Roue de secours",
 };
 
-// ==================== TRAJETS ====================
 
 export const getAllTrajets = async () => {
   const response = await fetch(`${API_URL}/trajets`, { headers: getHeaders() });
@@ -285,7 +280,6 @@ export const getTrajetPdf = async (id) => {
   return response.blob();
 };
 
-// ==================== UTILISATEURS (Chauffeurs) ====================
 
 export const getAllChauffeurs = async () => {
   const response = await fetch(`${API_URL}/auth/chauffeurs`, {
@@ -303,7 +297,6 @@ export const getAllUsers = async () => {
   return Array.isArray(data) ? data : [];
 };
 
-// ==================== PLEINS CARBURANT ====================
 
 export const getAllPleinsCarburant = async () => {
   const response = await fetch(`${API_URL}/pleins-carburant`, {
@@ -311,6 +304,171 @@ export const getAllPleinsCarburant = async () => {
   });
   const data = await response.json();
   return Array.isArray(data) ? data : [];
+};
+
+
+export const getAllInterventions = async () => {
+  const response = await fetch(`${API_URL}/maintenance/interventions`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération des interventions");
+  return response.json();
+};
+
+export const getInterventionById = async (id) => {
+  const response = await fetch(`${API_URL}/maintenance/interventions/${id}`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération de l'intervention");
+  return response.json();
+};
+
+export const getInterventionsByCamion = async (camionId) => {
+  const response = await fetch(
+    `${API_URL}/maintenance/interventions/camion/${camionId}`,
+    {
+      headers: getHeaders(),
+    }
+  );
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération des interventions");
+  return response.json();
+};
+
+export const createIntervention = async (data) => {
+  const response = await fetch(`${API_URL}/maintenance/interventions`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la création de l'intervention");
+  return response.json();
+};
+
+export const updateIntervention = async (id, data) => {
+  const response = await fetch(`${API_URL}/maintenance/interventions/${id}`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la mise à jour de l'intervention");
+  return response.json();
+};
+
+export const deleteIntervention = async (id) => {
+  const response = await fetch(`${API_URL}/maintenance/interventions/${id}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la suppression de l'intervention");
+  return response.json();
+};
+
+
+export const getAllRegles = async () => {
+  const response = await fetch(`${API_URL}/maintenance/regles`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération des règles");
+  return response.json();
+};
+
+export const getRegleById = async (id) => {
+  const response = await fetch(`${API_URL}/maintenance/regles/${id}`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération de la règle");
+  return response.json();
+};
+
+export const createRegle = async (data) => {
+  const response = await fetch(`${API_URL}/maintenance/regles`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Erreur lors de la création de la règle");
+  return response.json();
+};
+
+export const updateRegle = async (id, data) => {
+  const response = await fetch(`${API_URL}/maintenance/regles/${id}`, {
+    method: "PUT",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la mise à jour de la règle");
+  return response.json();
+};
+
+export const deleteRegle = async (id) => {
+  const response = await fetch(`${API_URL}/maintenance/regles/${id}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la suppression de la règle");
+  return response.json();
+};
+
+
+export const getMaintenanceAlertes = async () => {
+  const response = await fetch(`${API_URL}/maintenance/alertes`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok)
+    throw new Error("Erreur lors de la récupération des alertes");
+  return response.json();
+};
+
+export const planifierMaintenance = async (data) => {
+  const response = await fetch(`${API_URL}/maintenance/planifier`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Erreur lors de la planification");
+  return response.json();
+};
+
+// Types de maintenance enum
+export const TYPE_MAINTENANCE = {
+  VIDANGE: "VIDANGE",
+  REVISION: "REVISION",
+  CHANGEMENT_PNEUS: "CHANGEMENT_PNEUS",
+  FREINS: "FREINS",
+  ELECTRIQUE: "ELECTRIQUE",
+  CARROSSERIE: "CARROSSERIE",
+  CONTROLE_TECHNIQUE: "CONTROLE_TECHNIQUE",
+};
+
+export const TYPE_MAINTENANCE_LABELS = {
+  VIDANGE: "Vidange",
+  REVISION: "Révision",
+  CHANGEMENT_PNEUS: "Changement de pneus",
+  FREINS: "Freins",
+  ELECTRIQUE: "Électrique",
+  CARROSSERIE: "Carrosserie",
+  CONTROLE_TECHNIQUE: "Contrôle technique",
+};
+
+// Types de véhicule enum (pour RegleMaintenance)
+export const TYPE_VEHICULE = {
+  CAMION: "CAMION",
+  REMORQUE: "REMORQUE",
+};
+
+export const TYPE_VEHICULE_LABELS = {
+  CAMION: "Camion",
+  REMORQUE: "Remorque",
 };
 
 // Statut Trajet Enum
