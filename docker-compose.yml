@@ -4,7 +4,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "${BACKEND_PORT:-5000}:5000"
+      - "${BACKEND_PORT:-5432}:5432"
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -12,12 +12,12 @@ services:
       - .env
     environment:
       - MONGO_URI=${MONGO_URI}
-      - PORT=${BACKEND_PORT:-5000}
+      - PORT=${BACKEND_PORT:-5432}
 
   frontend:
     build: ./frontend
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
+      - "${FRONTEND_PORT:-6174}:6174"
     volumes:
       - ./frontend:/app
       - /app/node_modules
