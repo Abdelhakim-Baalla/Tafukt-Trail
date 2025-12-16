@@ -35,6 +35,10 @@ const pleinCarburantSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Camion',
         required: true
+    },
+    chauffeur: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Utilisateur'
     }
 }, {
     timestamps: true

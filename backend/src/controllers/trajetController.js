@@ -24,7 +24,9 @@ exports.getAllTrajets = async (req, res) => {
 
 exports.getTrajetByChauffeurId = async (req, res) => {
     try {
+        console.log('[DEBUG] getTrajetByChauffeurId called for user:', req.user.id);
         const trajets = await trajetService.getTrajetByChauffeurId(req.user.id);
+        console.log('[DEBUG] Found trajets:', trajets.length);
         res.status(200).json(trajets);
     } catch (error) {
         res.status(500).json({ message: error.message });

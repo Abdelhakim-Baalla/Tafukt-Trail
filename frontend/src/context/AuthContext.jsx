@@ -22,22 +22,27 @@ export const AuthProvider = ({ children }) => {
   // Initialiser l'utilisateur depuis le token stocké
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+
     if (storedToken) {
       const decoded = decodeToken(storedToken);
       if (decoded) {
         // Vérifier si le token n'est pas expiré
         if (decoded.exp && decoded.exp * 1000 > Date.now()) {
+          // Si on a les infos user en local, on les utilise, sinon on prend ce qu'il y a dans le token
+          const userFromStorage = storedUser ? JSON.parse(storedUser) : {};
           setUser({
-            id: decoded.id,
-            nom: decoded.nom,
-            prenom: decoded.prenom,
-            email: decoded.email,
+            id: decoded.id || userFromStorage.id || userFromStorage._id,
+            nom: userFromStorage.nom || decoded.nom,
+            prenom: userFromStorage.prenom || decoded.prenom,
+            email: userFromStorage.email || decoded.email,
             role: decoded.role
           });
           setToken(storedToken);
         } else {
           // Token expiré, nettoyer
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           setToken(null);
           setUser(null);
         }
@@ -49,15 +54,23 @@ export const AuthProvider = ({ children }) => {
   // Fonction de connexion
   const login = useCallback((newToken, userData) => {
     localStorage.setItem('token', newToken);
+    // Ensure we store the ID correctly. Backend sends _id usually.
+    // We normalize to 'id' for internal use if possible, or keep structure.
+    const userToStore = {
+      ...userData,
+      id: userData._id || userData.id // Ensure 'id' property exists
+    };
+    localStorage.setItem('user', JSON.stringify(userToStore));
+
     setToken(newToken);
-    
+
     const decoded = decodeToken(newToken);
     setUser({
-      id: decoded?.id || userData?.id,
-      nom: decoded?.nom || userData?.nom,
-      prenom: decoded?.prenom || userData?.prenom,
-      email: decoded?.email || userData?.email,
-      role: decoded?.role || userData?.role
+      id: decoded?.id || userToStore.id,
+      nom: userToStore.nom || decoded?.nom,
+      prenom: userToStore.prenom || decoded?.prenom,
+      email: userToStore.email || decoded?.email,
+      role: decoded?.role || userToStore.role
     });
   }, []);
 

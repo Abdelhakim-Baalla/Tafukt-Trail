@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="nav-inner">
         <Link to="/" className="nav-logo">
           <img src="/TafuktTrail-icon.png" className="w-10" alt="Tafukt" />
-          <span className="nav-logo-text">Tafukt Trail</span>
+          
         </Link>
 
         <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
@@ -61,7 +61,6 @@ const Navbar = () => {
         <div className="nav-actions">
           {isAuthenticated() ? (
             <>
-              <span className="nav-user-name">{user?.prenom || user?.nom || 'Utilisateur'}</span>
               <button onClick={handleLogout} className="nav-btn nav-btn-logout">
                 Déconnexion
               </button>

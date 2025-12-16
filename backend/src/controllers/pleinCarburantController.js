@@ -2,10 +2,20 @@ const pleinCarburantService = require('../services/pleinCarburantService');
 
 exports.createPlein = async (req, res) => {
     try {
-        const plein = await pleinCarburantService.createPlein(req.body);
+        const data = { ...req.body, chauffeur: req.user.id };
+        const plein = await pleinCarburantService.createPlein(data);
         res.status(201).json(plein);
     } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+};
+
+exports.getMyPleins = async (req, res) => {
+    try {
+        const pleins = await pleinCarburantService.getPleinsByChauffeur(req.user.id);
+        res.status(200).json(pleins);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
