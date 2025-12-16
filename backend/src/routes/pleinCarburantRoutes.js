@@ -7,6 +7,7 @@ const { validatePleinCarburant, validatePleinCarburantUpdate } = require('../val
 
 // Chauffeur
 router.post('/', authenticate, authorize([RoleUtilisateur.ADMIN, RoleUtilisateur.CHAUFFEUR]), validatePleinCarburant, pleinCarburantController.createPlein);
+router.get('/mes-pleins', authenticate, authorize([RoleUtilisateur.CHAUFFEUR]), pleinCarburantController.getMyPleins);
 
 // Admin only
 router.get('/', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getAllPleins);
