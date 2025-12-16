@@ -47,11 +47,15 @@ const CarburantList = () => {
   };
 
   const getAvailableCamions = () => {
-    // Extract unique camions from trajets
+    // Extract unique camions from ACTIVE trajets (EN_COURS or PLANIFIE)
     const uniqueCamions = [];
     const map = new Map();
-    if (trajets && trajets.length > 0) {
-      for (const t of trajets) {
+
+    // Filter for active missions only
+    const activeTrajets = trajets.filter(t => t.statut === 'EN_COURS' || t.statut === 'PLANIFIE');
+
+    if (activeTrajets && activeTrajets.length > 0) {
+      for (const t of activeTrajets) {
         if (t.camion && !map.has(t.camion._id)) {
           map.set(t.camion._id, true);
           uniqueCamions.push(t.camion);
