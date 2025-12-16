@@ -124,29 +124,27 @@ class TrajetService {
                 await this.setDisponible(trajet.camion._id, trajet.remorque?._id, trajet.chauffeur._id);
             }
 
-            if (statut === StatutTrajet.TERMINE && !updateData.carburantNiveauxArrivee) {
-                throw new Error('Niveau de carburant arrivee non fourni!');
-            }else{
+            if (statut === StatutTrajet.TERMINE) {
+                if (!updateData.carburantNiveauxArrivee) {
+                    throw new Error('Niveau de carburant arrivee non fourni!');
+                }
+
                 const camion = await Camion.findById(trajet.camion._id);
-                if(!camion){
+                if (!camion) {
                     throw new Error('Camion non trouvé!');
                 }
                 camion.reservoire = updateData.carburantNiveauxArrivee;
                 await camion.save();
-            }
 
-            if(statut === StatutTrajet.TERMINE && !updateData.dateHeureArrivee){
-                throw new Error('Date et heure arrivee non fourni!');
-            }else{
-                if(new Date(updateData.dateHeureArrivee) <= new Date(trajet.dateHeureDepart)){
+                if (!updateData.dateHeureArrivee) {
+                    throw new Error('Date et heure arrivee non fourni!');
+                } else if (new Date(updateData.dateHeureArrivee) <= new Date(trajet.dateHeureDepart)) {
                     throw new Error('Date et heure arrivee inferieur ou egale a la date et heure depart!');
                 }
-            }
 
-            if(statut === StatutTrajet.TERMINE && !updateData.kilometrageArrivee){
-                throw new Error('Kilometrage arrivee non fourni!');
-            }else{
-                if(updateData.kilometrageArrivee <= trajet.kilometrageDepart){
+                if (!updateData.kilometrageArrivee) {
+                    throw new Error('Kilometrage arrivee non fourni!');
+                } else if (updateData.kilometrageArrivee <= trajet.kilometrageDepart) {
                     throw new Error('Kilometrage arrivee inferieur ou egale au kilometrage depart!');
                 }
             }
