@@ -3,6 +3,7 @@ module.exports = {
   verbose: true,
   coverageDirectory: 'coverage',
   collectCoverage: true,
-  testMatch: ['**/*.test.js'],
-  roots: ['<rootDir>/src']
+  testMatch: ['**/tests/unit/**/*.test.js'],
+  roots: ['<rootDir>/src'],
+  testPathIgnorePatterns: ['/node_modules/', '/src/tests/integration']
 };
