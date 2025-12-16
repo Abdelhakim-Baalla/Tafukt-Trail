@@ -29,6 +29,15 @@ class PleinCarburantService {
         return await pleinCarburantRepository.findByCamion(camionId);
     }
 
+    async getPleinsByChauffeur(chauffeurId) {
+        // Need to ensure Repository supports this or do direct query here (Repository preferred)
+        // Since I can't edit Repository in same step, I'll use PleinCarburant model directly for now or assume repository update next.
+        // Direct model access is cleaner for quick addition:
+        return await PleinCarburant.find({ chauffeur: chauffeurId })
+            .populate('camion', 'matricule marque model')
+            .sort({ date: -1 });
+    }
+
     async getPleinById(id) {
         const plein = await pleinCarburantRepository.findById(id);
         if (!plein) {
