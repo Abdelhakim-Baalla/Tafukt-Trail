@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getMesPleins, createPlein } from '../../../services/carburant';
 import { getMesTrajets } from '../../../services/trajets';
 import { useAuth } from '../../../context/AuthContext';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import './carburant.css';
 import '../../chauffeur/chauffeur.css'; // Shared styles
 
@@ -101,7 +102,9 @@ const CarburantList = () => {
           <h1 className="chauffeur-title">Suivi Carburant</h1>
           <p className="chauffeur-subtitle">Historique et saisie des pleins</p>
         </div>
-        <button className="btn-action btn-start" onClick={() => setShowModal(true)}>+ Nouveau Plein</button>
+        <button className="btn-action btn-start" onClick={() => setShowModal(true)} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <PlusIcon className="icon-w-5" /> Nouveau Plein
+        </button>
       </header>
 
       <div className="carburant-stats">

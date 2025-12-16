@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getMesTrajets, downloadOrdreMission, updateTrajetStatut } from '../../../services/trajets';
 import { useAuth } from '../../../context/AuthContext';
+import { DocumentTextIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import '../../chauffeur/chauffeur.css';
 
 const TrajetsList = () => {
@@ -117,7 +118,7 @@ const TrajetsList = () => {
                     <td>
                       <div className="route-display">
                         <span className="city">{t.lieuDepart}</span>
-                        <span className="arrow">→</span>
+                        <ArrowRightIcon className="icon-arrow" />
                         <span className="city">{t.lieuArrivee}</span>
                       </div>
                     </td>
@@ -125,7 +126,9 @@ const TrajetsList = () => {
                     <td><span className={`status-badge ${getStatusBadgeClass(t.statut)}`}>{t.statut}</span></td>
                     <td>
                       <div className="action-buttons">
-                        <button className="btn-icon" onClick={() => handleDownloadPdf(t._id)} title="Télécharger">📄</button>
+                        <button className="btn-icon" onClick={() => handleDownloadPdf(t._id)} title="Télécharger">
+                          <DocumentTextIcon className="icon-w-5" />
+                        </button>
 
                         {t.statut === 'PLANIFIE' && (
                           <button
