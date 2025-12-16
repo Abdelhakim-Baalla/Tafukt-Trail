@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getMesTrajets, updateTrajetStatut, downloadOrdreMission } from '../../services/trajets';
+import { getMesPleins } from '../../services/carburant'; // New import
 import { useAuth } from '../../context/AuthContext';
 import { DocumentTextIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import './chauffeur.css';
 
 const ChauffeurDashboard = () => {
   const [trajets, setTrajets] = useState([]);
+  const [pleins, setPleins] = useState([]); // New state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useAuth();
@@ -24,19 +26,21 @@ const ChauffeurDashboard = () => {
 
   useEffect(() => {
     if (userId) {
-      fetchTrajets();
+      fetchData();
     } else if (user === null) {
-      // If user is explicitly null (logged out), stop loading
       setLoading(false);
     }
-    // If user is undefined (still loading context), do nothing
   }, [userId, user]);
 
-  const fetchTrajets = async () => {
+  const fetchData = async () => {
     try {
       if (userId) {
-        const data = await getMesTrajets(userId);
-        setTrajets(data);
+        const [trajetsData, pleinsData] = await Promise.all([
+            getMesTrajets(userId),
+            getMesPleins()
+        ]);
+        setTrajets(trajetsData);
+        setPleins(pleinsData);
       }
     } catch (err) {
       setError(err.message);
@@ -58,7 +62,7 @@ const ChauffeurDashboard = () => {
 
     try {
       await updateTrajetStatut(id, newStatus);
-      fetchTrajets(); // Refresh list
+      fetchData(); // Refresh list
     } catch (err) {
       alert('Erreur lors de la mise à jour du statut');
     }
@@ -69,7 +73,7 @@ const ChauffeurDashboard = () => {
     try {
       await updateTrajetStatut(selectedTrajetId, 'TERMINE', finishData);
       setShowFinishModal(false);
-      fetchTrajets();
+      fetchData();
     } catch (err) {
       alert('Erreur: ' + err.message);
     }
@@ -94,6 +98,10 @@ const ChauffeurDashboard = () => {
 
   if (loading && !userId) return <div className="chauffeur-page">Chargement des données utilisateur...</div>;
 
+  // Simple stats calculation
+  const totalLitres = pleins.reduce((sum, p) => sum + p.quantiteLitre, 0);
+  const totalCout = pleins.reduce((sum, p) => sum + p.montantTotal, 0);
+
   return (
     <main className="chauffeur-page">
       <header className="chauffeur-header">
@@ -106,20 +114,24 @@ const ChauffeurDashboard = () => {
       <section className="stats-row">
         <div className="stat-card">
           <div className="stat-value">{trajets.filter(t => t.statut === 'EN_COURS').length}</div>
-          <div className="stat-label">En cours</div>
+          <div className="stat-label">Mission En Cours</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{trajets.filter(t => t.statut === 'PLANIFIE').length}</div>
-          <div className="stat-label">À venir</div>
+          <div className="stat-label">Missions À Venir</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value">{trajets.filter(t => t.statut === 'TERMINE').length}</div>
-          <div className="stat-label">Terminés</div>
+          <div className="stat-value">{totalLitres.toFixed(0)} L</div>
+          <div className="stat-label">Carburant (Total)</div>
+        </div>
+        <div className="stat-card">
+            <div className="stat-value">{totalCout.toFixed(0)} MAD</div>
+            <div className="stat-label">Dépenses Carburant</div>
         </div>
       </section>
 
       <section className="card">
-        <h2 style={{ margin: '0 0 1rem 0' }}>Mes Trajets</h2>
+        <h2 style={{ margin: '0 0 1rem 0', fontSize: '1.25rem' }}>Mes Trajets Récents</h2>
         {error && <div className="error-message">{error}</div>}
 
         <div className="table-responsive">
@@ -141,7 +153,7 @@ const ChauffeurDashboard = () => {
               ) : (
                 trajets.map(trajet => (
                   <tr key={trajet._id}>
-                    <td>{new Date(trajet.dateHeureDepart).toLocaleDateString()} <br /> <small>{new Date(trajet.dateHeureDepart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small></td>
+                    <td>{new Date(trajet.dateHeureDepart).toLocaleDateString()} <br /> <small style={{color: 'var(--text-secondary)'}}>{new Date(trajet.dateHeureDepart).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small></td>
                     <td>
                       <div className="route-display">
                         <span className="city">{trajet.lieuDepart}</span>
