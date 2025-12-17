@@ -1,7 +1,6 @@
 <div align="center">
-	<img src="frontend/public/logo.png" alt="Tafukt Trial logo" style="max-width:220px;width:40%;height:auto;margin-bottom:8px;" />
 	<br/>
-	<video src="frontend/public/demo.mp4" controls muted autoplay loop playsinline style="max-width:960px;width:100%;height:auto;">
+	<video src="frontend/public/1215.mp4" controls muted autoplay loop playsinline style="max-width:960px;width:100%;height:auto;">
 		Votre navigateur ne supporte pas la balise vidéo.
 	</video>
 </div>
