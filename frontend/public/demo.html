@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Démo Tafukt Trial</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 24px;
+      }
+      .video-wrap {
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      video {
+        width: 100%;
+        height: auto;
+        background: #000;
+      }
+      .notice {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-wrap">
+      <h1>Démo - Tafukt Trial</h1>
+      <video id="demoVideo" src="demo.mp4" controls muted loop playsinline>
+        Votre navigateur ne supporte pas la balise vidéo.
+      </video>
+      <p class="notice">
+        La vidéo est configurée pour autoplay (muted) et loop. Si la lecture
+        automatique ne démarre pas, cliquez sur Play ou remplacez `demo.mp4` par
+        une vraie vidéo.
+      </p>
+      <p class="notice">
+        Pour remplacer la vidéo : déposer un fichier `demo.mp4` (format MP4
+        H.264) dans `frontend/public/`.
+      </p>
+    </div>
+
+    <script>
+      (function () {
+        const v = document.getElementById("demoVideo");
+        // Try to start playback programmatically (useful for some browsers)
+        v.play().catch(() => {
+          // autoplay prevented — user action required
+          console.log("Autoplay prevented, user interaction needed.");
+        });
+      })();
+    </script>
+  </body>
+</html>
