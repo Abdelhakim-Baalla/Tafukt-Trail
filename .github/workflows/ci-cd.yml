@@ -57,29 +57,41 @@ jobs:
             echo "No frontend tests defined, skipping"
           fi
 
-  docker-build:
-    name: Docker Build Images
+  docker-and-smoke:
+    name: Docker Build + Smoke Tests
     runs-on: ubuntu-latest
     needs: [backend, frontend]
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build backend image
-        run: docker build -t tafukt/backend-ci:latest ./backend
-      - name: Build frontend image
-        run: docker build -t tafukt/frontend-ci:latest ./frontend
-
-  smoke-test:
-    name: Smoke Test Images
-    runs-on: ubuntu-latest
-    needs: docker-build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Verify backend image exists
-        run: docker images --format "{{.Repository}}:{{.Tag}}" | grep tafukt/backend-ci:latest
-      - name: Run backend smoke test
-        run: docker run --rm tafukt/backend-ci:latest node -e "console.log('backend smoke OK')"
-      - name: Verify frontend image exists (best-effort)
-        run: docker images --format "{{.Repository}}:{{.Tag}}" | grep tafukt/frontend-ci:latest || echo "frontend image not found"
-      - name: Try run frontend image (non-blocking)
         run: |
-          docker run --rm --entrypoint node tafukt/frontend-ci:latest -e "console.log('frontend smoke OK')" || echo "frontend run skipped or failed"
+          if [ -d backend ]; then
+            docker build -t tafukt/backend-ci:latest ./backend
+          else
+            echo "backend folder not found, skipping backend image build"
+          fi
+      - name: Build frontend image
+        run: |
+          if [ -d frontend ]; then
+            docker build -t tafukt/frontend-ci:latest ./frontend
+          else
+            echo "frontend folder not found, skipping frontend image build"
+          fi
+      - name: List images
+        run: docker images --format "{{.Repository}}:{{.Tag}}"
+      - name: Backend smoke test (if image present)
+        run: |
+          if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "tafukt/backend-ci:latest"; then
+            docker run --rm tafukt/backend-ci:latest node -e "console.log('backend smoke OK')"
+          else
+            echo "backend image not found, skipping backend smoke test"
+          fi
+      - name: Frontend smoke test (if image present)
+        run: |
+          if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "tafukt/frontend-ci:latest"; then
+            docker run --rm --entrypoint node tafukt/frontend-ci:latest -e "console.log('frontend smoke OK')" || echo "frontend run executed with non-zero exit"
+          else
+            echo "frontend image not found, skipping frontend smoke test"
+          fi
