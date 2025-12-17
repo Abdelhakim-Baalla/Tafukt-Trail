@@ -1,0 +1,463 @@
+/* ==================== MAINTENANCE PAGE - DARK MODE ==================== */
+
+/* Stats Cards Mini */
+.maintenance-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .maintenance-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card-mini {
+  background: var(--bg-card);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid var(--border-primary);
+}
+
+.stat-mini-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-urgent .stat-mini-icon {
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+}
+
+.stat-warning .stat-mini-icon {
+  background: rgba(217, 119, 6, 0.15);
+  color: #fbbf24;
+}
+
+.stat-info .stat-mini-icon {
+  background: rgba(37, 99, 235, 0.15);
+  color: #60a5fa;
+}
+
+.stat-mini-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-mini-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-mini-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  background: var(--bg-card);
+  padding: 0.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-primary);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.tab.active {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.tab.active svg {
+  color: #fff;
+}
+
+.tab-content {
+  min-height: 400px;
+}
+
+/* Section Card */
+.section-card {
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--border-primary);
+  overflow: hidden;
+}
+
+.section-card .section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-elevated);
+}
+
+.section-card .section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.section-card .section-header h2 svg {
+  color: var(--text-muted);
+}
+
+.badge-count {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.625rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.table th {
+  background: var(--bg-elevated);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.table td {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.table tbody tr:hover {
+  background: var(--bg-elevated);
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+/* Badges */
+.badge-type {
+  background: rgba(37, 99, 235, 0.15);
+  color: #60a5fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-vehicule {
+  background: rgba(22, 163, 74, 0.15);
+  color: #34d399;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.matricule-badge {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 600;
+  background: var(--bg-elevated);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.btn-icon.btn-danger {
+  color: #f87171;
+}
+
+.btn-icon.btn-danger:hover {
+  background: rgba(220, 38, 38, 0.15);
+  color: #ef4444;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  background: var(--bg-elevated);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.empty-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Alertes Grid */
+.alertes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+/* Alerte Card */
+.alerte-card {
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px solid var(--border-primary);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.alerte-card:hover {
+  border-color: var(--border-secondary);
+}
+
+.alerte-urgent {
+  border-left: 4px solid #ef4444;
+}
+
+.alerte-normal {
+  border-left: 4px solid #f59e0b;
+}
+
+.alerte-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-elevated);
+}
+
+.alerte-priorite {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.alerte-type {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.alerte-body {
+  padding: 1rem;
+}
+
+.alerte-camion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+}
+
+.alerte-camion .matricule {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+
+.alerte-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.alerte-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Progress Bar */
+.alerte-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-danger {
+  background: #ef4444;
+}
+
+.progress-warning {
+  background: #f59e0b;
+}
+
+.progress-text {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.alerte-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border-primary);
+  background: var(--bg-elevated);
+}
+
+/* Alerts */
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert-error {
+  background: rgba(220, 38, 38, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.alert-success {
+  background: rgba(4, 120, 87, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(4, 120, 87, 0.2);
+}
+
+/* Status badges */
+.status-danger {
+  background: rgba(220, 38, 38, 0.15);
+  color: #f87171;
+}
+
+.status-warning {
+  background: rgba(217, 119, 6, 0.15);
+  color: #fbbf24;
+}

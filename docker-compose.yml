@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT:-5432}:5432"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - PORT=${BACKEND_PORT:-5432}
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:-6174}:6174"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:5000}
+
+volumes:
+  mongo-data:

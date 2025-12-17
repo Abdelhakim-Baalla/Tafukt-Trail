@@ -1,0 +1,27 @@
+/* Carburant page specific styles */
+/* Importing/Reusing chauffeur shared styles via class names, but adding specific overrides if needed */
+
+.carburant-stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.carburant-stat-card {
+    background: var(--tt-gray-800);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--tt-gray-700);
+    flex: 1;
+}
+
+.carburant-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--tt-primary);
+}
+
+.carburant-stat-label {
+    font-size: 14px;
+    color: var(--tt-gray-400);
+}
