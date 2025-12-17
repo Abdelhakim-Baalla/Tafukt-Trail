@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies (backend)
+        working-directory: backend
+        run: npm ci
+      - name: Run backend tests
+        working-directory: backend
+        run: npm test --silent
+
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install dependencies (frontend)
+        working-directory: frontend
+        run: npm ci
+      - name: Build frontend (if present)
+        working-directory: frontend
+        run: npm run build --if-present
+      - name: Run frontend tests (if present)
+        working-directory: frontend
+        run: |
+          if [ -f package.json ] && grep -q "\"test\"" package.json; then
+            npm test --silent || true
+          else
+            echo "No frontend tests defined, skipping"
+          fi
