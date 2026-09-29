@@ -4,6 +4,7 @@ const pleinCarburantController = require('../controllers/pleinCarburantControlle
 const { authenticate, authorize } = require('../middlewares/authMiddleware');
 const RoleUtilisateur = require('../enums/roles');
 const { validatePleinCarburant, validatePleinCarburantUpdate } = require('../validators/pleinCarburantValidator');
+const validateObjectId = require('../middlewares/validateObjectId');
 
 // Chauffeur
 router.post('/', authenticate, authorize([RoleUtilisateur.ADMIN, RoleUtilisateur.CHAUFFEUR]), validatePleinCarburant, pleinCarburantController.createPlein);
@@ -14,9 +15,9 @@ router.get('/', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburant
 router.get('/rapports', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getRapports);
 router.get('/optimisation', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getOptimisation);
 router.get('/camion/:camionId', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getPleinsByCamion);
-router.get('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.getPleinById);
-router.put('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), validatePleinCarburantUpdate, pleinCarburantController.updatePlein);
-router.delete('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), pleinCarburantController.deletePlein);
+router.get('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), validateObjectId, pleinCarburantController.getPleinById);
+router.put('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), validateObjectId, validatePleinCarburantUpdate, pleinCarburantController.updatePlein);
+router.delete('/:id', authenticate, authorize([RoleUtilisateur.ADMIN]), validateObjectId, pleinCarburantController.deletePlein);
 
 module.exports = router;
 

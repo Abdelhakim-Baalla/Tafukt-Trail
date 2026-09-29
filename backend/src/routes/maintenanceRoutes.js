@@ -2,6 +2,13 @@ const express = require('express');
 const router = express.Router();
 const maintenanceController = require('../controllers/maintenanceController');
 const { authenticate, authorize } = require('../middlewares/authMiddleware');
+const validateObjectId = require('../middlewares/validateObjectId');
+const {
+  validateIntervention,
+  validateInterventionUpdate,
+  validateRegle,
+  validateRegleUpdate,
+} = require('../validators/maintenanceValidator');
 const RoleUtilisateur = require('../enums/roles');
 
 // ==================== INTERVENTIONS ====================
@@ -15,6 +22,7 @@ router.get(
   '/interventions/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
   maintenanceController.getInterventionById
 );
 router.get(
@@ -27,18 +35,22 @@ router.post(
   '/interventions',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateIntervention,
   maintenanceController.createIntervention
 );
 router.put(
   '/interventions/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
+  validateInterventionUpdate,
   maintenanceController.updateIntervention
 );
 router.delete(
   '/interventions/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
   maintenanceController.deleteIntervention
 );
 
@@ -53,24 +65,29 @@ router.get(
   '/regles/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
   maintenanceController.getRegleById
 );
 router.post(
   '/regles',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateRegle,
   maintenanceController.createRegle
 );
 router.put(
   '/regles/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
+  validateRegleUpdate,
   maintenanceController.updateRegle
 );
 router.delete(
   '/regles/:id',
   authenticate,
   authorize([RoleUtilisateur.ADMIN]),
+  validateObjectId,
   maintenanceController.deleteRegle
 );
 

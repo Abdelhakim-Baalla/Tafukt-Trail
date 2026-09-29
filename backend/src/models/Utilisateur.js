@@ -52,12 +52,8 @@ const utilisateurSchema = new mongoose.Schema({
 utilisateurSchema.pre('save', async function() {
     if (!this.isModified('motDePasse')) return;
     
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.motDePasse = await bcrypt.hash(this.motDePasse, salt);
-    } catch (error) {
-        throw error;
-    }
+    const salt = await bcrypt.genSalt(10);
+    this.motDePasse = await bcrypt.hash(this.motDePasse, salt);
 });
 
 
