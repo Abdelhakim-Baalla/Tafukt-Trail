@@ -1,0 +1,60 @@
+/* Tafukt Trail admin design tokens.
+   Source of truth for ADMIN screens. Imported at the top of each
+   admin stylesheet with a relative @import. */
+
+:root {
+  --tt-bg: #0d0f12;
+  --tt-surface: #15181d;
+  --tt-surface2: #1c2128;
+  --tt-line: rgba(255, 255, 255, 0.08);
+  --tt-text: #f2f4f7;
+  --tt-muted: #9aa3af;
+  --tt-amber: #f5a524;
+  --tt-amber-hover: #ffbe45;
+  --tt-amber-ink: #1a1206;
+  --tt-amber-soft: rgba(245, 165, 36, 0.14);
+  --tt-green: #34d399;
+  --tt-green-bg: rgba(52, 211, 153, 0.12);
+  --tt-blue: #60a5fa;
+  --tt-blue-bg: rgba(96, 165, 250, 0.12);
+  --tt-red: #f87171;
+  --tt-red-bg: rgba(248, 113, 113, 0.12);
+  --tt-radius-card: 16px;
+  --tt-radius-control: 12px;
+  --tt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Shared mount animation for admin cards and sheets */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shared modal entrance: scale from .96 plus fade */
+@keyframes ttSheetIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

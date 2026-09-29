@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }) => {
   // Fonction de déconnexion
   const logout = useCallback(() => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setToken(null);
     setUser(null);
   }, []);

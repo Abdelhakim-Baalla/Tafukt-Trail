@@ -1,4 +1,4 @@
-/* TAFUKT - Dark Mode Design System */
+/* TAFUKT TRAIL - Desert ops at night / token layer */
 
 * {
   margin: 0;
@@ -7,69 +7,92 @@
 }
 
 :root {
-  /* Dark Mode Colors */
-  --bg-primary: #0a0a0b;
-  --bg-secondary: #111113;
-  --bg-tertiary: #18181b;
-  --bg-card: #1a1a1d;
-  --bg-hover: #232326;
-  --bg-input: #18181b;
-  
-  --border-primary: #27272a;
-  --border-secondary: #3f3f46;
-  --border-hover: #52525b;
-  
-  --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --text-inverse: #0a0a0b;
-  
-  --accent-primary: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-bg: rgba(59, 130, 246, 0.1);
-  
-  --success: #22c55e;
-  --success-bg: rgba(34, 197, 94, 0.1);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.1);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
-  
-  /* Legacy variables for compatibility */
-  --white: #fafafa;
-  --black: #0a0a0b;
-  --gray-50: #18181b;
-  --gray-100: #1a1a1d;
-  --gray-200: #27272a;
-  --gray-300: #3f3f46;
-  --gray-400: #52525b;
-  --gray-500: #71717a;
-  --gray-600: #a1a1aa;
-  --gray-700: #d4d4d8;
-  --gray-800: #e4e4e7;
-  --gray-900: #fafafa;
-  
-  --blue-50: rgba(59, 130, 246, 0.1);
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --green-50: rgba(34, 197, 94, 0.1);
-  --green-500: #22c55e;
-  --green-600: #16a34a;
-  --red-50: rgba(239, 68, 68, 0.1);
-  --red-500: #ef4444;
-  --red-600: #dc2626;
+  /* Primary tokens */
+  --tt-bg: #0d0f12;
+  --tt-surface: #14171c;
+  --tt-surface2: #1b2027;
+  --tt-line: #262c35;
+  --tt-text: #f2f4f7;
+  --tt-muted: #9aa3af;
+  --tt-amber: #f5a524;
+  --tt-amber-hover: #ffbe45;
+  --tt-amber-ink: #1a1206;
+  --tt-amber-soft: rgba(245, 165, 36, 0.14);
+
+  /* Status pills only */
+  --tt-green: #34d399;
+  --tt-green-bg: rgba(52, 211, 153, 0.12);
+  --tt-blue: #60a5fa;
+  --tt-blue-bg: rgba(96, 165, 250, 0.12);
+  --tt-red: #f87171;
+  --tt-red-bg: rgba(248, 113, 113, 0.12);
+  --tt-amber-pill: #fbbf24;
+  --tt-amber-pill-bg: rgba(251, 191, 36, 0.14);
+
+  --tt-radius-card: 16px;
+  --tt-radius-input: 12px;
+  --tt-radius-btn: 12px;
+
+  /* Back-compat maps (existing admin/chauffeur styles keep working) */
+  --bg-primary: var(--tt-bg);
+  --bg-secondary: var(--tt-surface);
+  --bg-tertiary: var(--tt-surface2);
+  --bg-card: var(--tt-surface);
+  --bg-hover: var(--tt-surface2);
+  --bg-input: #10131a;
+  --border-primary: var(--tt-line);
+  --border-secondary: #333b47;
+  --border-hover: #3f4754;
+  --text-primary: var(--tt-text);
+  --text-secondary: var(--tt-muted);
+  --text-muted: #6b7280;
+  --text-inverse: var(--tt-amber-ink);
+  --accent-primary: var(--tt-amber);
+  --accent-hover: var(--tt-amber-hover);
+  --accent-bg: var(--tt-amber-soft);
+  --success: var(--tt-green);
+  --success-bg: var(--tt-green-bg);
+  --warning: var(--tt-amber-pill);
+  --warning-bg: var(--tt-amber-pill-bg);
+  --danger: var(--tt-red);
+  --danger-bg: var(--tt-red-bg);
+
+  --white: var(--tt-text);
+  --black: var(--tt-bg);
+  --gray-50: var(--tt-surface2);
+  --gray-100: var(--tt-surface);
+  --gray-200: var(--tt-line);
+  --gray-300: #333b47;
+  --gray-400: #4b5563;
+  --gray-500: var(--tt-muted);
+  --gray-600: #9aa3af;
+  --gray-700: #d1d5db;
+  --gray-800: #e5e7eb;
+  --gray-900: var(--tt-text);
+  --blue-50: var(--tt-blue-bg);
+  --blue-500: var(--tt-blue);
+  --blue-600: #3b82f6;
+  --green-50: var(--tt-green-bg);
+  --green-500: var(--tt-green);
+  --green-600: #10b981;
+  --red-50: var(--tt-red-bg);
+  --red-500: var(--tt-red);
+  --red-600: #ef4444;
 }
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--tt-bg);
+  color: var(--tt-text);
   line-height: 1.6;
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -88,15 +111,80 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  color: inherit;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Focus visibility for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--tt-amber);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Selection */
+::selection {
+  background: var(--tt-amber);
+  color: var(--tt-amber-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--tt-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #2b323d;
+  border-radius: 8px;
+  border: 2px solid var(--tt-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a4350;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2b323d var(--tt-bg);
+}
+
+/* Shared mount animation for dashboard cards */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

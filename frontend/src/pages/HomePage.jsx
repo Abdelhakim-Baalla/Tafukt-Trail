@@ -14,17 +14,20 @@ const HomePage = () => {
         <div className="hero__overlay" />
         <div className="hero__glow hero__glow--1" />
         <div className="hero__glow hero__glow--2" />
-        <div className="hero__particles" />
-        
+
         <div className="hero__container">
           <div className="hero__content">
+            <span className="hero__badge">
+              <span className="hero__badge-dot" aria-hidden="true" />
+              Gestion de flotte pour le transport routier
+            </span>
             <h1 className="hero__title">
               Pilotez votre flotte.
-              <span>Optimisez vos trajets.</span>
+              <span className="hero__title-accent">Optimisez vos trajets.</span>
             </h1>
-            
+
             <p className="hero__desc">
-              Tafukt Trail centralise la gestion de vos camions, trajets, maintenance 
+              Tafukt Trail centralise la gestion de vos camions, trajets, maintenance
               et consommation carburant dans une interface simple et puissante.
             </p>
 
@@ -52,19 +55,23 @@ const HomePage = () => {
             </div>
 
             <div className="hero__stats">
-              <div className="hero__stat">
-                <span className="hero__stat-value">500+</span>
-                <span className="hero__stat-label">Véhicules gérés</span>
+              <div className="hero__chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Camions et remorques centralisés</span>
               </div>
-              <div className="hero__stat-divider" />
-              <div className="hero__stat">
-                <span className="hero__stat-value">98%</span>
-                <span className="hero__stat-label">Satisfaction</span>
+              <div className="hero__chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Ordres de mission en PDF</span>
               </div>
-              <div className="hero__stat-divider" />
-              <div className="hero__stat">
-                <span className="hero__stat-value">24/7</span>
-                <span className="hero__stat-label">Support</span>
+              <div className="hero__chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span>Alertes de maintenance</span>
               </div>
             </div>
           </div>
@@ -162,7 +169,7 @@ const HomePage = () => {
                   <path d="M18 9l-5 5-4-4-3 3"/>
                 </svg>
               </div>
-              <h3 className="feature-card__title">Rapports & Analytics</h3>
+              <h3 className="feature-card__title">Rapports et Analytics</h3>
               <p className="feature-card__desc">
                 Dashboards détaillés et exports PDF pour suivre les performances.
               </p>
@@ -181,8 +188,8 @@ const HomePage = () => {
             Simplifier le quotidien des transporteurs
           </h2>
           <p className="split__text">
-            Nous avons conçu Tafukt Trail avec des professionnels du transport pour 
-            créer l'outil que nous aurions voulu avoir. Simple, efficace, et pensé 
+            Nous avons conçu Tafukt Trail avec des professionnels du transport pour
+            créer l'outil que nous aurions voulu avoir. Simple, efficace, et pensé
             pour le terrain.
           </p>
           <ul className="split__list">
@@ -218,20 +225,24 @@ const HomePage = () => {
         <div className="container">
           <div className="stats__grid">
             <div className="stats__item">
-              <span className="stats__value">500+</span>
-              <span className="stats__label">Véhicules gérés</span>
+              <span className="stats__pill">Flotte</span>
+              <span className="stats__title">Véhicules centralisés</span>
+              <span className="stats__label">Camions, remorques et disponibilités au même endroit</span>
             </div>
             <div className="stats__item">
-              <span className="stats__value">50K</span>
-              <span className="stats__label">Trajets suivis</span>
+              <span className="stats__pill">Trajets</span>
+              <span className="stats__title">Missions suivies</span>
+              <span className="stats__label">Itinéraires, chauffeurs et ordres de mission inclus</span>
             </div>
             <div className="stats__item">
-              <span className="stats__value">99%</span>
-              <span className="stats__label">Disponibilité</span>
+              <span className="stats__pill">Terrain</span>
+              <span className="stats__title">Carburant et pneus</span>
+              <span className="stats__label">Pleins, usure et rotations suivis par véhicule</span>
             </div>
             <div className="stats__item">
-              <span className="stats__value">24/7</span>
-              <span className="stats__label">Support</span>
+              <span className="stats__pill">Pilotage</span>
+              <span className="stats__title">Maintenance et rapports</span>
+              <span className="stats__label">Alertes préventives et exports PDF pour vos dossiers</span>
             </div>
           </div>
         </div>
@@ -244,7 +255,7 @@ const HomePage = () => {
             Des années d'expertise à votre service
           </h2>
           <p className="split__text">
-            Notre équipe comprend les défis du transport routier. Chaque fonctionnalité 
+            Notre équipe comprend les défis du transport routier. Chaque fonctionnalité
             a été pensée pour répondre à vos besoins réels.
           </p>
           {!isAuthenticated() && (
@@ -268,7 +279,7 @@ const HomePage = () => {
               Prêt à optimiser votre flotte ?
             </h2>
             <p className="cta__text">
-              Rejoignez les professionnels du transport qui font confiance à Tafukt Trail 
+              Rejoignez les professionnels du transport qui font confiance à Tafukt Trail
               pour gérer leur activité au quotidien.
             </p>
             <div className="cta__actions">
