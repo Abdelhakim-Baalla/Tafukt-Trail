@@ -18,18 +18,19 @@ exports.getAllTrajets = async (req, res) => {
         const trajets = await trajetService.getAllTrajets(req.user);
         res.status(200).json(trajets);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
 exports.getTrajetByChauffeurId = async (req, res) => {
     try {
-        console.log('[DEBUG] getTrajetByChauffeurId called for user:', req.user.id);
-        const trajets = await trajetService.getTrajetByChauffeurId(req.user.id);
-        console.log('[DEBUG] Found trajets:', trajets.length);
+        const trajets = await trajetService.getTrajetByChauffeurId(req.params.id, req.user);
         res.status(200).json(trajets);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (error.statusCode === 403 || error.message === 'Accès non autorisé') {
+            return res.status(403).json({ message: error.message });
+        }
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
@@ -38,19 +39,22 @@ exports.getTrajetByStatut = async (req, res) => {
         const trajets = await trajetService.getTrajetByStatut(req.params.statut);
         res.status(200).json(trajets);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
 exports.getTrajetById = async (req, res) => {
     try {
-        const trajet = await trajetService.getTrajetById(req.params.id);
+        const trajet = await trajetService.getTrajetById(req.params.id, req.user);
         res.status(200).json(trajet);
     } catch (error) {
         if (error.message === 'Trajet non trouvé') {
             return res.status(404).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message });
+        if (error.statusCode === 403 || error.message === 'Accès non autorisé') {
+            return res.status(403).json({ message: error.message });
+        }
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
@@ -65,7 +69,7 @@ exports.updateStatut = async (req, res) => {
         if (error.message === 'Accès non autorisé') {
             return res.status(403).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
@@ -80,7 +84,7 @@ exports.updateTrajet = async (req, res) => {
         if (error.message === 'Accès non autorisé') {
             return res.status(403).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
@@ -95,7 +99,7 @@ exports.deleteTrajet = async (req, res) => {
         if (error.message === 'Accès non autorisé') {
             return res.status(403).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };
 
@@ -110,6 +114,6 @@ exports.generatePdf = async (req, res) => {
         if (error.message === 'Accès non autorisé') {
             return res.status(403).json({ message: error.message });
         }
-        res.status(500).json({ message: error.message });
+        res.status(error.statusCode || error.status || 500).json({ message: error.message });
     }
 };

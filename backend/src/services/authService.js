@@ -7,10 +7,13 @@ class AuthService {
         if (existingUser) {
             throw new Error('Un utilisateur avec cet email existe déjà.');
         }
-        
-        const user = await utilisateurRepository.create(userData);
+
+        // Securite : l'inscription publique cree toujours un CHAUFFEUR.
+        // Le role ADMIN ne peut etre attribue que hors de cette route.
+        const { role: _ignoredRole, ...safeData } = userData;
+        const user = await utilisateurRepository.create({ ...safeData, role: 'CHAUFFEUR' });
         const token = this.generateToken(user);
-        
+
         return { user, token };
     }
 

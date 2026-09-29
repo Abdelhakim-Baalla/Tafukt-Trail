@@ -7,8 +7,8 @@ class PneuService {
         const allPneus = await pneuRepository.findAll();
         const pneu = await pneuRepository.findByPosition(data.position);
         for (let i = 0; i < pneu.length; i++) {
-            if (pneu[i].position === data.position && pneu[i].camion._id.toString() === data.camion) {
-                let camion = await Camion.findById(pneu[i].camion._id);
+            if (pneu[i].position === data.position && String(pneu[i].camion?._id ?? pneu[i].camion) === data.camion) {
+                let camion = await Camion.findById(pneu[i].camion?._id ?? pneu[i].camion);
                 throw new Error('Pneu deja existant dans cette position: ' + data.position + ' pour le camion: ' + camion.matricule + ' ' + camion.marque + ' ' + camion.model);
             }
         }
@@ -20,7 +20,7 @@ class PneuService {
 
         let count = 0;
         for (let i = 0; i < allPneus.length; i++) {
-            if (allPneus[i].camion._id.toString() === data.camion && allPneus[i].position !== PositionPneu.ROULE_DE_SECOURS) {
+            if (String(allPneus[i].camion?._id ?? allPneus[i].camion) === data.camion && allPneus[i].position !== PositionPneu.ROULE_DE_SECOURS) {
                 count++;
             }
             if(count >= 4){
@@ -55,15 +55,15 @@ class PneuService {
         if (data.position && data.position !== pneu.position) {
             const existingPneu = await pneuRepository.findByPosition(data.position);
             for (let i = 0; i < existingPneu.length; i++) {
-                if (existingPneu[i].position === data.position && existingPneu[i].camion._id.toString() !== data.camion) {
-                    let camion = await Camion.findById(existingPneu[i].camion._id);
+                if (existingPneu[i].position === data.position && String(existingPneu[i].camion?._id ?? existingPneu[i].camion) !== data.camion) {
+                    let camion = await Camion.findById(existingPneu[i].camion?._id ?? existingPneu[i].camion);
                     throw new Error('Pneu deja existant dans cette position: ' + data.position + ' pour le camion: ' + camion.matricule + ' ' + camion.marque + ' ' + camion.model);
                 }
             }
            
         }
 
-        if (data.camion && data.camion !== pneu.camion.toString()) {
+        if (data.camion && data.camion !== String(pneu.camion?._id ?? pneu.camion)) {
             const camion = await Camion.findById(data.camion);
             if (!camion) {
                 throw new Error('Camion non trouvé');
@@ -72,7 +72,7 @@ class PneuService {
             const allPneus = await pneuRepository.findAll();
             let count = 0;
             for (let i = 0; i < allPneus.length; i++) {
-                if (allPneus[i].camion._id.toString() === data.camion && allPneus[i]._id.toString() !== id) {
+                if (String(allPneus[i].camion?._id ?? allPneus[i].camion) === data.camion && allPneus[i]._id.toString() !== id) {
                     count++;
                 }
                 if (count >= 4) {
