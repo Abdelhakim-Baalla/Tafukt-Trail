@@ -1,111 +1,81 @@
-<div align="center">
-	<br/>
-	<video src="frontend/public/1215.mp4" controls muted autoplay loop playsinline style="max-width:960px;width:100%;height:auto;">
-		Votre navigateur ne supporte pas la balise vidéo.
-	</video>
-</div>
+# Tafukt Trail — Gestion de flotte routière
 
-# Tafukt Trial
+Application full-stack de gestion de flotte : camions, remorques, pneus,
+carburant, trajets, maintenance préventive et rapports. Backend **Node.js
+(Express) + MongoDB**, frontend **Vite + React**.
 
-Description
------------
+## Démarrage rapide (5 minutes)
 
-Tafukt Trial est une application full-stack pour gérer des véhicules, interventions de maintenance, pleins de carburant, pneus, remorques et trajets. Le projet contient un backend Node.js (Express) et un frontend (Vite + React).
-
-Ce README explique comment installer, lancer, tester, construire des images Docker, utiliser le workflow CI et fournir une démo vidéo locale et les diagrammes.
-
-Structure du dépôt
---------------------
-
-- `backend/` : API Node.js, tests, configuration.
-- `frontend/` : interface utilisateur Vite/React.
-- `docs/` : documentation technique et utilisateur, présentation, livrables.
-- `docker-compose.yml` : orchestration locale (si utilisée).
-- `.github/workflows/ci-cd.yml` : workflow GitHub Actions (CI minimal).
-
-Prérequis
-----------
-
-- Node.js 18+ ou 20+ (selon la configuration du workflow)
-- npm ou yarn
-- Docker (optionnel pour exécuter via conteneurs)
-- Git
-
-Installation locale
--------------------
-
-1. Cloner le dépôt et se placer à la racine :
+Prérequis : Node 20+, Docker (pour MongoDB local).
 
 ```bash
-git clone https://github.com/Abdelhakim-Baalla/Tafukt-Trail
-cd "Tafukt Trial"
+# 1. Variables d'environnement
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+# -> backend/.env : renseignez JWT_SECRET (32+ caractères aléatoires).
+#    Sans JWT_SECRET valide, le serveur refuse de démarrer.
+
+# 2. Base de données locale
+docker run -d --name tafukt_mongo -p 27017:27017 -v tafukt_mongo_data:/data/db mongo:5.0
+# (ou : docker compose up -d mongo — voir docker-compose.yml)
+
+# 3. Backend
+cd backend && npm ci && npm test && npm run seed && npm run dev
+# API : http://localhost:5223 — comptes démo ci-dessous
+
+# 4. Frontend (autre terminal)
+cd frontend && npm ci && npm run dev -- --port 5174
+# App : http://localhost:5174
 ```
 
-2. Backend :
+Ou tout en Docker : `docker compose up --build` (mongo + backend + frontend,
+réseau `tafukt-net`). Pensez à `JWT_SECRET` dans l'environnement.
 
-```bash
-cd backend
-npm ci
-npm test        # lancer la suite de tests
-npm run dev     # lancer en mode développement (si défini)
+## Comptes démo (seed)
+
+| Rôle      | Email               | Mot de passe |
+|-----------|---------------------|--------------|
+| ADMIN     | admin@tafukt.ma     | Admin123!    |
+| CHAUFFEUR | yassine@tafukt.ma   | Driver123!   |
+
+Le seed crée aussi 2 camions et 1 trajet Casa → Agadir. Relancez
+`npm run seed` sans risque : il est idempotent.
+
+## Architecture
+
+```
+backend/src/
+  routes/ → controllers/ → services/ → repositories/ → models/
+  middlewares/  auth (JWT), authorize (rôles), validateObjectId, erreurs
+  validators/   Joi par ressource (dont maintenance)
+  enums/        statuts, rôles, types (source unique de vérité)
+  tests/unit/   61 tests (services réels, repos mockés)
+frontend/src/
+  pages/        Home, auth, admin/*, chauffeur/*
+  services/     appels API (VITE_API_URL doit finir par /api/v1)
+  context/      AuthContext (JWT + expiry)
+  components/   Layout, Navbar, ProtectedRoute
 ```
 
-3. Frontend :
+Règles : rôles `ADMIN`/`CHAUFFEUR` (inscription publique = CHAUFFEUR
+toujours), statuts trajet `PLANIFIE → EN_COURS → TERMINE` (transitions
+validées), `kilometrageActuel` auto-montant à la clôture, alertes
+maintenance au seuil km (`KM_SEUIL`).
 
-```bash
-cd frontend
-npm ci
-npm run dev     # lancement du serveur de dev
-npm run build   # build de production
-```
+## Scripts
 
-Variables d'environnement
--------------------------
+| Dossier   | Commande         | Effet                              |
+|-----------|------------------|------------------------------------|
+| backend   | `npm test`       | 61 tests unitaires                  |
+| backend   | `npm run seed`   | démo idempotente                    |
+| backend   | `npm run dev`    | nodemon sur 5223                    |
+| backend   | `npx eslint .`   | 0 erreur                            |
+| frontend  | `npm run dev`    | Vite (pensez `--port 5174`)         |
+| frontend  | `npm run build`  | build prod                          |
 
-Consultez `backend/.env.example` et créez un fichier `backend/.env` avec les variables requises (ex : `PORT`, `DATABASE_URL`, `JWT_SECRET`).
+## Sécurité
 
-Docker (manuel, très simple)
------------------------------
-
-Construire les images :
-
-```bash
-docker build -t tafukt/backend:local ./backend
-docker build -t tafukt/frontend:local ./frontend
-```
-
-Run (exemple backend) :
-
-```bash
-docker run --rm -p 3000:3000 -e PORT=3000 tafukt/backend:local
-```
-
-CI / GitHub Actions
--------------------
-
-Le workflow est défini dans `.github/workflows/ci-cd.yml` et contient des jobs pour :
-
-- installer et tester le backend
-- installer et builder le frontend
-- construire des images Docker (job `docker-build`)
-- exécuter des smoke tests simple (job `smoke-test`)
-
-Diagrammes et UML
------------------
-
-Les diagrammes se trouvent dans `docs/UML/`. Par exemple, ouvrez `docs/UML/tafukt-trial.mdj` (fichier de projet pour un outil de diagramme) ou exportez les images depuis ce dossier.
-
-Bonnes pratiques et contributions
----------------------------------
-
-- Respectez la structure des dossiers et les conventions de nommage.
-- Ouvrez une branche par fonctionnalité/bugfix et créez une PR pour revue.
-
-Commande utiles recap
----------------------
-
-- Installer dépendances backend : `cd backend && npm ci`
-- Lancer tests backend : `cd backend && npm test`
-- Installer dépendances frontend : `cd frontend && npm ci`
-- Builder frontend : `cd frontend && npm run build`
-- Construire images Docker : `docker build -t tafukt/backend:local ./backend`
+- `.env` jamais versionnés (`.gitignore` racine + backend). Si un secret a
+  fuité dans l'historique : révoquez-le puis purgez l'historique.
+- Rate-limit sur `/api/v1/auth`, CORS restreint via `CORS_ORIGIN`,
+  erreurs normalisées sans stack en prod, ObjectId validés (400, pas 500).
