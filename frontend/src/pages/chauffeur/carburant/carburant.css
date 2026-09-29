@@ -1,27 +1,180 @@
-/* Carburant page specific styles */
-/* Importing/Reusing chauffeur shared styles via class names, but adding specific overrides if needed */
+@import "../../../styles/tokens.css";
+
+/* Carburant page, driver first, phone friendly */
+
+.carburant-hero {
+  background: linear-gradient(180deg, var(--tt-surface2), var(--tt-surface));
+  border: 1px solid var(--tt-line);
+  border-radius: var(--tt-radius-card);
+  padding: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: tt-fade-slide-in var(--tt-motion-med) var(--tt-ease) both;
+}
+
+.carburant-hero-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.carburant-hero-text {
+  margin: 0;
+  color: var(--tt-muted);
+  font-size: 14px;
+}
+
+.carburant-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 20px;
+  border-radius: var(--tt-radius-control);
+  border: none;
+  background: var(--tt-amber);
+  color: var(--tt-amber-ink);
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform var(--tt-motion-fast) var(--tt-ease), background var(--tt-motion-fast) var(--tt-ease);
+}
+
+.carburant-hero-btn:hover {
+  background: var(--tt-amber-hover);
+  transform: translateY(-1px);
+}
 
 .carburant-stats {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .carburant-stat-card {
-    background: var(--tt-gray-800);
-    padding: 16px;
-    border-radius: 8px;
-    border: 1px solid var(--tt-gray-700);
-    flex: 1;
+  background: var(--tt-surface);
+  padding: 18px;
+  border-radius: var(--tt-radius-card);
+  border: 1px solid var(--tt-line);
+  flex: 1;
+  transition: transform var(--tt-motion-fast) var(--tt-ease), box-shadow var(--tt-motion-fast) var(--tt-ease);
+  animation: tt-fade-slide-in var(--tt-motion-med) var(--tt-ease) both;
+}
+
+.carburant-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--tt-shadow-lift);
 }
 
 .carburant-stat-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--tt-primary);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--tt-amber);
 }
 
 .carburant-stat-label {
-    font-size: 14px;
-    color: var(--tt-gray-400);
+  font-size: 13px;
+  color: var(--tt-muted);
+  margin-top: 4px;
+}
+
+.carburant-history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.carburant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--tt-line);
+  border-radius: var(--tt-radius-control);
+  background: var(--tt-surface2);
+  transition: transform var(--tt-motion-fast) var(--tt-ease), box-shadow var(--tt-motion-fast) var(--tt-ease);
+  animation: tt-fade-slide-in var(--tt-motion-med) var(--tt-ease) both;
+}
+
+.carburant-row:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--tt-shadow-lift);
+}
+
+.carburant-row-main {
+  min-width: 0;
+}
+
+.carburant-row-station {
+  font-weight: 800;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carburant-row-sub {
+  color: var(--tt-muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.carburant-row-side {
+  text-align: right;
+  flex: none;
+}
+
+.carburant-row-amount {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.conso-chip {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 6px;
+  padding: 5px 10px;
+  min-height: 28px;
+  border-radius: var(--tt-radius-pill);
+  border: 1px solid var(--tt-line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--tt-text);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.conso-chip.is-good {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: var(--tt-green-bg);
+  color: var(--tt-green);
+}
+
+.conso-chip.is-high {
+  border-color: rgba(245, 165, 36, 0.45);
+  background: var(--tt-amber-bg);
+  color: var(--tt-amber);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carburant-hero,
+  .carburant-stat-card,
+  .carburant-row {
+    animation: none;
+  }
+
+  .carburant-hero-btn:hover,
+  .carburant-stat-card:hover,
+  .carburant-row:hover {
+    transform: none;
+  }
 }

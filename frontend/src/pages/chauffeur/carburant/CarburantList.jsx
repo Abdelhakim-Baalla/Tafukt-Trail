@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { getMesPleins, createPlein } from '../../../services/carburant';
 import { getMesTrajets } from '../../../services/trajets';
 import { useAuth } from '../../../context/AuthContext';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, BeakerIcon } from '@heroicons/react/24/outline';
 import './carburant.css';
 import '../../chauffeur/chauffeur.css'; // Shared styles
 
@@ -10,6 +10,7 @@ const CarburantList = () => {
   const [pleins, setPleins] = useState([]);
   const [trajets, setTrajets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
 
@@ -29,19 +30,23 @@ const CarburantList = () => {
   useEffect(() => {
     if (userId) {
       fetchData();
+    } else if (user === null) {
+      setLoading(false);
     }
-  }, [userId]);
+  }, [userId, user]);
 
   const fetchData = async () => {
     try {
+      setError(null);
       const [pleinsData, trajetsData] = await Promise.all([
         getMesPleins(),
         getMesTrajets(userId)
       ]);
-      setPleins(pleinsData);
-      setTrajets(trajetsData);
+      setPleins(Array.isArray(pleinsData) ? pleinsData : []);
+      setTrajets(Array.isArray(trajetsData) ? trajetsData : []);
     } catch (err) {
       console.error(err);
+      setError(err.message || 'Erreur lors du chargement des pleins');
     } finally {
       setLoading(false);
     }
@@ -69,6 +74,7 @@ const CarburantList = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError(null);
       // Calculate total if missing (optional but good UX)
       // data sent to backend
       await createPlein(formData);
@@ -77,7 +83,7 @@ const CarburantList = () => {
       // Reset form (keep camion maybe?)
       setFormData({ ...formData, quantiteLitre: '', prixLitre: '', montantTotal: '', kilometrageCompteur: '', nomStation: '' });
     } catch (err) {
-      alert('Erreur: ' + err.message);
+      setError(err.message || "Erreur lors de l'enregistrement du plein");
     }
   };
 
@@ -91,83 +97,120 @@ const CarburantList = () => {
     }
   }, [formData.quantiteLitre, formData.prixLitre]);
 
-  if (loading) return <div className="chauffeur-page">Chargement...</div>;
+  if (loading) return <div className="chauffeur-page"><div className="chauffeur-loading">Chargement de vos pleins...</div></div>;
 
   const camions = getAvailableCamions();
+
+  const totalLitres = pleins.reduce((sum, p) => sum + (Number(p.quantiteLitre) || 0), 0);
+  const totalCout = pleins.reduce((sum, p) => sum + (Number(p.montantTotal) || 0), 0);
+
+  const byKm = [...pleins]
+    .filter(p => Number(p.kilometrageCompteur) > 0)
+    .sort((a, b) => Number(a.kilometrageCompteur) - Number(b.kilometrageCompteur));
+
+  const consoFor = (plein) => {
+    const km = Number(plein.kilometrageCompteur);
+    if (!Number.isFinite(km) || km <= 0) return null;
+    const idx = byKm.findIndex(p => p._id === plein._id);
+    if (idx <= 0) return null;
+    const prevKm = Number(byKm[idx - 1].kilometrageCompteur);
+    const litres = Number(plein.quantiteLitre);
+    if (!Number.isFinite(prevKm) || !Number.isFinite(litres) || km <= prevKm || litres <= 0) return null;
+    return (litres / (km - prevKm)) * 100;
+  };
+
+  const history = [...pleins].sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <main className="chauffeur-page">
       <header className="chauffeur-header">
         <div>
-          <h1 className="chauffeur-title">Suivi Carburant</h1>
+          <h1 className="chauffeur-title">Suivi carburant</h1>
           <p className="chauffeur-subtitle">Historique et saisie des pleins</p>
         </div>
-        <button className="btn-action btn-start" onClick={() => setShowModal(true)} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <PlusIcon className="icon-w-5" /> Nouveau Plein
-        </button>
+        <span className="shift-pill is-off" role="status">
+          <span className="shift-dot" aria-hidden="true" />
+          {pleins.length} plein{pleins.length > 1 ? 's' : ''}
+        </span>
       </header>
 
-      <div className="carburant-stats">
+      {error && (
+        <div className="alert alert-error">
+          {error}
+          <button className="alert-dismiss" onClick={() => setError(null)} aria-label="Fermer">×</button>
+        </div>
+      )}
+
+      <section className="carburant-hero" aria-label="Ajout rapide">
+        <div>
+          <h2 className="carburant-hero-title">Un plein à déclarer</h2>
+          <p className="carburant-hero-text">Saisie rapide pensée pour le bord de piste. Cela prend moins d une minute.</p>
+        </div>
+        <button className="carburant-hero-btn" onClick={() => setShowModal(true)}>
+          <PlusIcon className="icon-w-5" aria-hidden="true" /> Nouveau plein
+        </button>
+      </section>
+
+      <div className="carburant-stats" aria-label="Totaux carburant">
         <div className="carburant-stat-card">
-          <div className="carburant-stat-value">{pleins.length}</div>
-          <div className="carburant-stat-label">Pleins effectués</div>
+          <div className="carburant-stat-value">
+            {totalLitres.toFixed(0)} L
+          </div>
+          <div className="carburant-stat-label">Litres au compteur</div>
         </div>
         <div className="carburant-stat-card">
           <div className="carburant-stat-value">
-            {pleins.reduce((sum, p) => sum + p.quantiteLitre, 0).toFixed(0)} L
+            {totalCout.toFixed(0)} MAD
           </div>
-          <div className="carburant-stat-label">Volume Total</div>
-        </div>
-        <div className="carburant-stat-card">
-          <div className="carburant-stat-value">
-            {pleins.reduce((sum, p) => sum + p.montantTotal, 0).toFixed(0)} MAD
-          </div>
-          <div className="carburant-stat-label">Coût Total</div>
+          <div className="carburant-stat-label">Dépense totale</div>
         </div>
       </div>
 
-      <section className="card">
-        <div className="table-responsive">
-          <table className="table-modern" aria-label="carburant">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Station</th>
-                <th>Type</th>
-                <th>Litres</th>
-                <th>Prix/L</th>
-                <th>Total</th>
-                <th>Camion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pleins.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="text-center">Aucun plein enregistré</td>
-                </tr>
-              ) : (
-                pleins.map(plein => (
-                  <tr key={plein._id}>
-                    <td>{new Date(plein.date).toLocaleDateString()} <br /> <small>{new Date(plein.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small></td>
-                    <td>{plein.nomStation}</td>
-                    <td><span className="badge-info">{plein.typeCarburant}</span></td>
-                    <td>{plein.quantiteLitre} L</td>
-                    <td>{plein.prixLitre} MAD</td>
-                    <td>{plein.montantTotal} MAD</td>
-                    <td>{plein.camion?.matricule || 'N/A'}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+      <section className="card" aria-label="Historique des pleins">
+        <h2 className="card-title">Historique</h2>
+        <p className="card-hint">Les plus récents en premier, avec consommation estimée.</p>
+        {history.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon-well" aria-hidden="true"><BeakerIcon /></div>
+            <p className="empty-title">Aucun plein enregistré</p>
+            <p className="empty-text">Ajoutez votre premier plein avec le bouton ci dessus.</p>
+          </div>
+        ) : (
+          <ul className="carburant-history">
+            {history.map(plein => {
+              const conso = consoFor(plein);
+              return (
+                <li key={plein._id} className="carburant-row">
+                  <div className="carburant-row-main">
+                    <div className="carburant-row-station">{plein.nomStation || 'Station inconnue'}</div>
+                    <div className="carburant-row-sub">
+                      {plein.date ? new Date(plein.date).toLocaleDateString('fr-FR') : ''} · {plein.quantiteLitre} L · {plein.camion?.matricule || 'Camion N/A'}
+                    </div>
+                  </div>
+                  <div className="carburant-row-side">
+                    <div className="carburant-row-amount">{plein.montantTotal} MAD</div>
+                    <span className={`conso-chip ${conso === null ? '' : conso > 35 ? 'is-high' : 'is-good'}`}>
+                      {conso === null ? 'Conso N/A' : `${conso.toFixed(1)} L/100km`}
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </section>
 
       {/* Modal Nouveau Plein */}
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal-content">
+          <div className="modal-content" role="dialog" aria-modal="true" aria-label="Nouveau plein">
             <h3>Nouveau Plein</h3>
+            <p className="modal-sub">Remplissez les champs puis validez. Le total est calculé seul.</p>
+            {error && (
+              <div className="alert alert-error">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Camion *</label>
@@ -175,7 +218,6 @@ const CarburantList = () => {
                   required
                   value={formData.camion}
                   onChange={e => setFormData({ ...formData, camion: e.target.value })}
-                  style={{ width: '100%', padding: '10px', background: 'var(--tt-gray-900)', border: '1px solid var(--tt-gray-700)', color: 'white', borderRadius: '6px' }}
                 >
                   <option value="">Sélectionner un camion</option>
                   {camions.map(c => (
@@ -226,7 +268,7 @@ const CarburantList = () => {
                   type="number"
                   readOnly
                   value={formData.montantTotal}
-                  style={{ background: 'var(--tt-gray-700)', cursor: 'not-allowed' }}
+                  style={{ opacity: 0.7, cursor: 'not-allowed' }}
                 />
               </div>
 
@@ -257,10 +299,11 @@ const CarburantList = () => {
                 <select
                   value={formData.typeCarburant}
                   onChange={e => setFormData({ ...formData, typeCarburant: e.target.value })}
-                  style={{ width: '100%', padding: '10px', background: 'var(--tt-gray-900)', border: '1px solid var(--tt-gray-700)', color: 'white', borderRadius: '6px' }}
                 >
                   <option value="DIESEL">Diesel</option>
-                  <option value="ADBLUE">AdBlue</option>
+                  <option value="ESSENCE">Essence</option>
+                  <option value="GAZ">Gaz</option>
+                  <option value="ELECTRIQUE">Électrique</option>
                 </select>
               </div>
 
