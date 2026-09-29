@@ -280,11 +280,11 @@ export const updateTrajet = async (id, data) => {
   return handleResponse(response);
 };
 
-export const updateTrajetStatut = async (id, statut) => {
+export const updateTrajetStatut = async (id, statut, extraData = {}) => {
   const response = await fetch(`${API_URL}/trajets/${id}/statut`, {
     method: "PATCH",
     headers: getHeaders(),
-    body: JSON.stringify({ statut }),
+    body: JSON.stringify({ statut, ...extraData }),
   });
   return handleResponse(response);
 };

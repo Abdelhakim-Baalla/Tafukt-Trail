@@ -48,6 +48,7 @@ const RemorquesList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatut, setFilterStatut] = useState('');
   const [filterType, setFilterType] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
   const [formData, setFormData] = useState({
     type: TYPE_REMORQUE.FOURGON,
     capaciteTonnes: '',
@@ -133,6 +134,16 @@ const RemorquesList = () => {
     setEditingRemorque(null);
   };
 
+  const copyMatricule = async (id, text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      /* presse-papiers indisponible, on affiche quand meme le retour */
+    }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1500);
+  };
+
   const filteredRemorques = remorques.filter(r => {
     const matchSearch = r.matricule?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                        TYPE_REMORQUE_LABELS[r.type]?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -210,9 +221,20 @@ const RemorquesList = () => {
         <div className="cards-grid">
           {filteredRemorques.map((remorque) => (
             <div className="card" key={remorque._id}>
+              <span className={`v-rail ${getStatusClass(remorque.statut)}`} aria-hidden="true" />
               <div className="card-header">
                 <div className="card-title">
-                  <span className="card-matricule">{remorque.matricule}</span>
+                  <span className="matricule-wrap">
+                    <span className="card-matricule">{remorque.matricule}</span>
+                    <button
+                      type="button"
+                      className={`copy-btn ${copiedId === remorque._id ? 'is-copied' : ''}`}
+                      onClick={() => copyMatricule(remorque._id, remorque.matricule)}
+                      title="Copier la matricule"
+                    >
+                      {copiedId === remorque._id ? 'Copié' : 'Copier'}
+                    </button>
+                  </span>
                   <span className={`status ${getStatusClass(remorque.statut)}`}>
                     {STATUT_VEHICULE_LABELS[remorque.statut]}
                   </span>

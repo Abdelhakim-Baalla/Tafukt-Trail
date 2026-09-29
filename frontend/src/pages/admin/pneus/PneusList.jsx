@@ -37,6 +37,7 @@ const PneusList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPosition, setFilterPosition] = useState('');
   const [filterCamion, setFilterCamion] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
   const [formData, setFormData] = useState({
     numeroSerie: '',
     marque: '',
@@ -57,10 +58,10 @@ const PneusList = () => {
       setError(null);
       const [pneusData, camionsData] = await Promise.all([
         getAllPneus(),
-        getAllCamions()
+        getAllCamions().catch(() => [])
       ]);
-      setPneus(pneusData);
-      setCamions(camionsData);
+      setPneus(Array.isArray(pneusData) ? pneusData : []);
+      setCamions(Array.isArray(camionsData) ? camionsData : []);
     } catch (error) {
       console.error('Erreur lors du chargement:', error);
       setError(error.message || 'Erreur lors du chargement des données');
@@ -135,6 +136,16 @@ const PneusList = () => {
   const closeModal = () => {
     setShowModal(false);
     setEditingPneu(null);
+  };
+
+  const copySerie = async (id, text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      /* presse-papiers indisponible, on affiche quand meme le retour */
+    }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1500);
   };
 
   const getCamionLabel = (pneu) => {
@@ -227,9 +238,20 @@ const PneusList = () => {
         <div className="cards-grid">
           {filteredPneus.map((pneu) => (
             <div className="card" key={pneu._id}>
+              <span className="v-rail rail-neutral" aria-hidden="true" />
               <div className="card-header">
                 <div className="card-title">
-                  <span className="card-matricule">{pneu.numeroSerie}</span>
+                  <span className="matricule-wrap">
+                    <span className="card-matricule">{pneu.numeroSerie}</span>
+                    <button
+                      type="button"
+                      className={`copy-btn ${copiedId === pneu._id ? 'is-copied' : ''}`}
+                      onClick={() => copySerie(pneu._id, pneu.numeroSerie)}
+                      title="Copier le numéro de série"
+                    >
+                      {copiedId === pneu._id ? 'Copié' : 'Copier'}
+                    </button>
+                  </span>
                   <span className="tag">{POSITION_PNEU_LABELS[pneu.position]}</span>
                 </div>
                 <div className="card-actions">
@@ -307,20 +329,22 @@ const PneusList = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Modèle</label>
+                  <label>Modèle *</label>
                   <input
                     type="text"
                     value={formData.modele}
                     onChange={(e) => setFormData({ ...formData, modele: e.target.value })}
+                    required
                     placeholder="X Multi D"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Dimension</label>
+                  <label>Dimension *</label>
                   <input
                     type="text"
                     value={formData.dimension}
                     onChange={(e) => setFormData({ ...formData, dimension: e.target.value })}
+                    required
                     placeholder="315/80 R22.5"
                   />
                 </div>
@@ -337,11 +361,12 @@ const PneusList = () => {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Pression recommandée (bar)</label>
+                  <label>Pression recommandée (bar) *</label>
                   <input
                     type="number"
                     value={formData.pressionRecommandee}
                     onChange={(e) => setFormData({ ...formData, pressionRecommandee: e.target.value })}
+                    required
                     step="0.1"
                     min="0"
                     placeholder="8.5"
@@ -356,10 +381,11 @@ const PneusList = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Camion assigné</label>
+                  <label>Camion assigné *</label>
                   <select
                     value={formData.camion}
                     onChange={(e) => setFormData({ ...formData, camion: e.target.value })}
+                    required
                   >
                     <option value="">Aucun</option>
                     {camions.map(c => (

@@ -79,6 +79,15 @@ const TrajetsList = () => {
     statut: STATUT_TRAJET.PLANIFIE,
     notesAdministratives: ''
   });
+  const [showFinishModal, setShowFinishModal] = useState(false);
+  const [finishingTrajetId, setFinishingTrajetId] = useState(null);
+  const [finishData, setFinishData] = useState({
+    kilometrageArrivee: '',
+    carburantNiveauxArrivee: '',
+    dateHeureArrivee: '',
+    commentairesChauffeur: ''
+  });
+  const [finishError, setFinishError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -94,11 +103,6 @@ const TrajetsList = () => {
         getAllRemorques(),
         getAllChauffeurs()
       ]);
-      
-      console.log('Trajets:', trajetsRes);
-      console.log('Camions:', camionsRes);
-      console.log('Remorques:', remorquesRes);
-      console.log('Chauffeurs:', chauffeursRes);
       
       // Ensure we always have arrays
       const trajetsArray = Array.isArray(trajetsRes) ? trajetsRes : (trajetsRes?.trajets || []);
@@ -167,11 +171,48 @@ const TrajetsList = () => {
   };
 
   const handleStatusChange = async (id, newStatut) => {
+    if (newStatut === STATUT_TRAJET.TERMINE) {
+      setFinishingTrajetId(id);
+      setFinishData({
+        kilometrageArrivee: '',
+        carburantNiveauxArrivee: '',
+        dateHeureArrivee: new Date().toISOString().slice(0, 16),
+        commentairesChauffeur: ''
+      });
+      setFinishError(null);
+      setShowFinishModal(true);
+      return;
+    }
     try {
       await updateTrajetStatut(id, newStatut);
       fetchData();
     } catch (err) {
       console.error('Erreur:', err);
+      setError(err.message || 'Erreur lors de la mise à jour du statut');
+    }
+  };
+
+  const closeFinishModal = () => {
+    setShowFinishModal(false);
+    setFinishingTrajetId(null);
+    setFinishError(null);
+  };
+
+  const handleFinishSubmit = async (e) => {
+    e.preventDefault();
+    setFinishError(null);
+    try {
+      await updateTrajetStatut(finishingTrajetId, STATUT_TRAJET.TERMINE, {
+        kilometrageArrivee: Number(finishData.kilometrageArrivee),
+        carburantNiveauxArrivee: Number(finishData.carburantNiveauxArrivee),
+        dateHeureArrivee: finishData.dateHeureArrivee,
+        commentairesChauffeur: finishData.commentairesChauffeur || undefined
+      });
+      closeFinishModal();
+      fetchData();
+    } catch (err) {
+      console.error('Erreur:', err);
+      setFinishError(err.message || "Erreur lors de la clôture du trajet");
     }
   };
 
@@ -247,6 +288,16 @@ const TrajetsList = () => {
     return matchSearch && matchStatut;
   });
 
+  const finishingTrajet = trajets.find(t => t._id === finishingTrajetId) || null;
+
+  const getDistanceLabel = (trajet) => {
+    if (trajet.kilometrageArrivee && trajet.kilometrageDepart != null) {
+      const diff = trajet.kilometrageArrivee - trajet.kilometrageDepart;
+      return diff > 0 ? `${diff.toLocaleString()} km` : '0 km';
+    }
+    return trajet.statut === STATUT_TRAJET.EN_COURS ? 'En cours' : '-';
+  };
+
   if (loading) {
     return (
       <div className="page page-loading">
@@ -301,39 +352,49 @@ const TrajetsList = () => {
       ) : (
         <div className="cards-grid">
           {filteredTrajets.map((trajet) => (
-            <div className="card" key={trajet._id}>
+            <div className="card tj-card" key={trajet._id}>
               <div className="card-header">
                 <div className="card-title">
-                  <div className="trajet-route">
-                    <span className="trajet-lieu">{Icons.mapPin} {trajet.lieuDepart}</span>
-                    <span className="trajet-arrow">{Icons.arrow}</span>
-                    <span className="trajet-lieu">{Icons.mapPin} {trajet.lieuArrivee}</span>
+                  <div className="tj-timeline">
+                    <div className="tj-stop">
+                      <span className="tj-dot tj-dot-start" aria-hidden="true" />
+                      <div className="tj-stop-text">
+                        <span className="tj-city">{trajet.lieuDepart}</span>
+                        <span className="tj-date">{formatDateTime(trajet.dateHeureDepart)}</span>
+                      </div>
+                    </div>
+                    <span className="tj-connector" aria-hidden="true" />
+                    <div className="tj-stop">
+                      <span className="tj-dot tj-dot-end" aria-hidden="true" />
+                      <div className="tj-stop-text">
+                        <span className="tj-city">{trajet.lieuArrivee}</span>
+                        <span className="tj-date">{trajet.dateHeureArrivee ? formatDateTime(trajet.dateHeureArrivee) : 'Arrivée à planifier'}</span>
+                      </div>
+                    </div>
                   </div>
                   <span className={`status ${getStatusClass(trajet.statut)}`}>
                     {STATUT_TRAJET_LABELS[trajet.statut]}
                   </span>
                 </div>
                 <div className="card-actions">
-                  <button className="btn-icon" onClick={() => openModal(trajet)}>{Icons.edit}</button>
-                  <button className="btn-icon btn-danger" onClick={() => handleDelete(trajet._id)}>{Icons.trash}</button>
+                  <button className="btn-icon" onClick={() => openModal(trajet)} title="Modifier">{Icons.edit}</button>
+                  <button className="btn-icon btn-danger" onClick={() => handleDelete(trajet._id)} title="Supprimer">{Icons.trash}</button>
                 </div>
               </div>
               <div className="card-body">
-                <div className="card-info">
-                  <span className="info-label">{Icons.calendar} Départ</span>
-                  <span className="info-value">{formatDateTime(trajet.dateHeureDepart)}</span>
+                <div className="assign-row">
+                  <span className="assign-chip">{Icons.truck} {getCamionLabel(trajet)}</span>
+                  <span className="assign-chip">{Icons.user} {getChauffeurLabel(trajet)}</span>
                 </div>
-                <div className="card-info">
-                  <span className="info-label">{Icons.truck} Camion</span>
-                  <span className="info-value">{getCamionLabel(trajet)}</span>
-                </div>
-                <div className="card-info">
-                  <span className="info-label">{Icons.user} Chauffeur</span>
-                  <span className="info-value">{getChauffeurLabel(trajet)}</span>
-                </div>
-                <div className="card-info">
-                  <span className="info-label">Km</span>
-                  <span className="info-value">{trajet.kilometrageDepart?.toLocaleString() || '-'}</span>
+                <div className="tj-facts">
+                  <div className="card-info">
+                    <span className="info-label">{Icons.calendar} Km départ</span>
+                    <span className="info-value">{trajet.kilometrageDepart?.toLocaleString() || '-'}</span>
+                  </div>
+                  <div className="card-info">
+                    <span className="info-label">Distance</span>
+                    <span className="info-value">{getDistanceLabel(trajet)}</span>
+                  </div>
                 </div>
               </div>
               {trajet.statut === STATUT_TRAJET.PLANIFIE && (
@@ -525,6 +586,77 @@ const TrajetsList = () => {
                 <button type="submit" className="btn btn-primary">
                   {editingTrajet ? 'Enregistrer' : 'Créer'}
                 </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showFinishModal && (
+        <div className="modal-overlay" onClick={closeFinishModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Terminer le trajet</h2>
+              <button className="btn-icon" onClick={closeFinishModal}>{Icons.x}</button>
+            </div>
+            <form onSubmit={handleFinishSubmit}>
+              {finishError && <div className="form-error">{finishError}</div>}
+              {finishingTrajet && (
+                <div className="finish-summary">
+                  <div className="finish-route">
+                    {Icons.mapPin} {finishingTrajet.lieuDepart}
+                    <span className="trajet-arrow">{Icons.arrow}</span>
+                    {Icons.mapPin} {finishingTrajet.lieuArrivee}
+                  </div>
+                  <p className="finish-hint">
+                    {getCamionLabel(finishingTrajet)} conduit par {getChauffeurLabel(finishingTrajet)}.
+                    Km départ : {finishingTrajet.kilometrageDepart?.toLocaleString() || '-'}.
+                  </p>
+                </div>
+              )}
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Date/heure d'arrivée *</label>
+                  <input
+                    type="datetime-local"
+                    value={finishData.dateHeureArrivee}
+                    onChange={(e) => setFinishData({ ...finishData, dateHeureArrivee: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Kilométrage d'arrivée *</label>
+                  <input
+                    type="number"
+                    value={finishData.kilometrageArrivee}
+                    onChange={(e) => setFinishData({ ...finishData, kilometrageArrivee: e.target.value })}
+                    required
+                    min="0"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Niveau carburant à l'arrivée (L) *</label>
+                  <input
+                    type="number"
+                    value={finishData.carburantNiveauxArrivee}
+                    onChange={(e) => setFinishData({ ...finishData, carburantNiveauxArrivee: e.target.value })}
+                    required
+                    min="0"
+                    step="0.1"
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Commentaires</label>
+                  <textarea
+                    value={finishData.commentairesChauffeur}
+                    onChange={(e) => setFinishData({ ...finishData, commentairesChauffeur: e.target.value })}
+                    rows="2"
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={closeFinishModal}>Annuler</button>
+                <button type="submit" className="btn btn-primary">Confirmer</button>
               </div>
             </form>
           </div>

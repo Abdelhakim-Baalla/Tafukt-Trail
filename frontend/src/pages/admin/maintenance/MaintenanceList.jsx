@@ -472,7 +472,55 @@ const MaintenanceList = () => {
                 </div>
               ) : (
                 <div className="alertes-grid">
-                  {alertes.map((alerte, index) => (
+                  {alertes.map((alerte, index) => {
+                    if (alerte.type === 'KM_SEUIL') {
+                      const used = alerte.kmSince || 0;
+                      const intervalle = alerte.intervalle || 1;
+                      const ratio = Math.min((used / intervalle) * 100, 100);
+                      const isOver = (alerte.depassement || 0) > 0;
+                      return (
+                        <div key={index} className="alerte-card alerte-seuil">
+                          <div className="alerte-header">
+                            <span className="seuil-tag">Seuil km</span>
+                            <span className="alerte-type">
+                              {TYPE_MAINTENANCE_LABELS[alerte.typeIntervention] || alerte.typeIntervention}
+                            </span>
+                          </div>
+
+                          <div className="alerte-body">
+                            <div className="alerte-camion">
+                              {Icons.truck}
+                              <span className="matricule">{alerte.camion}</span>
+                            </div>
+
+                            <div className="km-gauge">
+                              <div className="km-gauge-top">
+                                <span className="km-gauge-used">{used.toLocaleString()} km depuis intervention</span>
+                                <span className="km-gauge-total">seuil {intervalle.toLocaleString()} km</span>
+                              </div>
+                              <div className="km-gauge-track">
+                                <div
+                                  className={`km-gauge-fill ${isOver ? 'is-over' : ''}`}
+                                  style={{ width: `${ratio}%` }}
+                                ></div>
+                              </div>
+                              {isOver && (
+                                <span className="depassement-badge">
+                                  +{(alerte.depassement || 0).toLocaleString()} km au delà du seuil
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="alerte-footer">
+                            <button className="btn btn-sm btn-primary" onClick={() => openPlanifierModal(alerte)}>
+                              {Icons.calendar} Planifier
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
                     <div 
                       key={index} 
                       className={`alerte-card ${alerte.priorite === 'URGENT' ? 'alerte-urgent' : 'alerte-normal'}`}
@@ -528,7 +576,8 @@ const MaintenanceList = () => {
                         </button>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -118,6 +118,39 @@ const RapportsList = () => {
     }
   };
 
+  // Consommation par camion en L/100km, calculee depuis les donnees deja chargees
+  const getVehiculeKey = (ref) => {
+    if (!ref) return null;
+    if (typeof ref === 'object') return ref._id || ref.matricule || null;
+    return ref;
+  };
+
+  const consoParCamion = camions.map((c) => {
+    const key = getVehiculeKey(c);
+    const litres = filteredPleins
+      .filter((p) => {
+        const pk = getVehiculeKey(p.camion);
+        return pk && (pk === key || pk === c.matricule);
+      })
+      .reduce((sum, p) => sum + (p.quantiteLitre || 0), 0);
+    const km = filteredTrajets
+      .filter((t) => {
+        const tk = getVehiculeKey(t.camion);
+        return tk && (tk === key || tk === c.matricule);
+      })
+      .reduce((sum, t) => {
+        const depart = t.kilometrageDepart || 0;
+        const arrivee = t.kilometrageArrivee || 0;
+        return sum + (arrivee > depart ? arrivee - depart : 0);
+      }, 0);
+    return { id: c._id, matricule: c.matricule, litres, km, conso: km > 0 ? (litres / km) * 100 : 0 };
+  })
+    .filter((x) => x.litres > 0 || x.km > 0)
+    .sort((a, b) => b.conso - a.conso)
+    .slice(0, 8);
+
+  const maxConso = consoParCamion.reduce((m, x) => Math.max(m, x.conso), 0);
+
   // ==================== EXPORT CSV NATIF (SANS BIBLIOTHÈQUE) ====================
   
   /**
@@ -178,8 +211,8 @@ const RapportsList = () => {
           value = new Date(value).toLocaleString('fr-FR');
         }
         
-        // Formatage des nombres
-        if (col.type === 'number' && value !== undefined) {
+        // Formatage des nombres (on préserve les cellules vides)
+        if (col.type === 'number' && value !== undefined && value !== null && value !== '') {
           value = Number(value).toLocaleString('fr-FR');
         }
         
@@ -219,10 +252,10 @@ const RapportsList = () => {
       { key: 'statut', label: 'Statut' },
     ];
     
-    // Ajouter colonne distance calculée
+    // Ajouter colonne distance calculée (bornée à 0 minimum)
     const dataWithDistance = filteredTrajets.map(t => ({
       ...t,
-      distance: (t.kilometrageArrivee || 0) - (t.kilometrageDepart || 0)
+      distance: Math.max(0, (Number(t.kilometrageArrivee) || 0) - (Number(t.kilometrageDepart) || 0))
     }));
     columns.push({ key: 'distance', label: 'Distance (km)', type: 'number' });
     
@@ -235,7 +268,7 @@ const RapportsList = () => {
       { key: 'matricule', label: 'Matricule' },
       { key: 'marque', label: 'Marque' },
       { key: 'modele', label: 'Modèle' },
-      { key: 'anneeFabrication', label: 'Année' },
+      { key: 'annee', label: 'Année' },
       { key: 'kilometrageActuel', label: 'Kilométrage', type: 'number' },
       { key: 'typeCarburant', label: 'Type Carburant' },
       { key: 'reservoire', label: 'Réservoir (L)', type: 'number' },
@@ -243,10 +276,12 @@ const RapportsList = () => {
       { key: 'dateDernierControle', label: 'Dernier Contrôle', type: 'date' },
     ];
     
-    // Normaliser le champ modele
+    // Normaliser le champ modele (le modèle utilise `model`) et
+    // n'exporter kilometrageActuel que s'il est présent
     const data = camions.map(c => ({
       ...c,
-      modele: c.modele || c.model
+      modele: c.modele || c.model,
+      kilometrageActuel: c.kilometrageActuel ?? ''
     }));
     
     exportToCSV(data, 'rapport_flotte_camions', columns);
@@ -269,9 +304,9 @@ const RapportsList = () => {
       { key: 'date', label: 'Date', type: 'date' },
       { key: 'camion', label: 'Camion' },
       { key: 'quantiteLitre', label: 'Quantité (L)', type: 'number' },
-      { key: 'prixUnitaire', label: 'Prix/L', type: 'number' },
+      { key: 'prixLitre', label: 'Prix/L', type: 'number' },
       { key: 'montantTotal', label: 'Montant Total', type: 'number' },
-      { key: 'station', label: 'Station' },
+      { key: 'nomStation', label: 'Station' },
     ];
     exportToCSV(filteredPleins, 'rapport_carburant', columns);
   };
@@ -363,6 +398,27 @@ const RapportsList = () => {
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="export-row">
+        <span className="export-label">Exports du rapport</span>
+        <div className="export-buttons">
+          <button className="btn export-csv" onClick={exportTrajetsCSV}>
+            {Icons.download} Trajets CSV
+          </button>
+          <button className="btn export-csv" onClick={exportFlotteCSV}>
+            {Icons.download} Flotte CSV
+          </button>
+          <button className="btn export-csv" onClick={exportRemorquesCSV}>
+            {Icons.download} Remorques CSV
+          </button>
+          <button className="btn export-csv" onClick={exportCarburantCSV}>
+            {Icons.download} Carburant CSV
+          </button>
+          <button className="btn export-pdf" onClick={handlePrint}>
+            {Icons.printer} Imprimer / PDF
+          </button>
         </div>
       </div>
 
@@ -492,7 +548,7 @@ const RapportsList = () => {
                       <td className="itineraire">{trajet.lieuDepart} → {trajet.lieuArrivee}</td>
                       <td>{trajet.camion?.matricule || '-'}</td>
                       <td>{trajet.chauffeur ? `${trajet.chauffeur.prenom} ${trajet.chauffeur.nom}` : '-'}</td>
-                      <td>{(trajet.kilometrageArrivee || 0) - (trajet.kilometrageDepart || 0)} km</td>
+                      <td>{Math.max(0, (trajet.kilometrageArrivee || 0) - (trajet.kilometrageDepart || 0))} km</td>
                       <td>
                         <span className={`status ${trajet.statut === 'TERMINE' ? 'status-ok' : trajet.statut === 'EN_COURS' ? 'status-busy' : trajet.statut === 'ANNULE' ? 'status-danger' : 'status-default'}`}>
                           {trajet.statut}
@@ -607,6 +663,27 @@ const RapportsList = () => {
           </div>
           
           <div className="section-content">
+            <div className="conso-section">
+              <h3>Consommation par camion (L/100km)</h3>
+              {consoParCamion.length === 0 ? (
+                <p className="conso-empty">Pas assez de données sur la période pour calculer la consommation.</p>
+              ) : (
+                <div className="conso-bars">
+                  {consoParCamion.map((c) => (
+                    <div className="conso-row" key={c.id}>
+                      <span className="conso-matricule">{c.matricule}</span>
+                      <div className="conso-track">
+                        <div
+                          className="conso-fill"
+                          style={{ width: `${maxConso > 0 ? (c.conso / maxConso) * 100 : 0}%` }}
+                        />
+                      </div>
+                      <span className="conso-value">{c.conso.toFixed(1)} L/100km</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             <div className="carburant-summary">
               <div className="carburant-card">
                 <span className="carburant-value">{statsCalculees.carburant.litres.toLocaleString()}</span>

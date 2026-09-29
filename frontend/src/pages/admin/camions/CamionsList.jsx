@@ -31,6 +31,7 @@ const CamionsList = () => {
   const [filterStatut, setFilterStatut] = useState('');
   const [error, setError] = useState(null);
   const [formError, setFormError] = useState(null);
+  const [copiedId, setCopiedId] = useState(null);
   const [formData, setFormData] = useState({
     marque: '',
     model: '',
@@ -89,6 +90,7 @@ const CamionsList = () => {
   };
 
   const openModal = (camion = null) => {
+    setFormError(null);
     if (camion) {
       setEditingCamion(camion);
       setFormData({
@@ -118,6 +120,7 @@ const CamionsList = () => {
   const closeModal = () => {
     setShowModal(false);
     setEditingCamion(null);
+    setFormError(null);
   };
 
   const filteredCamions = camions.filter(c => {
@@ -136,6 +139,16 @@ const CamionsList = () => {
       case 'HORS_SERVICE': return 'status-danger';
       default: return 'status-default';
     }
+  };
+
+  const copyMatricule = async (id, text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      /* presse-papiers indisponible, on affiche quand meme le retour */
+    }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1500);
   };
 
   if (loading) {
@@ -185,16 +198,27 @@ const CamionsList = () => {
         <div className="cards-grid">
           {filteredCamions.map((camion) => (
             <div className="card" key={camion._id}>
+              <span className={`v-rail ${getStatutClass(camion.statut)}`} aria-hidden="true" />
               <div className="card-header">
                 <div className="card-title">
-                  <span className="card-matricule">{camion.matricule}</span>
+                  <span className="matricule-wrap">
+                    <span className="card-matricule">{camion.matricule}</span>
+                    <button
+                      type="button"
+                      className={`copy-btn ${copiedId === camion._id ? 'is-copied' : ''}`}
+                      onClick={() => copyMatricule(camion._id, camion.matricule)}
+                      title="Copier la matricule"
+                    >
+                      {copiedId === camion._id ? 'Copié' : 'Copier'}
+                    </button>
+                  </span>
                   <span className={`status ${getStatutClass(camion.statut)}`}>
                     {STATUT_VEHICULE_LABELS[camion.statut]}
                   </span>
                 </div>
                 <div className="card-actions">
-                  <button className="btn-icon" onClick={() => openModal(camion)}>{Icons.edit}</button>
-                  <button className="btn-icon btn-danger" onClick={() => handleDelete(camion._id)}>{Icons.trash}</button>
+                  <button className="btn-icon" onClick={() => openModal(camion)} title="Modifier">{Icons.edit}</button>
+                  <button className="btn-icon btn-danger" onClick={() => handleDelete(camion._id)} title="Supprimer">{Icons.trash}</button>
                 </div>
               </div>
               <div className="card-body">
@@ -235,9 +259,9 @@ const CamionsList = () => {
               <button className="btn-icon" onClick={closeModal}>{Icons.x}</button>
             </div>
             <form onSubmit={handleSubmit}>
-              {error && (
+              {formError && (
                 <div className="alert alert-error" style={{margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca'}}>
-                  {error}
+                  {formError}
                 </div>
               )}
               <div className="form-grid">

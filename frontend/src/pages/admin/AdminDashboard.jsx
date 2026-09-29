@@ -22,24 +22,24 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchStats = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getDashboardStats();
+      setStats(data);
+    } catch (error) {
+      console.error('Erreur:', error);
+      setError(error.message || 'Erreur lors du chargement du tableau de bord');
+      setStats(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data = await getDashboardStats();
-        setStats(data);
-      } catch (error) {
-        console.error('Erreur:', error);
-        setStats({
-          vehicules: { camions: { total: 0, disponibles: 0 }, remorques: { total: 0, disponibles: 0 } },
-          trajets: { total: 0, enCours: 0, planifies: 0, termines: 0, derniers: [] },
-          chauffeurs: { total: 0, disponibles: 0, liste: [] },
-          carburant: { totalLitres: 0, totalMontant: 0, nombrePleins: 0 }
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchStats();
   }, []);
 
@@ -57,7 +57,14 @@ const AdminDashboard = () => {
     );
   }
 
-  if (!stats) return <div className="dash-empty">Impossible de charger les données</div>;
+  if (!stats) return (
+    <div className="dash">
+      <div className="dash-empty">
+        <p>{error || 'Impossible de charger les données'}</p>
+        <button className="action-btn" onClick={fetchStats}>Réessayer</button>
+      </div>
+    </div>
+  );
 
   const camions = stats.vehicules?.camions || { total: 0, disponibles: 0 };
   const remorques = stats.vehicules?.remorques || { total: 0, disponibles: 0 };
@@ -68,6 +75,10 @@ const AdminDashboard = () => {
   const chauffeursDisponibles = stats.chauffeurs?.disponibles || 0;
   const chauffeursMission = chauffeursTotal - chauffeursDisponibles;
   const derniersTrajets = stats.trajets?.derniers || [];
+  const pct = (part, total) => (total > 0 ? Math.round((part / total) * 100) : 0);
+  const pctCamions = pct(camions.disponibles, camions.total);
+  const pctRemorques = pct(remorques.disponibles, remorques.total);
+  const pctTermines = pct(trajetsTermines, trajetsTotal);
 
   return (
     <div className="dash">
@@ -77,14 +88,21 @@ const AdminDashboard = () => {
           <p>Gestion de flotte • Supervision en temps réel</p>
         </div>
         <div className="quick-actions">
-          <button className="action-btn" onClick={() => navigate('/admin/trajets/nouveau')}>
+          <button className="action-btn" onClick={() => navigate('/admin/trajets')}>
             {Icons.plus} <span>Nouveau trajet</span>
           </button>
-          <button className="action-btn action-secondary" onClick={() => navigate('/admin/camions/nouveau')}>
+          <button className="action-btn action-secondary" onClick={() => navigate('/admin/camions')}>
             {Icons.plus} <span>Ajouter camion</span>
           </button>
         </div>
       </header>
+
+      {error && stats && (
+        <div className="alert alert-error" style={{ margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca' }}>
+          {error}
+          <button onClick={fetchStats} style={{ marginLeft: '1rem', background: 'none', border: '1px solid #dc2626', borderRadius: '6px', color: '#dc2626', cursor: 'pointer', padding: '0.25rem 0.75rem' }}>Réessayer</button>
+        </div>
+      )}
 
       <div className="metrics">
         <div className="metric">
@@ -93,6 +111,7 @@ const AdminDashboard = () => {
             <span className="metric-value">{camions.total}</span>
             <span className="metric-label">Camions</span>
             <span className="metric-sub">{camions.disponibles} disponibles</span>
+            <span className="metric-delta">{pctCamions}% du parc en service actif</span>
           </div>
         </div>
         <div className="metric">
@@ -101,6 +120,7 @@ const AdminDashboard = () => {
             <span className="metric-value">{remorques.total}</span>
             <span className="metric-label">Remorques</span>
             <span className="metric-sub">{remorques.disponibles} disponibles</span>
+            <span className="metric-delta">{pctRemorques}% du parc en service actif</span>
           </div>
         </div>
         <div className="metric">
@@ -109,6 +129,7 @@ const AdminDashboard = () => {
             <span className="metric-value">{trajetsEnCours}</span>
             <span className="metric-label">En route</span>
             <span className="metric-sub">sur {trajetsTotal} trajets</span>
+            <span className="metric-delta is-info">{trajetsTermines} trajets terminés</span>
           </div>
         </div>
         <div className="metric">
@@ -117,18 +138,22 @@ const AdminDashboard = () => {
             <span className="metric-value">{chauffeursDisponibles}</span>
             <span className="metric-label">Chauffeurs</span>
             <span className="metric-sub">sur {chauffeursTotal} au total</span>
+            <span className="metric-delta is-warn">{chauffeursMission} en mission</span>
           </div>
         </div>
       </div>
 
       <div className="sections">
         <div className="section">
-          <h2>{Icons.chart} État de la flotte</h2>
+          <div className="section-head">
+            <h2>{Icons.chart} État de la flotte</h2>
+            <span className="count-pill">{pctCamions}% dispo</span>
+          </div>
           <div className="bars">
             <div className="bar-item">
               <div className="bar-header">
                 <span>Camions disponibles</span>
-                <span>{camions.disponibles}/{camions.total}</span>
+                <span>{camions.disponibles}/{camions.total}<span className="bar-pct">{pctCamions}%</span></span>
               </div>
               <div className="bar">
                 <div className="bar-fill bar-green" style={{ width: `${camions.total ? (camions.disponibles / camions.total) * 100 : 0}%` }} />
@@ -137,7 +162,7 @@ const AdminDashboard = () => {
             <div className="bar-item">
               <div className="bar-header">
                 <span>Chauffeurs en mission</span>
-                <span>{chauffeursMission}/{chauffeursTotal}</span>
+                <span>{chauffeursMission}/{chauffeursTotal}<span className="bar-pct">{pct(chauffeursMission, chauffeursTotal)}%</span></span>
               </div>
               <div className="bar">
                 <div className="bar-fill bar-blue" style={{ width: `${chauffeursTotal ? (chauffeursMission / chauffeursTotal) * 100 : 0}%` }} />
@@ -146,7 +171,7 @@ const AdminDashboard = () => {
             <div className="bar-item">
               <div className="bar-header">
                 <span>Trajets terminés</span>
-                <span>{trajetsTermines}/{trajetsTotal}</span>
+                <span>{trajetsTermines}/{trajetsTotal}<span className="bar-pct">{pctTermines}%</span></span>
               </div>
               <div className="bar">
                 <div className="bar-fill bar-gray" style={{ width: `${trajetsTotal ? (trajetsTermines / trajetsTotal) * 100 : 0}%` }} />
@@ -176,21 +201,30 @@ const AdminDashboard = () => {
 
       <div className="sections">
         <div className="section">
-          <h2>{Icons.clock} Derniers trajets</h2>
+          <div className="section-head">
+            <h2>{Icons.clock} Derniers trajets</h2>
+            <span className="count-pill">{derniersTrajets.length}</span>
+          </div>
           {derniersTrajets.length > 0 ? (
             <div className="trips-list">
               {derniersTrajets.map((t) => (
                 <div className="trip-item" key={t._id}>
-                  <div className="trip-route">
-                    <span className="trip-location">{Icons.mapPin} {t.lieuDepart || 'Départ'}</span>
-                    <span className="trip-arrow">{Icons.arrow}</span>
-                    <span className="trip-location">{Icons.mapPin} {t.lieuArrivee || 'Arrivée'}</span>
-                  </div>
-                  <div className="trip-meta">
-                    <span className="trip-date">{formatDate(t.dateDepart)}</span>
-                    <span className={`status ${t.statut === 'TERMINE' ? 'status-ok' : t.statut === 'EN_COURS' ? 'status-busy' : 'status-pending'}`}>
-                      {t.statut === 'TERMINE' ? 'Terminé' : t.statut === 'EN_COURS' ? 'En cours' : 'Planifié'}
-                    </span>
+                  <span className="tl-rail" aria-hidden="true">
+                    <span className={`tl-dot ${t.statut === 'TERMINE' ? 'is-done' : t.statut === 'EN_COURS' ? 'is-busy' : ''}`} />
+                    <span className="tl-line" />
+                  </span>
+                  <div className="trip-main">
+                    <div className="trip-route">
+                      <span className="trip-location">{Icons.mapPin} {t.lieuDepart || 'Départ'}</span>
+                      <span className="trip-arrow">{Icons.arrow}</span>
+                      <span className="trip-location">{Icons.mapPin} {t.lieuArrivee || 'Arrivée'}</span>
+                    </div>
+                    <div className="trip-meta">
+                      <span className="trip-date">{formatDate(t.dateDepart)}</span>
+                      <span className={`status ${t.statut === 'TERMINE' ? 'status-ok' : t.statut === 'EN_COURS' ? 'status-busy' : 'status-pending'}`}>
+                        {t.statut === 'TERMINE' ? 'Terminé' : t.statut === 'EN_COURS' ? 'En cours' : 'Planifié'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -201,13 +235,19 @@ const AdminDashboard = () => {
         </div>
 
         <div className="section">
-          <h2>{Icons.team} Équipe</h2>
+          <div className="section-head">
+            <h2>{Icons.team} Équipe</h2>
+            <span className="count-pill">{chauffeursDisponibles} libres</span>
+          </div>
           {stats.chauffeurs?.liste?.length > 0 ? (
             <div className="team-list">
               {stats.chauffeurs.liste.slice(0, 5).map((c) => (
                 <div className="team-item" key={c._id}>
                   <div className="user-cell">
-                    <div className="user-avatar">{c.prenom?.[0]}{c.nom?.[0]}</div>
+                    <div className="avatar-wrap">
+                      <div className="user-avatar">{c.prenom?.[0]}{c.nom?.[0]}</div>
+                      <span className={`presence-dot ${c.statut === 'DISPONIBLE' ? 'is-free' : 'is-busy'}`} />
+                    </div>
                     <div className="user-info">
                       <span className="user-name">{c.prenom} {c.nom}</span>
                       <span className="user-email">{c.email}</span>
