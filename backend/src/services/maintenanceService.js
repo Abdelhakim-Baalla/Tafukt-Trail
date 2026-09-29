@@ -1,7 +1,5 @@
 const InterventionMaintenanceRepository = require('../repositories/InterventionMaintenanceRepository');
 const RegleMaintenanceRepository = require('../repositories/RegleMaintenanceRepository');
-const CamionRepository = require('../repositories/CamionRepository');
-const TrajetRepository = require('../repositories/TrajetRepository');
 const Camion = require('../models/Camion');
 const Trajet = require('../models/Trajet');
 
@@ -98,7 +96,39 @@ class MaintenanceService {
       }
     }
 
+    // Alertes basées sur le kilométrage actuel du camion (KM_SEUIL).
+    // Forme existante ci-dessus inchangée ; ces alertes sont ajoutées.
+    for (const camion of camions) {
+      const actuel = camion.kilometrageActuel ?? 0;
+      if (!(actuel > 0)) continue;
+      for (const regle of regles) {
+        if (regle.typeVehicule !== 'CAMION') continue;
+        const derniereIntervention =
+          await InterventionMaintenanceRepository.getLastIntervention(
+            camion._id,
+            regle.typeIntervention
+          );
+        const lastKm = derniereIntervention?.kilometrageVehicule;
+        const kmSince = lastKm == null ? actuel : actuel - lastKm;
+        if (kmSince >= regle.intervalleKilometres) {
+          alertes.push({
+            type: 'KM_SEUIL',
+            camion: camion.matricule,
+            camionId: camion._id,
+            typeIntervention: regle.typeIntervention,
+            kmSince,
+            intervalle: regle.intervalleKilometres,
+            depassement: kmSince - regle.intervalleKilometres,
+          });
+        }
+      }
+    }
+
     return alertes;
+  }
+
+  async getAlertes() {
+    return this.verifierMaintenancePreventive();
   }
 
   async planifierMaintenance(camionId, typeIntervention, datePrevu) {

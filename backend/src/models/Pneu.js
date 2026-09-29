@@ -39,6 +39,16 @@ const pneuSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Camion',
         required: true
+    },
+    usurePourcent: {
+        type: Number,
+        default: 0,
+        min: 0,
+        max: 100
+    },
+    kilometragePose: {
+        type: Number,
+        min: 0
     }
 }, {
     timestamps: true

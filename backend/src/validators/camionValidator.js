@@ -11,7 +11,8 @@ const validateCamion = (req, res, next) => {
         typeCarburant: Joi.string().valid(...Object.values(TypeCarburant)).required(),
         dateDernierControle: Joi.date().optional(),
         matricule: Joi.string().required(),
-        reservoire: Joi.number().required()
+        reservoire: Joi.number().required(),
+        kilometrageActuel: Joi.number().min(0).optional()
     });
 
     const { error } = schema.validate(req.body);
@@ -30,7 +31,8 @@ const validateCamionUpdate = (req, res, next) => {
         typeCarburant: Joi.string().valid(...Object.values(TypeCarburant)).optional(),
         dateDernierControle: Joi.date().optional(),
         matricule: Joi.string().optional(),
-        reservoire: Joi.number().optional()
+        reservoire: Joi.number().optional(),
+        kilometrageActuel: Joi.number().min(0).optional()
     });
 
     const { error } = schema.validate(req.body);

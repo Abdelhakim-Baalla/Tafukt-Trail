@@ -39,6 +39,11 @@ const camionSchema = new mongoose.Schema({
     reservoire: {
         type: Number,
         required: true
+    },
+    kilometrageActuel: {
+        type: Number,
+        default: 0,
+        min: 0
     }
 }, {
     timestamps: true
