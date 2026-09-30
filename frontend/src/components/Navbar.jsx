@@ -88,13 +88,13 @@ const Navbar = () => {
           <span className="nav-logo-text">Tafukt Trail</span>
         </Link>
 
-        {isLanding && !isAuthenticated() && (
+        {isLanding && (
           <nav className={`nav-pill ${menuOpen ? 'is-open' : ''}`} aria-label="Navigation principale">
-            {landingLinks.map((link, i) => (
+            {landingLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`nav-pill-link ${i === 0 ? 'active' : ''}`}
+                className={`nav-pill-link ${location.hash === link.href || (!location.hash && link.href === '#accueil') ? 'active' : ''}`}
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}

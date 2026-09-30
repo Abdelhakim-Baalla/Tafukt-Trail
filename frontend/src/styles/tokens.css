@@ -30,7 +30,7 @@
   --tt-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --tt-container: 1220px;
-  --tt-section-y: clamp(72px, 10vw, 120px);
+  --tt-section-y: clamp(88px, 12vw, 140px);
 
   --tt-motion-med: 240ms;
   --tt-ease: cubic-bezier(0.23, 1, 0.32, 1);

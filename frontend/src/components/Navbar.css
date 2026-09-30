@@ -10,7 +10,7 @@
   top: 0;
   left: 0;
   right: 0;
-  padding: 20px 24px 0;
+  padding: 28px 24px 0;
   background: transparent;
 }
 
@@ -28,7 +28,7 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .nav--app .nav-inner {
@@ -40,35 +40,68 @@
   box-shadow: 0 10px 28px rgba(20, 20, 20, 0.08);
 }
 
+/* Logo — transparent on landing, clear wordmark */
 .nav-logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: -0.01em;
+  font-size: 18px;
+  letter-spacing: -0.02em;
   color: var(--tt-text);
   text-decoration: none;
-  padding: 8px 14px 8px 8px;
-  background: var(--tt-surface);
-  border-radius: var(--tt-radius-control);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 .nav--landing .nav-logo {
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+.nav--landing .nav-logo:hover {
+  color: #fff;
+  opacity: 0.92;
+}
+
+.nav--app .nav-logo {
   color: var(--tt-text);
 }
 
 .nav-logo img {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: cover;
   border-radius: 50%;
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.nav--landing .nav-logo img {
+  width: 42px;
+  height: 42px;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.95),
+    0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.nav--app .nav-logo img {
+  width: 34px;
+  height: 34px;
   background: var(--tt-surface2);
 }
 
 .nav-logo-text {
   white-space: nowrap;
+  line-height: 1;
+}
+
+.nav--landing .nav-logo-text {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
 }
 
 .nav-pill {
@@ -76,11 +109,11 @@
   align-items: center;
   gap: 2px;
   margin: 0 auto;
-  padding: 4px;
-  background: var(--tt-surface);
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--tt-radius-pill);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 .nav--app .nav-pill {
@@ -90,6 +123,7 @@
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
+  margin: 0;
 }
 
 .nav-pill::-webkit-scrollbar {
@@ -97,7 +131,7 @@
 }
 
 .nav-pill-link {
-  padding: 9px 16px;
+  padding: 10px 18px;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--tt-text);
@@ -119,7 +153,7 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -127,9 +161,10 @@
 .nav-time {
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 
 .nav--app .nav-time {
@@ -148,7 +183,8 @@
 }
 
 .nav--landing .nav-user-chip {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .nav-avatar {
@@ -219,20 +255,28 @@
 
 .nav--landing .nav-btn--ghost {
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.4);
   background: transparent;
+}
+
+.nav--landing .nav-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-burger {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
-  background: var(--tt-surface);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: var(--tt-radius-control);
+}
+
+.nav--app .nav-burger {
+  background: var(--tt-surface2);
 }
 
 .nav-burger span {
@@ -254,13 +298,13 @@
   .nav-pill {
     display: none;
     position: absolute;
-    top: calc(100% + 10px);
-    left: 24px;
-    right: 24px;
+    top: calc(100% + 12px);
+    left: 0;
+    right: 0;
     flex-direction: column;
     align-items: stretch;
     border-radius: var(--tt-radius-card);
-    padding: 8px;
+    padding: 10px;
     z-index: 20;
   }
 
@@ -291,14 +335,24 @@
     display: none;
   }
 
-  .nav-logo-text {
+  /* Keep brand readable on landing; hide wordmark only in dense app nav */
+  .nav--app .nav-logo-text {
     display: none;
   }
 }
 
 @media (max-width: 640px) {
   .nav--landing {
-    padding: 12px 12px 0;
+    padding: 16px 16px 0;
+  }
+
+  .nav--landing .nav-logo-text {
+    font-size: 16px;
+  }
+
+  .nav--landing .nav-logo img {
+    width: 36px;
+    height: 36px;
   }
 
   .btn-split--sm .btn-split-label {

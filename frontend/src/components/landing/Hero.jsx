@@ -20,7 +20,11 @@ const Hero = () => {
 
       <div className="tt-container ld-hero__inner">
         <div className="ld-hero__content">
-          <h1 className="ld-hero__title">Pilotez votre flotte. Avancez.</h1>
+          <span className="eyebrow eyebrow--light ld-hero__eyebrow">Gestion de flotte</span>
+          <h1 className="ld-hero__title">
+            Pilotez votre flotte.
+            <span className="ld-hero__title-line">Avancez.</span>
+          </h1>
           <p className="ld-hero__desc">
             Tafukt Trail centralise camions, trajets, maintenance et carburant —
             simple, fiable, pensé pour le transport routier.
