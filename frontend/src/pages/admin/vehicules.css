@@ -838,3 +838,18 @@
   border: 1px solid rgba(52, 211, 153, 0.3);
   color: var(--tt-green);
 }
+
+/* Ghost index numerals (telemetry registry motif) */
+.card-index {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-family: var(--tt-mono);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tt-text);
+  opacity: 0.07;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}

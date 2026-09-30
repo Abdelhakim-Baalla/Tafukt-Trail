@@ -196,9 +196,10 @@ const CamionsList = () => {
 
       {filteredCamions.length > 0 ? (
         <div className="cards-grid">
-          {filteredCamions.map((camion) => (
+          {filteredCamions.map((camion, i) => (
             <div className="card" key={camion._id}>
               <span className={`v-rail ${getStatutClass(camion.statut)}`} aria-hidden="true" />
+              <span className="card-index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <div className="card-header">
                 <div className="card-title">
                   <span className="matricule-wrap">

@@ -80,22 +80,67 @@ const AdminDashboard = () => {
   const pctRemorques = pct(remorques.disponibles, remorques.total);
   const pctTermines = pct(trajetsTermines, trajetsTotal);
 
+  const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
   return (
     <div className="dash">
-      <header className="dash-header">
-        <div className="dash-header-left">
-          <h1>Tableau de bord</h1>
-          <p>Gestion de flotte • Supervision en temps réel</p>
+      <section className="hero">
+        <div className="hero-top">
+          <div>
+            <p className="hero-kicker">Supervision flotte — {today}</p>
+            <h1 className="hero-title">
+              La flotte,
+              <br />
+              pilotée.
+            </h1>
+          </div>
+          <div className="quick-actions">
+            <button className="hero-btn hero-btn-solid" onClick={() => navigate('/admin/trajets')}>
+              {Icons.plus} <span>Nouveau trajet</span>
+            </button>
+            <button className="hero-btn hero-btn-ghost" onClick={() => navigate('/admin/camions')}>
+              {Icons.plus} <span>Ajouter camion</span>
+            </button>
+          </div>
         </div>
-        <div className="quick-actions">
-          <button className="action-btn" onClick={() => navigate('/admin/trajets')}>
-            {Icons.plus} <span>Nouveau trajet</span>
-          </button>
-          <button className="action-btn action-secondary" onClick={() => navigate('/admin/camions')}>
-            {Icons.plus} <span>Ajouter camion</span>
-          </button>
+        <dl className="spec-strip">
+          <div className="spec">
+            <dt>En route</dt>
+            <dd>{trajetsEnCours}</dd>
+          </div>
+          <div className="spec">
+            <dt>Camions dispo</dt>
+            <dd>{camions.disponibles}/{camions.total}</dd>
+          </div>
+          <div className="spec">
+            <dt>Carburant</dt>
+            <dd>{stats.carburant.totalLitres} L</dd>
+          </div>
+          <div className="spec">
+            <dt>Statut réseau</dt>
+            <dd className="spec-ok">Optimal</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div className="number-cards">
+        <div className="number-card">
+          <span className="number-value">{camions.total}</span>
+          <span className="number-label">Camions au parc</span>
         </div>
-      </header>
+        <div className="number-card">
+          <span className="number-value">{trajetsTotal}</span>
+          <span className="number-label">Trajets suivis</span>
+        </div>
+        <div className="number-card">
+          <span className="number-value">{stats.carburant.totalLitres}</span>
+          <span className="number-label">Litres consommés</span>
+        </div>
+        <div className="number-card">
+          <span className="number-value">{chauffeursTotal}</span>
+          <span className="number-label">Chauffeurs</span>
+        </div>
+      </div>
 
       {error && stats && (
         <div className="alert alert-error" style={{ margin: '0 0 1rem 0', padding: '0.75rem 1rem', background: '#fef2f2', color: '#dc2626', borderRadius: '8px', border: '1px solid #fecaca' }}>
@@ -103,45 +148,6 @@ const AdminDashboard = () => {
           <button onClick={fetchStats} style={{ marginLeft: '1rem', background: 'none', border: '1px solid #dc2626', borderRadius: '6px', color: '#dc2626', cursor: 'pointer', padding: '0.25rem 0.75rem' }}>Réessayer</button>
         </div>
       )}
-
-      <div className="metrics">
-        <div className="metric">
-          <div className="metric-icon">{Icons.truck}</div>
-          <div className="metric-content">
-            <span className="metric-value">{camions.total}</span>
-            <span className="metric-label">Camions</span>
-            <span className="metric-sub">{camions.disponibles} disponibles</span>
-            <span className="metric-delta">{pctCamions}% du parc en service actif</span>
-          </div>
-        </div>
-        <div className="metric">
-          <div className="metric-icon">{Icons.trailer}</div>
-          <div className="metric-content">
-            <span className="metric-value">{remorques.total}</span>
-            <span className="metric-label">Remorques</span>
-            <span className="metric-sub">{remorques.disponibles} disponibles</span>
-            <span className="metric-delta">{pctRemorques}% du parc en service actif</span>
-          </div>
-        </div>
-        <div className="metric">
-          <div className="metric-icon">{Icons.route}</div>
-          <div className="metric-content">
-            <span className="metric-value">{trajetsEnCours}</span>
-            <span className="metric-label">En route</span>
-            <span className="metric-sub">sur {trajetsTotal} trajets</span>
-            <span className="metric-delta is-info">{trajetsTermines} trajets terminés</span>
-          </div>
-        </div>
-        <div className="metric">
-          <div className="metric-icon">{Icons.users}</div>
-          <div className="metric-content">
-            <span className="metric-value">{chauffeursDisponibles}</span>
-            <span className="metric-label">Chauffeurs</span>
-            <span className="metric-sub">sur {chauffeursTotal} au total</span>
-            <span className="metric-delta is-warn">{chauffeursMission} en mission</span>
-          </div>
-        </div>
-      </div>
 
       <div className="sections">
         <div className="section">

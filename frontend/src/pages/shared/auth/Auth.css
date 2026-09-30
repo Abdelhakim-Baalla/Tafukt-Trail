@@ -78,10 +78,12 @@
 }
 
 .auth-brand-title {
-  font-size: clamp(24px, 3vw, 30px);
-  font-weight: 750;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-family: var(--tt-font-display);
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.02;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
