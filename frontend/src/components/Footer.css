@@ -3,7 +3,7 @@
 .footer {
   margin-top: auto;
   border-top: 1px solid var(--tt-line);
-  background: rgba(244, 239, 228, 0.9);
+  background: rgba(11, 11, 12, 0.85);
 }
 
 .footer-inner {

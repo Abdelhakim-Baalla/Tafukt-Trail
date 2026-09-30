@@ -66,7 +66,7 @@
 }
 
 .shift-pill.is-on {
-  border-color: rgba(245, 165, 36, 0.45);
+  border-color: rgba(0, 64, 255, 0.45);
   background: var(--tt-amber-bg);
   color: var(--tt-amber);
 }
@@ -88,13 +88,13 @@
 /* Next mission hero */
 
 .hero-card {
-  background: var(--tt-text);
-  color: var(--tt-bg);
-  border: 1px solid var(--tt-text);
+  background: linear-gradient(150deg, #2b5bff 0%, var(--tt-amber) 70%, #001a80 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 22px;
   padding: 22px;
   margin-bottom: 20px;
-  box-shadow: 0 14px 34px rgba(33, 26, 16, 0.22);
+  box-shadow: 0 18px 44px rgba(0, 64, 255, 0.35);
   animation: tt-fade-slide-in var(--tt-motion-med) var(--tt-ease) both;
 }
 
@@ -370,14 +370,14 @@
 
 .step.is-done {
   color: var(--tt-amber);
-  border-color: rgba(245, 165, 36, 0.45);
+  border-color: rgba(0, 64, 255, 0.45);
   background: var(--tt-amber-bg);
 }
 
 .step.is-current {
   color: var(--tt-text);
   border-color: var(--tt-amber);
-  background: rgba(245, 165, 36, 0.22);
+  background: rgba(0, 64, 255, 0.22);
 }
 
 .mission-foot {
@@ -469,7 +469,7 @@
 .badge-warning {
   background: var(--tt-amber-bg);
   color: var(--tt-amber);
-  border-color: rgba(245, 165, 36, 0.4);
+  border-color: rgba(0, 64, 255, 0.4);
 }
 
 .badge-success {
@@ -639,7 +639,7 @@
   align-items: center;
   justify-content: center;
   background: var(--tt-amber-bg);
-  border: 1px solid rgba(245, 165, 36, 0.4);
+  border: 1px solid rgba(0, 64, 255, 0.4);
   color: var(--tt-amber);
 }
 
@@ -833,8 +833,8 @@
 }
 
 /* Inverted ink hero: paper text */
-.hero-card .hero-route .city { color: var(--tt-bg); }
+.hero-card .hero-route .city { color: #ffffff; }
 .hero-card .hero-eyebrow,
 .hero-card .hero-dates,
-.hero-card .hero-note { color: rgba(244, 239, 228, 0.72); }
-.hero-card .chip { border-color: rgba(244, 239, 228, 0.28); }
+.hero-card .hero-note { color: rgba(255, 255, 255, 0.78); }
+.hero-card .chip { border-color: rgba(255, 255, 255, 0.3); color: #ffffff; }

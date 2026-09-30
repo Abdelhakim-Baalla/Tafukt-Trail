@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(600px 400px at 15% 10%, rgba(245, 165, 36, 0.08), transparent 60%),
+    radial-gradient(600px 400px at 15% 10%, rgba(0, 64, 255, 0.08), transparent 60%),
     var(--tt-bg);
   padding: 32px 16px;
 }
@@ -20,7 +20,7 @@
   border: 1px solid var(--tt-line);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 32px 80px -32px rgba(33, 26, 16, 0.35);
+  box-shadow: 0 32px 80px -32px rgba(0, 0, 0, 0.35);
   animation: fadeSlideIn 220ms ease-out;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .auth-brand {
-  background: linear-gradient(160deg, var(--tt-amber) 0%, #d98a12 60%, #8a5a0c 100%);
+  background: linear-gradient(160deg, #2b5bff 0%, var(--tt-amber) 60%, #001a80 100%);
   color: var(--tt-amber-ink);
   padding: 40px 36px;
   display: flex;

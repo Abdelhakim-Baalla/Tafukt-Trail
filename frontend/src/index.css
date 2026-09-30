@@ -1,4 +1,4 @@
-/* TAFUKT TRAIL - Carnet de bord / logbook token layer (v2, hand-built) */
+/* TAFUKT TELEMETRY base */
 
 * {
   margin: 0;
@@ -7,33 +7,28 @@
 }
 
 :root {
-  /* Logbook paper + ink. Amber reserved for action/active/alerts only. */
-  --tt-bg: #f4efe4;
-  --tt-surface: #fffdf7;
-  --tt-surface2: #ece4d2;
-  --tt-line: #ddd2ba;
-  --tt-text: #211a10;
-  --tt-muted: #7c6f59;
-  --tt-amber: #b45309;
-  --tt-amber-hover: #92400e;
-  --tt-amber-ink: #fffdf7;
-  --tt-amber-soft: rgba(180, 83, 9, 0.1);
-
-  /* Status pills only, AA on paper */
-  --tt-green: #15803d;
-  --tt-green-bg: rgba(21, 128, 61, 0.1);
-  --tt-blue: #1d4ed8;
-  --tt-blue-bg: rgba(29, 78, 216, 0.09);
-  --tt-red: #b91c1c;
-  --tt-red-bg: rgba(185, 28, 28, 0.09);
-  --tt-amber-pill: #92400e;
-  --tt-amber-pill-bg: rgba(180, 83, 9, 0.12);
-
+  --tt-bg: #0b0b0c;
+  --tt-surface: #141416;
+  --tt-surface2: #1c1c1f;
+  --tt-line: rgba(255, 255, 255, 0.09);
+  --tt-text: #f5f5f7;
+  --tt-muted: #a1a1a6;
+  --tt-amber: #0040ff;
+  --tt-amber-hover: #3b63ff;
+  --tt-amber-ink: #ffffff;
+  --tt-amber-soft: rgba(0, 64, 255, 0.14);
+  --tt-green: #34d399;
+  --tt-green-bg: rgba(52, 211, 153, 0.12);
+  --tt-blue: #60a5fa;
+  --tt-blue-bg: rgba(96, 165, 250, 0.12);
+  --tt-red: #f87171;
+  --tt-red-bg: rgba(248, 113, 113, 0.12);
+  --tt-amber-pill: #7aa2ff;
+  --tt-amber-pill-bg: rgba(0, 64, 255, 0.16);
   --tt-radius-card: 18px;
   --tt-radius-input: 12px;
   --tt-radius-btn: 12px;
 
-  /* Emil Kowalski motion tokens */
   --tt-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --tt-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --tt-press: 160ms;
@@ -41,19 +36,19 @@
   --tt-sheet: 320ms;
   --tt-stagger: 60ms;
 
-  /* Back-compat maps (existing admin/chauffeur styles keep working) */
+  /* Back-compat maps */
   --bg-primary: var(--tt-bg);
   --bg-secondary: var(--tt-surface);
   --bg-tertiary: var(--tt-surface2);
   --bg-card: var(--tt-surface);
   --bg-hover: var(--tt-surface2);
-  --bg-input: var(--tt-surface);
+  --bg-input: #101013;
   --border-primary: var(--tt-line);
-  --border-secondary: #cfc2a4;
-  --border-hover: #b8a67f;
+  --border-secondary: #2a2a2e;
+  --border-hover: #3a3a40;
   --text-primary: var(--tt-text);
   --text-secondary: var(--tt-muted);
-  --text-muted: #a29378;
+  --text-muted: #6e6e73;
   --text-inverse: var(--tt-amber-ink);
   --accent-primary: var(--tt-amber);
   --accent-hover: var(--tt-amber-hover);
@@ -65,27 +60,27 @@
   --danger: var(--tt-red);
   --danger-bg: var(--tt-red-bg);
 
-  --white: var(--tt-surface);
-  --black: var(--tt-text);
+  --white: var(--tt-text);
+  --black: var(--tt-bg);
   --gray-50: var(--tt-surface2);
   --gray-100: var(--tt-surface);
   --gray-200: var(--tt-line);
-  --gray-300: #cfc2a4;
-  --gray-400: #a29378;
+  --gray-300: #2a2a2e;
+  --gray-400: #52525b;
   --gray-500: var(--tt-muted);
-  --gray-600: #7c6f59;
-  --gray-700: #4a4132;
-  --gray-800: #2e2718;
+  --gray-600: #a1a1a6;
+  --gray-700: #d4d4d8;
+  --gray-800: #e4e4e7;
   --gray-900: var(--tt-text);
   --blue-50: var(--tt-blue-bg);
   --blue-500: var(--tt-blue);
-  --blue-600: #1e40af;
+  --blue-600: #3b82f6;
   --green-50: var(--tt-green-bg);
   --green-500: var(--tt-green);
-  --green-600: #166534;
+  --green-600: #10b981;
   --red-50: var(--tt-red-bg);
   --red-500: var(--tt-red);
-  --red-600: #991b1b;
+  --red-600: #ef4444;
 }
 
 html {
@@ -94,7 +89,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: var(--tt-bg);
   color: var(--tt-text);
   line-height: 1.6;
@@ -133,15 +128,18 @@ textarea {
   font-size: 1rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+h1, h2 {
+  font-family: "Cabinet Grotesk", -apple-system, "Segoe UI", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
 }
 
-/* Data numerals: tabular, never proportional */
-.num, th, td {
-  font-variant-numeric: tabular-nums;
+h3, h4, h5, h6 {
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 img {
@@ -149,20 +147,22 @@ img {
   display: block;
 }
 
-/* Focus visibility for keyboard users */
+/* Telemetry data: mono, tabular */
+.num, th, td, .card-matricule {
+  font-variant-numeric: tabular-nums;
+}
+
 :focus-visible {
   outline: 2px solid var(--tt-amber);
   outline-offset: 2px;
   border-radius: 6px;
 }
 
-/* Selection */
 ::selection {
   background: var(--tt-amber);
   color: var(--tt-amber-ink);
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -171,19 +171,18 @@ img {
   background: var(--tt-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #c9b992;
+  background: #2b2b30;
   border-radius: 8px;
   border: 2px solid var(--tt-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b3a179;
+  background: #3a3a41;
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c9b992 var(--tt-bg);
+  scrollbar-color: #2b2b30 var(--tt-bg);
 }
 
-/* Shared mount animation: fade + rise, transform/opacity only */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;

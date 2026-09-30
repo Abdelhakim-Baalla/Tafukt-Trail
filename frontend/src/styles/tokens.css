@@ -1,34 +1,35 @@
-/* Tafukt Trail admin design tokens.
-   Source of truth for ADMIN screens. Imported at the top of each
-   admin stylesheet with a relative @import. */
+/* TAFUKT TELEMETRY tokens — industrial dark, electric blue accent.
+   Display: Cabinet Grotesk (condensed uppercase). Data: JetBrains Mono. */
 
 :root {
-  --tt-motion-med: var(--tt-ui);
-  --tt-ease: var(--tt-ease-out);
-  --tt-radius-pill: 999px;
-  --tt-bg: #f4efe4;
-  --tt-surface: #fffdf7;
-  --tt-surface2: #ece4d2;
-  --tt-line: #ddd2ba;
-  --tt-text: #211a10;
-  --tt-muted: #7c6f59;
-  --tt-amber: #b45309;
-  --tt-amber-hover: #92400e;
-  --tt-amber-ink: #fffdf7;
-  --tt-amber-soft: rgba(180, 83, 9, 0.1);
-  --tt-green: #15803d;
-  --tt-green-bg: rgba(21, 128, 61, 0.1);
-  --tt-blue: #1d4ed8;
-  --tt-blue-bg: rgba(29, 78, 216, 0.09);
-  --tt-red: #b91c1c;
-  --tt-red-bg: rgba(185, 28, 28, 0.09);
+  --tt-bg: #0b0b0c;
+  --tt-surface: #141416;
+  --tt-surface2: #1c1c1f;
+  --tt-line: rgba(255, 255, 255, 0.09);
+  --tt-text: #f5f5f7;
+  --tt-muted: #a1a1a6;
+  --tt-amber: #0040ff;
+  --tt-amber-hover: #3b63ff;
+  --tt-amber-ink: #ffffff;
+  --tt-amber-soft: rgba(0, 64, 255, 0.14);
+  --tt-green: #34d399;
+  --tt-green-bg: rgba(52, 211, 153, 0.12);
+  --tt-blue: #60a5fa;
+  --tt-blue-bg: rgba(96, 165, 250, 0.12);
+  --tt-red: #f87171;
+  --tt-red-bg: rgba(248, 113, 113, 0.12);
+  --tt-amber-pill: #7aa2ff;
+  --tt-amber-pill-bg: rgba(0, 64, 255, 0.16);
   --tt-radius-card: 18px;
   --tt-radius-control: 12px;
-  --tt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
+  --tt-radius-pill: 999px;
+  --tt-font-display: "Cabinet Grotesk", -apple-system, "Segoe UI", sans-serif;
+  --tt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --tt-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-/* Emil Kowalski motion tokens */
-:root {
+  /* Emil Kowalski motion tokens */
+  --tt-motion-med: 240ms;
+  --tt-ease: cubic-bezier(0.23, 1, 0.32, 1);
   --tt-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --tt-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --tt-press: 160ms;
@@ -37,11 +38,19 @@
   --tt-stagger: 60ms;
 }
 
-/* Shared mount animation for admin cards and sheets */
+/* Display headlines: condensed uppercase, tight */
+h1, h2 {
+  font-family: var(--tt-font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+/* Shared mount animation: fade + rise, transform/opacity only */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -49,15 +58,14 @@
   }
 }
 
-/* Shared modal entrance: scale from .96 plus fade */
-@keyframes ttSheetIn {
+@keyframes tt-fade-slide-in {
   from {
     opacity: 0;
-    transform: scale(0.96) translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
   }
 }
 
