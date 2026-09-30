@@ -1,50 +1,105 @@
-/* TAFUKT TELEMETRY tokens — industrial dark, electric blue accent.
-   Display: Cabinet Grotesk (condensed uppercase). Data: JetBrains Mono. */
+/* TAFUKT CIKETO tokens — paper/ink/safety-orange, sharp geometry.
+   Pills reserved for navbar + badges. */
 
 :root {
-  --tt-bg: #0b0b0c;
-  --tt-surface: #141416;
-  --tt-surface2: #1c1c1f;
-  --tt-line: rgba(255, 255, 255, 0.09);
-  --tt-text: #f5f5f7;
-  --tt-muted: #a1a1a6;
-  --tt-amber: #0040ff;
-  --tt-amber-hover: #3b63ff;
+  --tt-bg: #f6f4ef;
+  --tt-surface: #ffffff;
+  --tt-surface2: #efeae0;
+  --tt-line: #e3dccd;
+  --tt-text: #141414;
+  --tt-muted: #6f6a5e;
+  --tt-amber: #ff4d00;
+  --tt-amber-hover: #d63e00;
   --tt-amber-ink: #ffffff;
-  --tt-amber-soft: rgba(0, 64, 255, 0.14);
-  --tt-green: #34d399;
-  --tt-green-bg: rgba(52, 211, 153, 0.12);
-  --tt-blue: #60a5fa;
-  --tt-blue-bg: rgba(96, 165, 250, 0.12);
-  --tt-red: #f87171;
-  --tt-red-bg: rgba(248, 113, 113, 0.12);
-  --tt-amber-pill: #7aa2ff;
-  --tt-amber-pill-bg: rgba(0, 64, 255, 0.16);
-  --tt-radius-card: 18px;
-  --tt-radius-control: 12px;
+  --tt-amber-soft: rgba(255, 77, 0, 0.09);
+  --tt-green: #1e7d46;
+  --tt-green-bg: rgba(30, 125, 70, 0.1);
+  --tt-blue: #1d4ed8;
+  --tt-blue-bg: rgba(29, 78, 216, 0.09);
+  --tt-red: #c22a1c;
+  --tt-red-bg: rgba(194, 42, 28, 0.09);
+  --tt-amber-pill: #d63e00;
+  --tt-amber-pill-bg: rgba(255, 77, 0, 0.1);
+  --tt-radius-card: 6px;
+  --tt-radius-control: 3px;
   --tt-radius-pill: 999px;
-  --tt-font-display: "Cabinet Grotesk", -apple-system, "Segoe UI", sans-serif;
-  --tt-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --tt-font-display: "Archivo", -apple-system, "Segoe UI", sans-serif;
+  --tt-font: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   --tt-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Emil Kowalski motion tokens */
   --tt-motion-med: 240ms;
   --tt-ease: cubic-bezier(0.23, 1, 0.32, 1);
   --tt-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --tt-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --tt-ease-in-out: cubic-bezier(0.44, 0, 0.56, 1);
   --tt-press: 160ms;
   --tt-ui: 240ms;
   --tt-sheet: 320ms;
   --tt-stagger: 60ms;
 }
 
-/* Display headlines: condensed uppercase, tight */
-h1, h2 {
-  font-family: var(--tt-font-display);
+/* Eyebrow label: orange square + caps (Ciketo signature) */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
-  line-height: 1.05;
+  color: var(--tt-muted);
 }
+
+.eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--tt-amber);
+  flex-shrink: 0;
+}
+
+/* Split button: rectangular label + square arrow box */
+.btn-split {
+  display: inline-flex;
+  align-items: stretch;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.btn-split .btn-split-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 22px;
+  height: 52px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--tt-amber);
+  color: #fff;
+  transition: background var(--tt-ui) var(--tt-ease-out);
+}
+
+.btn-split:hover .btn-split-label { background: var(--tt-amber-hover); }
+
+.btn-split .btn-split-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: var(--tt-amber);
+  color: #fff;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+  transition: background var(--tt-ui) var(--tt-ease-out);
+}
+
+.btn-split:hover .btn-split-arrow { background: var(--tt-amber-hover); }
+
+.btn-split.dark .btn-split-label,
+.btn-split.dark .btn-split-arrow { background: #141414; }
+
+.btn-split.dark:hover .btn-split-label,
+.btn-split.dark:hover .btn-split-arrow { background: #000; }
 
 /* Shared mount animation: fade + rise, transform/opacity only */
 @keyframes fadeSlideIn {

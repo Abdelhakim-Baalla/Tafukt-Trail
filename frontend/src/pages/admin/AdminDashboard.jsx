@@ -85,42 +85,45 @@ const AdminDashboard = () => {
   return (
     <div className="dash">
       <section className="hero">
-        <div className="hero-top">
-          <div>
-            <p className="hero-kicker">Supervision flotte — {today}</p>
-            <h1 className="hero-title">
-              La flotte,
-              <br />
-              pilotée.
-            </h1>
-          </div>
-          <div className="quick-actions">
-            <button className="hero-btn hero-btn-solid" onClick={() => navigate('/admin/trajets')}>
-              {Icons.plus} <span>Nouveau trajet</span>
+        <div className="hero-photo" aria-hidden="true" />
+        <div className="hero-tags">
+          <span className="hero-tag">{trajetsEnCours} en route</span>
+          <span className="hero-tag">Réseau optimal</span>
+        </div>
+        <div className="hero-content">
+          <p className="hero-kicker">Supervision flotte — {today}</p>
+          <h1 className="hero-title">
+            La flotte,
+            <br />
+            pilotée.
+          </h1>
+          <p className="hero-sub">
+            Camions, trajets, carburant et maintenance suivis en temps réel,
+            au même endroit.
+          </p>
+          <div className="hero-ctas">
+            <button className="btn-split" onClick={() => navigate('/admin/trajets')}>
+              <span className="btn-split-label">Nouveau trajet</span>
+              <span className="btn-split-arrow">{Icons.arrow}</span>
             </button>
-            <button className="hero-btn hero-btn-ghost" onClick={() => navigate('/admin/camions')}>
-              {Icons.plus} <span>Ajouter camion</span>
+            <button className="btn-split dark" onClick={() => navigate('/admin/camions')}>
+              <span className="btn-split-label">Ajouter camion</span>
+              <span className="btn-split-arrow">{Icons.arrow}</span>
             </button>
           </div>
         </div>
-        <dl className="spec-strip">
-          <div className="spec">
-            <dt>En route</dt>
-            <dd>{trajetsEnCours}</dd>
+        <div className="hero-stat-card">
+          <div className="hero-stat-main">
+            <span className="hero-stat-value">{camions.total}</span>
+            <span className="hero-stat-label">Camions au parc</span>
+            <span className="hero-stat-sub">{camions.disponibles} disponibles aujourd'hui</span>
           </div>
-          <div className="spec">
-            <dt>Camions dispo</dt>
-            <dd>{camions.disponibles}/{camions.total}</dd>
+          <div className="hero-stat-side">
+            <span className="hero-stat-label">Trajets suivis</span>
+            <span className="hero-stat-value sm">{trajetsTotal}</span>
+            <span className="hero-stat-sub">{trajetsTermines} terminés • {trajetsEnCours} en cours</span>
           </div>
-          <div className="spec">
-            <dt>Carburant</dt>
-            <dd>{stats.carburant.totalLitres} L</dd>
-          </div>
-          <div className="spec">
-            <dt>Statut réseau</dt>
-            <dd className="spec-ok">Optimal</dd>
-          </div>
-        </dl>
+        </div>
       </section>
 
       <div className="number-cards">

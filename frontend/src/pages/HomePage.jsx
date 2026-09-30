@@ -33,22 +33,31 @@ const HomePage = () => {
 
             <div className="hero__cta">
               {isAuthenticated() ? (
-                <Link to={isAdmin ? '/admin' : '/chauffeur'} className="btn btn--glow btn--lg">
-                  <span>Accéder au Dashboard</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
+                <Link to={isAdmin ? '/admin' : '/chauffeur'} className="btn-split">
+                  <span className="btn-split-label">Accéder au Dashboard</span>
+                  <span className="btn-split-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </span>
                 </Link>
               ) : (
                 <>
-                  <Link to="/register" className="btn btn--glow btn--lg">
-                    <span>Démarrer maintenant</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+                  <Link to="/register" className="btn-split">
+                    <span className="btn-split-label">Démarrer maintenant</span>
+                    <span className="btn-split-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </span>
                   </Link>
-                  <Link to="/login" className="btn btn--ghost btn--lg">
-                    <span>Connexion</span>
+                  <Link to="/login" className="btn-split dark">
+                    <span className="btn-split-label">Connexion</span>
+                    <span className="btn-split-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </span>
                   </Link>
                 </>
               )}

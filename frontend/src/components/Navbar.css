@@ -1,23 +1,29 @@
-/* Navbar - logbook paper bar */
+/* Navbar - floating white pill (Ciketo) */
 
 .nav {
   position: sticky;
-  top: 0;
+  top: 12px;
   z-index: 100;
-  background: rgba(11, 11, 12, 0.82);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--tt-line);
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  background: transparent;
+  border: none;
 }
 
 .nav-inner {
-  max-width: 1280px;
+  width: 100%;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 0 24px;
-  min-height: 64px;
+  padding: 8px 8px 8px 20px;
+  min-height: 60px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-line);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(20, 20, 20, 0.1);
 }
 
 .nav-logo {
@@ -26,19 +32,18 @@
   gap: 10px;
   font-weight: 800;
   font-size: 16px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   color: var(--tt-text);
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .nav-logo img {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   object-fit: cover;
   border-radius: 50%;
-  border: 1px solid var(--tt-line);
-  background: var(--tt-surface);
+  background: var(--tt-surface2);
 }
 
 .nav-logo-text {
@@ -53,7 +58,7 @@
   justify-content: center;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 8px 4px;
+  padding: 4px;
 }
 
 .nav-links::-webkit-scrollbar {
@@ -61,33 +66,30 @@
 }
 
 .nav-link {
-  padding: 8px 14px;
-  font-size: 14px;
+  padding: 9px 16px;
+  font-size: 13.5px;
   font-weight: 500;
-  color: var(--tt-muted);
+  color: var(--tt-text);
   border-radius: 999px;
   transition: color var(--tt-ui) var(--tt-ease-out), background var(--tt-ui) var(--tt-ease-out);
   white-space: nowrap;
   flex-shrink: 0;
-  position: relative;
 }
 
 .nav-link:hover {
-  color: var(--tt-text);
   background: var(--tt-surface2);
 }
 
 .nav-link.active {
-  color: var(--tt-text);
-  font-weight: 700;
-  background: var(--tt-surface);
-  box-shadow: inset 0 -2px 0 var(--tt-amber);
+  color: #fff;
+  font-weight: 600;
+  background: var(--tt-amber);
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -99,7 +101,7 @@
   padding: 4px 12px 4px 4px;
   border: 1px solid var(--tt-line);
   border-radius: 999px;
-  background: var(--tt-surface);
+  background: var(--tt-bg);
   max-width: 240px;
 }
 
@@ -115,7 +117,6 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
 }
 
 .nav-user-meta {
@@ -148,10 +149,10 @@
 }
 
 .nav-btn {
-  padding: 9px 16px;
+  padding: 10px 20px;
   font-size: 13px;
   font-weight: 600;
-  border-radius: var(--tt-radius-btn);
+  border-radius: 999px;
   transition: background var(--tt-ui) var(--tt-ease-out), transform var(--tt-press) var(--tt-ease-out);
   text-decoration: none;
   cursor: pointer;
@@ -159,13 +160,14 @@
 }
 
 .nav-btn-primary {
-  color: var(--tt-bg);
-  background: var(--tt-text);
-  border: 1px solid var(--tt-text);
+  color: #fff;
+  background: var(--tt-amber);
+  border: 1px solid var(--tt-amber);
 }
 
 .nav-btn-primary:hover {
-  transform: translateY(-1px);
+  background: var(--tt-amber-hover);
+  border-color: var(--tt-amber-hover);
 }
 
 .nav-btn-secondary {
@@ -191,8 +193,9 @@
 @media (max-width: 900px) {
   .nav-inner {
     flex-wrap: wrap;
+    border-radius: 20px;
     gap: 0;
-    padding: 10px 16px;
+    padding: 10px 14px;
     row-gap: 8px;
   }
 
@@ -200,7 +203,7 @@
     order: 3;
     flex-basis: 100%;
     justify-content: flex-start;
-    padding: 4px 0 6px;
+    padding: 4px 0;
   }
 
   .nav-user-name {
@@ -209,9 +212,5 @@
 
   .nav-user-chip {
     padding: 4px;
-  }
-
-  .nav-logo-text {
-    font-size: 15px;
   }
 }
