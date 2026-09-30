@@ -119,6 +119,7 @@ const TrajetsList = () => {
     <main className="chauffeur-page">
       <header className="chauffeur-header">
         <div>
+          <p className="eyebrow" style={{ marginBottom: 8 }}>Espace chauffeur — trajets</p>
           <h1 className="chauffeur-title">Mes trajets</h1>
           <p className="chauffeur-subtitle">Visualisez et gérez vos trajets</p>
         </div>

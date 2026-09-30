@@ -247,7 +247,7 @@
 .stat-blue::before { background: var(--tt-blue); }
 .stat-green::before { background: var(--tt-green); }
 .stat-orange::before { background: var(--tt-amber); }
-.stat-purple::before { background: #a78bfa; }
+.stat-purple::before { background: var(--tt-text); }
 
 .stat-icon {
   width: 40px;
@@ -266,7 +266,7 @@
 .stat-blue .stat-icon { background: var(--tt-blue-bg); color: var(--tt-blue); }
 .stat-green .stat-icon { background: var(--tt-green-bg); color: var(--tt-green); }
 .stat-orange .stat-icon { background: var(--tt-amber-soft); color: var(--tt-amber); }
-.stat-purple .stat-icon { background: rgba(167, 139, 250, 0.14); color: #a78bfa; }
+.stat-purple .stat-icon { background: var(--tt-surface2); color: var(--tt-text); }
 
 .stat-content {
   display: flex;
@@ -648,7 +648,7 @@
   border-radius: var(--tt-radius-control);
   padding: 1rem;
   text-align: center;
-  border: 1px solid rgba(0, 64, 255, 0.25);
+  border: 1px solid var(--tt-line);
   transition: transform 200ms ease-out;
 }
 
@@ -752,10 +752,10 @@
 .btn-pdf {
   background: var(--tt-amber-soft);
   color: var(--tt-amber);
-  border: 1px solid rgba(0, 64, 255, 0.3);
+  border: 1px solid var(--tt-line);
 }
 
-.btn-pdf:hover { background: rgba(0, 64, 255, 0.25); }
+.btn-pdf:hover { background: var(--tt-surface2); }
 
 .data-table th:last-child,
 .data-table td:last-child {

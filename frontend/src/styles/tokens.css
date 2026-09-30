@@ -21,6 +21,11 @@
   --tt-amber-pill: #d63e00;
   --tt-amber-pill-bg: rgba(255, 77, 0, 0.1);
 
+  /* Aliases used by chauffeur/carburant pages (back-compat) */
+  --tt-amber-bg: var(--tt-amber-soft);
+  --tt-motion-fast: 160ms;
+  --tt-shadow-lift: 0 10px 28px rgba(20, 20, 20, 0.12);
+
   --tt-radius-card: 6px;
   --tt-radius-control: 3px;
   --tt-radius-pill: 999px;

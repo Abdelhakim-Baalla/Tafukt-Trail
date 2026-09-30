@@ -125,6 +125,7 @@ const CarburantList = () => {
     <main className="chauffeur-page">
       <header className="chauffeur-header">
         <div>
+          <p className="eyebrow" style={{ marginBottom: 8 }}>Espace chauffeur — carburant</p>
           <h1 className="chauffeur-title">Suivi carburant</h1>
           <p className="chauffeur-subtitle">Historique et saisie des pleins</p>
         </div>
@@ -143,6 +144,7 @@ const CarburantList = () => {
 
       <section className="carburant-hero" aria-label="Ajout rapide">
         <div>
+          <p className="eyebrow" style={{ marginBottom: 8 }}>Saisie rapide</p>
           <h2 className="carburant-hero-title">Un plein à déclarer</h2>
           <p className="carburant-hero-text">Saisie rapide pensée pour le bord de piste. Cela prend moins d une minute.</p>
         </div>

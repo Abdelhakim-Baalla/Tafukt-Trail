@@ -7,11 +7,14 @@
   background: var(--tt-bg);
   color: var(--tt-text);
   font-family: var(--tt-font);
-  padding: 1.5rem;
+  padding: 1.5rem 0;
+  max-width: var(--tt-container);
+  margin: 0 auto;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
-  .dash { padding: 2rem 2.5rem; }
+  .dash { padding: 2rem 0 2.5rem; }
 }
 
 .dash-loading {
@@ -277,6 +280,11 @@
   flex-direction: column;
   gap: 6px;
   animation: fadeSlideIn var(--tt-ui) var(--tt-ease-out) both;
+  transition: transform var(--tt-ui) var(--tt-ease-out), border-color var(--tt-ui) var(--tt-ease-out);
+}
+.number-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
 }
 .number-card:nth-child(2) { animation-delay: 60ms; }
 .number-card:nth-child(3) { animation-delay: 120ms; }

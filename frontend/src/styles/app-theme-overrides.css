@@ -29,10 +29,10 @@
 .btn-primary,
 .page-btn,
 .modal-btn-primary {
-  background: var(--tt-text) !important;
+  background: var(--tt-amber) !important;
   color: #fff !important;
   border-radius: var(--tt-radius-control) !important;
-  border: none !important;
+  border: 1px solid var(--tt-amber) !important;
 }
 
 .action-btn.action-secondary,

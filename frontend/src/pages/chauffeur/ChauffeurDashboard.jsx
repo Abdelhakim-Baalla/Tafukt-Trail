@@ -147,6 +147,7 @@ const ChauffeurDashboard = () => {
     <main className="chauffeur-page">
       <header className="chauffeur-header">
         <div>
+          <p className="eyebrow" style={{ marginBottom: 8 }}>Espace chauffeur — missions</p>
           <h1 className="chauffeur-title">Bonjour, {user?.nom || 'Chauffeur'}</h1>
           <p className="chauffeur-subtitle">Vos missions connectées</p>
         </div>
@@ -160,6 +161,7 @@ const ChauffeurDashboard = () => {
 
       {nextMission ? (
         <section className="hero-card" aria-label="Prochaine mission">
+          <div className="hero-photo" aria-hidden="true" />
           <div className="hero-eyebrow">
             <span>{nextMission.statut === 'EN_COURS' ? 'Mission en cours' : nextMission.statut === 'TERMINE' ? 'Dernière mission' : 'Prochaine mission'}</span>
             <span className={`status-badge ${getStatusBadgeClass(nextMission.statut)}`}>
@@ -206,6 +208,7 @@ const ChauffeurDashboard = () => {
         </section>
       ) : (
         <section className="hero-card">
+          <div className="hero-photo" aria-hidden="true" />
           <div className="empty-state">
             <div className="empty-icon-well" aria-hidden="true"><MapIcon /></div>
             <p className="empty-title">Aucune mission pour le moment</p>
