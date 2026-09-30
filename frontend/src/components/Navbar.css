@@ -1,10 +1,10 @@
-/* Navbar - Desert ops at night */
+/* Navbar - logbook paper bar */
 
 .nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(13, 15, 18, 0.82);
+  background: rgba(244, 239, 228, 0.88);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--tt-line);
@@ -24,8 +24,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
+  letter-spacing: -0.02em;
   color: var(--tt-text);
   text-decoration: none;
   flex-shrink: 0;
@@ -35,19 +36,19 @@
   width: 36px;
   height: 36px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 1px solid var(--tt-line);
+  background: var(--tt-surface);
 }
 
 .nav-logo-text {
-  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
   justify-content: center;
   overflow-x: auto;
@@ -65,9 +66,10 @@
   font-weight: 500;
   color: var(--tt-muted);
   border-radius: 999px;
-  transition: color 180ms ease-out, background 180ms ease-out;
+  transition: color var(--tt-ui) var(--tt-ease-out), background var(--tt-ui) var(--tt-ease-out);
   white-space: nowrap;
   flex-shrink: 0;
+  position: relative;
 }
 
 .nav-link:hover {
@@ -76,8 +78,10 @@
 }
 
 .nav-link.active {
-  color: var(--tt-amber);
-  background: var(--tt-amber-soft);
+  color: var(--tt-text);
+  font-weight: 700;
+  background: var(--tt-surface);
+  box-shadow: inset 0 -2px 0 var(--tt-amber);
 }
 
 .nav-actions {
@@ -103,8 +107,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--tt-amber);
-  color: var(--tt-amber-ink);
+  background: var(--tt-text);
+  color: var(--tt-bg);
   font-size: 12px;
   font-weight: 700;
   display: flex;
@@ -133,7 +137,7 @@
 
 .nav-role-tag {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--tt-amber);
   background: var(--tt-amber-soft);
   padding: 3px 8px;
@@ -148,21 +152,19 @@
   font-size: 13px;
   font-weight: 600;
   border-radius: var(--tt-radius-btn);
-  transition: background 180ms ease-out, color 180ms ease-out, border-color 180ms ease-out, transform 180ms ease-out;
+  transition: background var(--tt-ui) var(--tt-ease-out), transform var(--tt-press) var(--tt-ease-out);
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .nav-btn-primary {
-  color: var(--tt-amber-ink);
-  background: var(--tt-amber);
-  border: 1px solid var(--tt-amber);
+  color: var(--tt-bg);
+  background: var(--tt-text);
+  border: 1px solid var(--tt-text);
 }
 
 .nav-btn-primary:hover {
-  background: var(--tt-amber-hover);
-  border-color: var(--tt-amber-hover);
   transform: translateY(-1px);
 }
 
@@ -174,7 +176,6 @@
 
 .nav-btn-secondary:hover {
   background: var(--tt-surface2);
-  border-color: #333b47;
 }
 
 .nav-btn-logout {
@@ -185,7 +186,6 @@
 
 .nav-btn-logout:hover {
   background: var(--tt-red-bg);
-  border-color: rgba(248, 113, 113, 0.35);
 }
 
 @media (max-width: 900px) {

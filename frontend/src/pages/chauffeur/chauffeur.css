@@ -88,12 +88,13 @@
 /* Next mission hero */
 
 .hero-card {
-  background: linear-gradient(180deg, var(--tt-surface2), var(--tt-surface));
-  border: 1px solid var(--tt-line);
-  border-radius: var(--tt-radius-card);
-  padding: 20px;
+  background: var(--tt-text);
+  color: var(--tt-bg);
+  border: 1px solid var(--tt-text);
+  border-radius: 22px;
+  padding: 22px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 14px 34px rgba(33, 26, 16, 0.22);
   animation: tt-fade-slide-in var(--tt-motion-med) var(--tt-ease) both;
 }
 
@@ -153,14 +154,14 @@
   min-height: 36px;
   border-radius: var(--tt-radius-pill);
   border: 1px solid var(--tt-line);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--tt-text);
+  background: transparent;
+  color: inherit;
   font-size: 13px;
   font-weight: 600;
 }
 
 .chip.chip-amber {
-  border-color: rgba(245, 165, 36, 0.45);
+  border-color: var(--tt-amber);
   background: var(--tt-amber-bg);
   color: var(--tt-amber);
 }
@@ -830,3 +831,10 @@
     transform: none;
   }
 }
+
+/* Inverted ink hero: paper text */
+.hero-card .hero-route .city { color: var(--tt-bg); }
+.hero-card .hero-eyebrow,
+.hero-card .hero-dates,
+.hero-card .hero-note { color: rgba(244, 239, 228, 0.72); }
+.hero-card .chip { border-color: rgba(244, 239, 228, 0.28); }

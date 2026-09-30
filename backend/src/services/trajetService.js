@@ -202,6 +202,8 @@ class TrajetService {
                 throw new AppError('Kilometrage arrivee non fourni!', 400);
             } else if (kilometrageFinal <= trajet.kilometrageDepart) {
                 throw new AppError('Kilometrage arrivee inferieur ou egale au kilometrage depart!', 400);
+            } else if (kilometrageFinal - trajet.kilometrageDepart > 50000) {
+                throw new AppError('Kilometrage arrivee incoherent (ecart superieur a 50 000 km)!', 400);
             }
         }
 

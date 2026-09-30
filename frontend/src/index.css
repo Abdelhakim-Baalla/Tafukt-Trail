@@ -1,4 +1,4 @@
-/* TAFUKT TRAIL - Desert ops at night / token layer */
+/* TAFUKT TRAIL - Carnet de bord / logbook token layer (v2, hand-built) */
 
 * {
   margin: 0;
@@ -7,31 +7,39 @@
 }
 
 :root {
-  /* Primary tokens */
-  --tt-bg: #0d0f12;
-  --tt-surface: #14171c;
-  --tt-surface2: #1b2027;
-  --tt-line: #262c35;
-  --tt-text: #f2f4f7;
-  --tt-muted: #9aa3af;
-  --tt-amber: #f5a524;
-  --tt-amber-hover: #ffbe45;
-  --tt-amber-ink: #1a1206;
-  --tt-amber-soft: rgba(245, 165, 36, 0.14);
+  /* Logbook paper + ink. Amber reserved for action/active/alerts only. */
+  --tt-bg: #f4efe4;
+  --tt-surface: #fffdf7;
+  --tt-surface2: #ece4d2;
+  --tt-line: #ddd2ba;
+  --tt-text: #211a10;
+  --tt-muted: #7c6f59;
+  --tt-amber: #b45309;
+  --tt-amber-hover: #92400e;
+  --tt-amber-ink: #fffdf7;
+  --tt-amber-soft: rgba(180, 83, 9, 0.1);
 
-  /* Status pills only */
-  --tt-green: #34d399;
-  --tt-green-bg: rgba(52, 211, 153, 0.12);
-  --tt-blue: #60a5fa;
-  --tt-blue-bg: rgba(96, 165, 250, 0.12);
-  --tt-red: #f87171;
-  --tt-red-bg: rgba(248, 113, 113, 0.12);
-  --tt-amber-pill: #fbbf24;
-  --tt-amber-pill-bg: rgba(251, 191, 36, 0.14);
+  /* Status pills only, AA on paper */
+  --tt-green: #15803d;
+  --tt-green-bg: rgba(21, 128, 61, 0.1);
+  --tt-blue: #1d4ed8;
+  --tt-blue-bg: rgba(29, 78, 216, 0.09);
+  --tt-red: #b91c1c;
+  --tt-red-bg: rgba(185, 28, 28, 0.09);
+  --tt-amber-pill: #92400e;
+  --tt-amber-pill-bg: rgba(180, 83, 9, 0.12);
 
-  --tt-radius-card: 16px;
+  --tt-radius-card: 18px;
   --tt-radius-input: 12px;
   --tt-radius-btn: 12px;
+
+  /* Emil Kowalski motion tokens */
+  --tt-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --tt-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --tt-press: 160ms;
+  --tt-ui: 240ms;
+  --tt-sheet: 320ms;
+  --tt-stagger: 60ms;
 
   /* Back-compat maps (existing admin/chauffeur styles keep working) */
   --bg-primary: var(--tt-bg);
@@ -39,13 +47,13 @@
   --bg-tertiary: var(--tt-surface2);
   --bg-card: var(--tt-surface);
   --bg-hover: var(--tt-surface2);
-  --bg-input: #10131a;
+  --bg-input: var(--tt-surface);
   --border-primary: var(--tt-line);
-  --border-secondary: #333b47;
-  --border-hover: #3f4754;
+  --border-secondary: #cfc2a4;
+  --border-hover: #b8a67f;
   --text-primary: var(--tt-text);
   --text-secondary: var(--tt-muted);
-  --text-muted: #6b7280;
+  --text-muted: #a29378;
   --text-inverse: var(--tt-amber-ink);
   --accent-primary: var(--tt-amber);
   --accent-hover: var(--tt-amber-hover);
@@ -57,27 +65,27 @@
   --danger: var(--tt-red);
   --danger-bg: var(--tt-red-bg);
 
-  --white: var(--tt-text);
-  --black: var(--tt-bg);
+  --white: var(--tt-surface);
+  --black: var(--tt-text);
   --gray-50: var(--tt-surface2);
   --gray-100: var(--tt-surface);
   --gray-200: var(--tt-line);
-  --gray-300: #333b47;
-  --gray-400: #4b5563;
+  --gray-300: #cfc2a4;
+  --gray-400: #a29378;
   --gray-500: var(--tt-muted);
-  --gray-600: #9aa3af;
-  --gray-700: #d1d5db;
-  --gray-800: #e5e7eb;
+  --gray-600: #7c6f59;
+  --gray-700: #4a4132;
+  --gray-800: #2e2718;
   --gray-900: var(--tt-text);
   --blue-50: var(--tt-blue-bg);
   --blue-500: var(--tt-blue);
-  --blue-600: #3b82f6;
+  --blue-600: #1e40af;
   --green-50: var(--tt-green-bg);
   --green-500: var(--tt-green);
-  --green-600: #10b981;
+  --green-600: #166534;
   --red-50: var(--tt-red-bg);
   --red-500: var(--tt-red);
-  --red-600: #ef4444;
+  --red-600: #991b1b;
 }
 
 html {
@@ -113,6 +121,10 @@ button {
   background: none;
   color: inherit;
 }
+button:active {
+  transform: scale(0.97);
+  transition: transform var(--tt-press) var(--tt-ease-out);
+}
 
 input,
 select,
@@ -122,9 +134,14 @@ textarea {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 650;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Data numerals: tabular, never proportional */
+.num, th, td {
+  font-variant-numeric: tabular-nums;
 }
 
 img {
@@ -154,19 +171,19 @@ img {
   background: var(--tt-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #2b323d;
+  background: #c9b992;
   border-radius: 8px;
   border: 2px solid var(--tt-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a4350;
+  background: #b3a179;
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2b323d var(--tt-bg);
+  scrollbar-color: #c9b992 var(--tt-bg);
 }
 
-/* Shared mount animation for dashboard cards */
+/* Shared mount animation: fade + rise, transform/opacity only */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;

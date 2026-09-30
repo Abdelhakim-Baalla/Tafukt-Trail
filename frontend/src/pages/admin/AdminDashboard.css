@@ -45,7 +45,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  animation: fadeSlideIn 200ms ease-out both;
+  animation: fadeSlideIn var(--tt-ui) var(--tt-ease-out) both;
 }
 
 @media (min-width: 768px) {
@@ -86,28 +86,26 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.5rem 0.875rem;
+  padding: 0.625rem 1rem;
   font-size: 0.8125rem;
   font-weight: 600;
   border-radius: var(--tt-radius-control);
   border: none;
   cursor: pointer;
-  transition: background 200ms ease-out, transform 200ms ease-out;
+  transition: background var(--tt-ui) var(--tt-ease-out), transform var(--tt-press) var(--tt-ease-out);
+  background: var(--tt-text);
+  color: var(--tt-bg);
+}
+
+.action-btn:hover { transform: translateY(-1px); }
+
+.action-btn.action-secondary {
   background: var(--tt-amber);
   color: var(--tt-amber-ink);
 }
 
-.action-btn:hover { background: var(--tt-amber-hover); }
-
-.action-btn.action-secondary {
-  background: var(--tt-surface);
-  color: var(--tt-text);
-  border: 1px solid var(--tt-line);
-}
-
 .action-btn.action-secondary:hover {
-  background: var(--tt-surface2);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: var(--tt-amber-hover);
 }
 
 .action-btn span { display: none; }
@@ -116,58 +114,41 @@
   .action-btn span { display: inline; }
 }
 
-/* KPI cards */
+/* KPI ledger: one ruled strip, giant tabular numerals, no boxes */
 .metrics {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-line);
+  border-radius: var(--tt-radius-card);
   margin-bottom: 1rem;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .metrics {
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
     margin-bottom: 1.5rem;
   }
 }
 
 .metric {
-  background: var(--tt-surface);
-  border: 1px solid var(--tt-line);
-  border-radius: var(--tt-radius-card);
-  padding: 1rem;
+  padding: 1.1rem 1.25rem;
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  transition: transform 200ms ease-out, border-color 200ms ease-out;
-  animation: fadeSlideIn 220ms ease-out both;
+  flex-direction: column;
+  gap: 0.15rem;
+  border-left: 1px solid var(--tt-line);
+  border-top: 1px solid var(--tt-line);
+  margin-left: -1px;
+  margin-top: -1px;
+  animation: fadeSlideIn var(--tt-ui) var(--tt-ease-out) both;
 }
 
-.metric:nth-child(2) { animation-delay: 40ms; }
-.metric:nth-child(3) { animation-delay: 80ms; }
-.metric:nth-child(4) { animation-delay: 120ms; }
+.metric:nth-child(2) { animation-delay: 60ms; }
+.metric:nth-child(3) { animation-delay: 120ms; }
+.metric:nth-child(4) { animation-delay: 180ms; }
 
-.metric:hover {
-  transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-@media (min-width: 768px) {
-  .metric { padding: 1.25rem; gap: 1rem; }
-}
-
-.metric-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--tt-amber-soft);
-  color: var(--tt-amber);
-  border-radius: var(--tt-radius-control);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+.metric-icon { display: none; }
 
 .metric-content {
   display: flex;
@@ -176,34 +157,39 @@
 }
 
 .metric-value {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   color: var(--tt-text);
   line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (min-width: 768px) {
-  .metric-value { font-size: 1.75rem; }
+  .metric-value { font-size: 2.75rem; }
 }
 
 .metric-label {
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.6875rem;
+  font-weight: 700;
   color: var(--tt-muted);
-  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.4rem;
 }
 
 .metric-sub {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: var(--tt-muted);
   margin-top: 0.125rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .metric-delta {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  margin-top: 0.375rem;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
   font-size: 0.6875rem;
   font-weight: 600;
   color: var(--tt-green);
@@ -220,10 +206,6 @@
 
 .metric-delta.is-warn { color: var(--tt-amber); }
 .metric-delta.is-info { color: var(--tt-blue); }
-
-@media (min-width: 768px) {
-  .metric-sub { font-size: 0.75rem; }
-}
 
 /* Sections */
 .sections {
@@ -246,7 +228,7 @@
   border: 1px solid var(--tt-line);
   border-radius: var(--tt-radius-card);
   padding: 1.25rem;
-  animation: fadeSlideIn 220ms ease-out both;
+  animation: fadeSlideIn var(--tt-ui) var(--tt-ease-out) both;
 }
 
 @media (min-width: 768px) {
@@ -343,7 +325,7 @@
 .bar-fill {
   height: 100%;
   border-radius: 999px;
-  transition: width 250ms ease-out;
+  transition: width var(--tt-ui) var(--tt-ease-out);
 }
 
 .bar-green { background: var(--tt-green); }
@@ -367,7 +349,7 @@
   padding: 0.75rem;
   border-radius: var(--tt-radius-control);
   text-align: center;
-  transition: transform 200ms ease-out;
+  transition: transform var(--tt-ui) var(--tt-ease-out);
 }
 
 .data-box:hover { transform: translateY(-1px); }
@@ -513,7 +495,7 @@
   background: var(--tt-surface2);
   border-radius: var(--tt-radius-control);
   border: 1px solid var(--tt-line);
-  transition: transform 200ms ease-out;
+  transition: transform var(--tt-ui) var(--tt-ease-out);
 }
 
 .team-item:hover { transform: translateY(-1px); }
