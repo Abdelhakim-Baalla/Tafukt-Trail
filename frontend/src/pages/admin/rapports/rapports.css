@@ -648,7 +648,7 @@
   border-radius: var(--tt-radius-control);
   padding: 1rem;
   text-align: center;
-  border: 1px solid rgba(245, 165, 36, 0.25);
+  border: 1px solid rgba(0, 64, 255, 0.25);
   transition: transform 200ms ease-out;
 }
 
@@ -752,10 +752,10 @@
 .btn-pdf {
   background: var(--tt-amber-soft);
   color: var(--tt-amber);
-  border: 1px solid rgba(245, 165, 36, 0.3);
+  border: 1px solid rgba(0, 64, 255, 0.3);
 }
 
-.btn-pdf:hover { background: rgba(245, 165, 36, 0.25); }
+.btn-pdf:hover { background: rgba(0, 64, 255, 0.25); }
 
 .data-table th:last-child,
 .data-table td:last-child {

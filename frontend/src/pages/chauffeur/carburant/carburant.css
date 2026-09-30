@@ -160,7 +160,7 @@
 }
 
 .conso-chip.is-high {
-  border-color: rgba(245, 165, 36, 0.45);
+  border-color: rgba(0, 64, 255, 0.45);
   background: var(--tt-amber-bg);
   color: var(--tt-amber);
 }

@@ -216,7 +216,7 @@
 .seuil-tag {
   background: var(--tt-amber-soft);
   color: var(--tt-amber);
-  border: 1px solid rgba(245, 165, 36, 0.35);
+  border: 1px solid rgba(0, 64, 255, 0.35);
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   font-size: 0.6875rem;
