@@ -18,7 +18,7 @@ const Hero = () => {
       </video>
       <div className="ld-hero__overlay" />
 
-      <div className="tt-container ld-hero__inner">
+      <div className="tt-container ld-hero__stage">
         <div className="ld-hero__content">
           <span className="eyebrow eyebrow--light ld-hero__eyebrow">Gestion de flotte</span>
           <h1 className="ld-hero__title">
@@ -44,38 +44,6 @@ const Hero = () => {
                 <a href="#services" className="btn btn--ghost">Nos services</a>
               </>
             )}
-          </div>
-        </div>
-
-        <aside className="ld-hero__aside" aria-label="Indicateurs">
-          <div className="ld-hero__chip">
-            <span className="ld-hero__chip-dot" aria-hidden="true" />
-            <span>98,5% missions à l&apos;heure</span>
-          </div>
-          <p className="ld-hero__chip-sub">Capacité de suivi — Q4 2026</p>
-
-          <div className="ld-hero__lane">
-            <div className="ld-hero__lane-text">
-              <span className="ld-hero__lane-badge">NOUVEAU</span>
-              <span className="ld-hero__lane-title">Casablanca → Agadir</span>
-              <span className="ld-hero__lane-meta">Corridor prioritaire</span>
-            </div>
-            <img src="/Homme-Debout-Devant-Un-Camion.jpg" alt="" className="ld-hero__lane-img" />
-          </div>
-        </aside>
-      </div>
-
-      <div className="tt-container ld-hero__stats-wrap">
-        <div className="ld-hero__stats">
-          <div className="ld-hero__stats-light">
-            <span className="ld-hero__stats-num">400+</span>
-            <span className="ld-hero__stats-label">Véhicules suivis</span>
-            <p className="ld-hero__stats-partners">Camions · Remorques · Pneus · Carburant</p>
-          </div>
-          <div className="ld-hero__stats-dark">
-            <span className="ld-hero__stats-num">120</span>
-            <span className="ld-hero__stats-label">Trajets actifs</span>
-            <p className="ld-hero__stats-partners">Itinéraires, chauffeurs et ordres de mission</p>
           </div>
         </div>
       </div>
