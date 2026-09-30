@@ -129,7 +129,7 @@
   padding: 0;
   background: transparent;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   color: var(--tt-muted);
   cursor: pointer;
   transition: background var(--tt-press) var(--tt-ease-out), color var(--tt-press) var(--tt-ease-out);
@@ -441,7 +441,7 @@
 .modal {
   background: var(--tt-surface);
   border: 1px solid var(--tt-line);
-  border-radius: 20px;
+  border-radius: var(--tt-radius-card);
   width: 100%;
   max-width: 520px;
   max-height: 90vh;
@@ -463,7 +463,7 @@
   top: 0;
   background: var(--tt-surface);
   z-index: 2;
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--tt-radius-card) 20px 0 0;
 }
 
 .modal-header h2 {
@@ -815,7 +815,7 @@
   border: 1px solid rgba(248, 113, 113, 0.3);
   color: var(--tt-red);
   padding: 0.625rem 0.75rem;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   margin-bottom: 1rem;
   font-size: 0.8125rem;
 }

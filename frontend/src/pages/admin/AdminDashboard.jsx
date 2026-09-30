@@ -91,7 +91,7 @@ const AdminDashboard = () => {
           <span className="hero-tag">Réseau optimal</span>
         </div>
         <div className="hero-content">
-          <p className="hero-kicker">Supervision flotte — {today}</p>
+          <p className="eyebrow eyebrow--light" style={{ marginBottom: 14 }}>Supervision flotte — {today}</p>
           <h1 className="hero-title">
             La flotte,
             <br />

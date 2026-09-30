@@ -690,7 +690,7 @@
 .modal-content {
   background: var(--tt-surface);
   padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--tt-radius-card) 20px 0 0;
   width: 100%;
   max-width: 560px;
   max-height: 92vh;

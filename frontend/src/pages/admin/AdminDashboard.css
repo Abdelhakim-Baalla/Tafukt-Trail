@@ -618,7 +618,7 @@
   height: 32px;
   background: var(--tt-amber-soft);
   color: var(--tt-amber);
-  border-radius: 10px;
+  border-radius: var(--tt-radius-card);
   display: flex;
   align-items: center;
   justify-content: center;

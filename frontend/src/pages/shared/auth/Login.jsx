@@ -46,7 +46,7 @@ const Login = () => {
             <img src="/TafuktTrail-icon.png" alt="Tafukt" />
             <span className="auth-brand-name">Tafukt Trail</span>
           </Link>
-          <h2 className="auth-brand-title">La flotte, pilotée de nuit comme de jour.</h2>
+          <h2 className="auth-brand-title">La flotte, pilotée — jour et nuit.</h2>
           <p className="auth-brand-text">
             Connectez-vous pour retrouver vos trajets, vos véhicules et vos alertes au même endroit.
           </p>

@@ -1,86 +1,13 @@
+@import "./styles/tokens.css";
+
 /* TAFUKT CIKETO base */
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-:root {
-  --tt-bg: #f6f4ef;
-  --tt-surface: #ffffff;
-  --tt-surface2: #efeae0;
-  --tt-line: #e3dccd;
-  --tt-text: #141414;
-  --tt-muted: #6f6a5e;
-  --tt-amber: #ff4d00;
-  --tt-amber-hover: #d63e00;
-  --tt-amber-ink: #ffffff;
-  --tt-amber-soft: rgba(255, 77, 0, 0.09);
-  --tt-green: #1e7d46;
-  --tt-green-bg: rgba(30, 125, 70, 0.1);
-  --tt-blue: #1d4ed8;
-  --tt-blue-bg: rgba(29, 78, 216, 0.09);
-  --tt-red: #c22a1c;
-  --tt-red-bg: rgba(194, 42, 28, 0.09);
-  --tt-amber-pill: #d63e00;
-  --tt-amber-pill-bg: rgba(255, 77, 0, 0.1);
-  --tt-radius-card: 6px;
-  --tt-radius-input: 3px;
-  --tt-radius-btn: 3px;
-
-  --tt-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --tt-ease-in-out: cubic-bezier(0.44, 0, 0.56, 1);
-  --tt-press: 160ms;
-  --tt-ui: 240ms;
-  --tt-sheet: 320ms;
-  --tt-stagger: 60ms;
-
-  /* Back-compat maps */
-  --bg-primary: var(--tt-bg);
-  --bg-secondary: var(--tt-surface);
-  --bg-tertiary: var(--tt-surface2);
-  --bg-card: var(--tt-surface);
-  --bg-hover: var(--tt-surface2);
-  --bg-input: var(--tt-surface);
-  --border-primary: var(--tt-line);
-  --border-secondary: #d3c9b4;
-  --border-hover: #b3a586;
-  --text-primary: var(--tt-text);
-  --text-secondary: var(--tt-muted);
-  --text-muted: #a29885;
-  --text-inverse: var(--tt-amber-ink);
-  --accent-primary: var(--tt-amber);
-  --accent-hover: var(--tt-amber-hover);
-  --accent-bg: var(--tt-amber-soft);
-  --success: var(--tt-green);
-  --success-bg: var(--tt-green-bg);
-  --warning: var(--tt-amber-pill);
-  --warning-bg: var(--tt-amber-pill-bg);
-  --danger: var(--tt-red);
-  --danger-bg: var(--tt-red-bg);
-
-  --white: var(--tt-surface);
-  --black: var(--tt-text);
-  --gray-50: var(--tt-surface2);
-  --gray-100: var(--tt-surface);
-  --gray-200: var(--tt-line);
-  --gray-300: #d3c9b4;
-  --gray-400: #a29885;
-  --gray-500: var(--tt-muted);
-  --gray-600: #6f6a5e;
-  --gray-700: #4a4438;
-  --gray-800: #2b261d;
-  --gray-900: var(--tt-text);
-  --blue-50: var(--tt-blue-bg);
-  --blue-500: var(--tt-blue);
-  --blue-600: #1e40af;
-  --green-50: var(--tt-green-bg);
-  --green-500: var(--tt-green);
-  --green-600: #166534;
-  --red-50: var(--tt-red-bg);
-  --red-500: var(--tt-red);
-  --red-600: #991b1b;
 }
 
 html {
@@ -89,7 +16,7 @@ html {
 }
 
 body {
-  font-family: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: var(--tt-font);
   background: var(--tt-bg);
   color: var(--tt-text);
   line-height: 1.6;
@@ -116,6 +43,7 @@ button {
   background: none;
   color: inherit;
 }
+
 button:active {
   transform: scale(0.97);
   transition: transform var(--tt-press) var(--tt-ease-out);
@@ -128,13 +56,17 @@ textarea {
   font-size: 1rem;
 }
 
-h1, h2, h3 {
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.25;
 }
@@ -144,8 +76,15 @@ img {
   display: block;
 }
 
-/* Data numerals: tabular */
-.num, th, td, .card-matricule {
+ul,
+ol {
+  list-style: none;
+}
+
+.num,
+th,
+td,
+.card-matricule {
   font-variant-numeric: tabular-nums;
 }
 
@@ -163,37 +102,18 @@ img {
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--tt-bg);
 }
+
 ::-webkit-scrollbar-thumb {
   background: #c9bda3;
   border-radius: 8px;
   border: 2px solid var(--tt-bg);
 }
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #c9bda3 var(--tt-bg);
-}
-
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
 }

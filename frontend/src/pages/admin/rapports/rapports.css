@@ -552,7 +552,7 @@
   background: var(--tt-surface2);
   border: 1px solid var(--tt-line);
   padding: 0.2rem 0.5rem;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   font-size: 0.75rem;
   white-space: nowrap;
 }
@@ -743,7 +743,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   border: none;
   cursor: pointer;
   transition: background 150ms ease-out, color 150ms ease-out;

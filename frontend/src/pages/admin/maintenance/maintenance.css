@@ -232,7 +232,7 @@
   background: var(--tt-surface2);
   border: 1px solid var(--tt-line);
   padding: 0.2rem 0.5rem;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   font-size: 0.8125rem;
   color: var(--tt-text);
   white-space: nowrap;
@@ -249,7 +249,7 @@
   height: 32px;
   border: none;
   background: var(--tt-surface2);
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -385,7 +385,7 @@
   background: var(--tt-surface2);
   border: 1px solid var(--tt-line);
   padding: 0.2rem 0.5rem;
-  border-radius: 8px;
+  border-radius: var(--tt-radius-control);
   font-size: 0.8125rem;
 }
 

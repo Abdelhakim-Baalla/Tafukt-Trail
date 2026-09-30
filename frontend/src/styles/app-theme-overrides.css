@@ -1,0 +1,89 @@
+/* App overrides — force Ciketo paper/ink/orange on legacy page CSS */
+
+.dash,
+.page,
+.chauffeur-page,
+.rapports-page,
+.maintenance-page,
+.carburant-page {
+  background: var(--tt-bg) !important;
+  color: var(--tt-text);
+  font-family: var(--tt-font);
+}
+
+.dash .card,
+.page .card,
+.veh-card,
+.stat-card,
+.modal-content,
+.table-card,
+.filter-bar,
+.list-card {
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-line);
+  border-radius: var(--tt-radius-card);
+  box-shadow: none;
+}
+
+.action-btn,
+.btn-primary,
+.page-btn,
+.modal-btn-primary {
+  background: var(--tt-text) !important;
+  color: #fff !important;
+  border-radius: var(--tt-radius-control) !important;
+  border: none !important;
+}
+
+.action-btn.action-secondary,
+.btn-accent,
+.page-btn-accent {
+  background: var(--tt-amber) !important;
+  color: #fff !important;
+}
+
+input,
+select,
+textarea,
+.search-input,
+.form-input,
+.modal-input {
+  border-radius: var(--tt-radius-control) !important;
+  border-color: var(--tt-line) !important;
+  background: var(--tt-bg) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.search-input:focus,
+.form-input:focus {
+  border-color: var(--tt-amber) !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.badge,
+.status-badge,
+.pill,
+.tag {
+  border-radius: var(--tt-radius-control) !important;
+}
+
+.table th,
+.app-table th {
+  background: var(--tt-bg) !important;
+  color: var(--tt-muted) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.modal-overlay {
+  background: rgba(20, 20, 20, 0.45) !important;
+}
+
+.modal,
+.modal-content {
+  border-radius: var(--tt-radius-card) !important;
+}

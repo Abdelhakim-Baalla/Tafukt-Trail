@@ -1,5 +1,4 @@
-/* TAFUKT CIKETO tokens — paper/ink/safety-orange, sharp geometry.
-   Pills reserved for navbar + badges. */
+/* TAFUKT CIKETO — paper / ink / safety-orange, sharp geometry */
 
 :root {
   --tt-bg: #f6f4ef;
@@ -8,6 +7,7 @@
   --tt-line: #e3dccd;
   --tt-text: #141414;
   --tt-muted: #6f6a5e;
+  --tt-ink: #000000;
   --tt-amber: #ff4d00;
   --tt-amber-hover: #d63e00;
   --tt-amber-ink: #ffffff;
@@ -20,12 +20,17 @@
   --tt-red-bg: rgba(194, 42, 28, 0.09);
   --tt-amber-pill: #d63e00;
   --tt-amber-pill-bg: rgba(255, 77, 0, 0.1);
+
   --tt-radius-card: 6px;
   --tt-radius-control: 3px;
   --tt-radius-pill: 999px;
+
   --tt-font-display: "Archivo", -apple-system, "Segoe UI", sans-serif;
   --tt-font: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   --tt-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --tt-container: 1220px;
+  --tt-section-y: clamp(72px, 10vw, 120px);
 
   --tt-motion-med: 240ms;
   --tt-ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -35,11 +40,68 @@
   --tt-ui: 240ms;
   --tt-sheet: 320ms;
   --tt-stagger: 60ms;
+
+  /* Back-compat aliases for app pages */
+  --bg-primary: var(--tt-bg);
+  --bg-secondary: var(--tt-surface);
+  --bg-tertiary: var(--tt-surface2);
+  --bg-card: var(--tt-surface);
+  --bg-hover: var(--tt-surface2);
+  --bg-input: var(--tt-surface);
+  --border-primary: var(--tt-line);
+  --border-secondary: #d3c9b4;
+  --border-hover: #b3a586;
+  --text-primary: var(--tt-text);
+  --text-secondary: var(--tt-muted);
+  --text-muted: #a29885;
+  --text-inverse: var(--tt-amber-ink);
+  --accent-primary: var(--tt-amber);
+  --accent-hover: var(--tt-amber-hover);
+  --accent-bg: var(--tt-amber-soft);
+  --success: var(--tt-green);
+  --success-bg: var(--tt-green-bg);
+  --warning: var(--tt-amber-pill);
+  --warning-bg: var(--tt-amber-pill-bg);
+  --danger: var(--tt-red);
+  --danger-bg: var(--tt-red-bg);
+  --white: var(--tt-surface);
+  --black: var(--tt-text);
+  --gray-50: var(--tt-surface2);
+  --gray-100: var(--tt-surface);
+  --gray-200: var(--tt-line);
+  --gray-300: #d3c9b4;
+  --gray-400: #a29885;
+  --gray-500: var(--tt-muted);
+  --gray-600: #6f6a5e;
+  --gray-700: #4a4438;
+  --gray-800: #2b261d;
+  --gray-900: var(--tt-text);
+  --blue-50: var(--tt-blue-bg);
+  --blue-500: var(--tt-blue);
+  --blue-600: #1e40af;
+  --green-50: var(--tt-green-bg);
+  --green-500: var(--tt-green);
+  --green-600: #166534;
+  --red-50: var(--tt-red-bg);
+  --red-500: var(--tt-red);
+  --red-600: #991b1b;
 }
 
-/* Eyebrow label: orange square + caps (Ciketo signature) */
+/* ——— Layout ——— */
+.tt-container {
+  width: 100%;
+  max-width: var(--tt-container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.tt-section {
+  padding: var(--tt-section-y) 0;
+}
+
+/* ——— Eyebrow ——— */
 .eyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   font-size: 11px;
@@ -57,7 +119,95 @@
   flex-shrink: 0;
 }
 
-/* Split button: rectangular label + square arrow box */
+.eyebrow--light {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.eyebrow--accent {
+  color: var(--tt-amber);
+}
+
+/* ——— Buttons ——— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 24px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: var(--tt-radius-control);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--tt-ui) var(--tt-ease-out), color var(--tt-ui) var(--tt-ease-out), border-color var(--tt-ui) var(--tt-ease-out);
+}
+
+.btn--primary {
+  background: var(--tt-amber);
+  color: #fff;
+  border-color: var(--tt-amber);
+}
+
+.btn--primary:hover {
+  background: var(--tt-amber-hover);
+  border-color: var(--tt-amber-hover);
+}
+
+.btn--dark {
+  background: var(--tt-text);
+  color: #fff;
+  border-color: var(--tt-text);
+}
+
+.btn--dark:hover {
+  background: #000;
+}
+
+.btn--light {
+  background: #fff;
+  color: var(--tt-text);
+  border-color: #fff;
+}
+
+.btn--light:hover {
+  background: var(--tt-surface2);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #fff;
+}
+
+.btn--ghost-dark {
+  background: transparent;
+  color: var(--tt-text);
+  border-color: var(--tt-line);
+}
+
+.btn--ghost-dark:hover {
+  background: var(--tt-surface2);
+}
+
+.btn--sm {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* Split button: label + square arrow */
 .btn-split {
   display: inline-flex;
   align-items: stretch;
@@ -65,6 +215,8 @@
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
+  padding: 0;
+  background: none;
 }
 
 .btn-split .btn-split-label {
@@ -79,8 +231,6 @@
   transition: background var(--tt-ui) var(--tt-ease-out);
 }
 
-.btn-split:hover .btn-split-label { background: var(--tt-amber-hover); }
-
 .btn-split .btn-split-arrow {
   display: inline-flex;
   align-items: center;
@@ -93,15 +243,163 @@
   transition: background var(--tt-ui) var(--tt-ease-out);
 }
 
-.btn-split:hover .btn-split-arrow { background: var(--tt-amber-hover); }
+.btn-split:hover .btn-split-label,
+.btn-split:hover .btn-split-arrow {
+  background: var(--tt-amber-hover);
+}
 
+.btn-split--dark .btn-split-label,
+.btn-split--dark .btn-split-arrow,
 .btn-split.dark .btn-split-label,
-.btn-split.dark .btn-split-arrow { background: #141414; }
+.btn-split.dark .btn-split-arrow {
+  background: var(--tt-text);
+}
 
+.btn-split--dark:hover .btn-split-label,
+.btn-split--dark:hover .btn-split-arrow,
 .btn-split.dark:hover .btn-split-label,
-.btn-split.dark:hover .btn-split-arrow { background: #000; }
+.btn-split.dark:hover .btn-split-arrow {
+  background: #000;
+}
 
-/* Shared mount animation: fade + rise, transform/opacity only */
+.btn-split--light .btn-split-label,
+.btn-split--light .btn-split-arrow,
+.btn-split.light .btn-split-label,
+.btn-split.light .btn-split-arrow {
+  background: #fff;
+  color: var(--tt-text);
+}
+
+.btn-split--light .btn-split-arrow,
+.btn-split.light .btn-split-arrow {
+  border-left-color: rgba(20, 20, 20, 0.12);
+}
+
+.btn-split--light:hover .btn-split-label,
+.btn-split--light:hover .btn-split-arrow,
+.btn-split.light:hover .btn-split-label,
+.btn-split.light:hover .btn-split-arrow {
+  background: var(--tt-surface2);
+}
+
+.btn-split--sm .btn-split-label {
+  height: 44px;
+  padding: 0 18px;
+  font-size: 13px;
+}
+
+.btn-split--sm .btn-split-arrow {
+  width: 44px;
+  height: 44px;
+}
+
+/* ——— Forms ——— */
+.tt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tt-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tt-text);
+}
+
+.tt-input,
+.tt-select,
+.tt-textarea {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--tt-text);
+  background: var(--tt-bg);
+  border: 1px solid var(--tt-line);
+  border-radius: var(--tt-radius-control);
+  outline: none;
+  transition: border-color var(--tt-ui) var(--tt-ease-out);
+}
+
+.tt-textarea {
+  height: auto;
+  min-height: 120px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.tt-input:focus,
+.tt-select:focus,
+.tt-textarea:focus {
+  border-color: var(--tt-amber);
+}
+
+.tt-input::placeholder,
+.tt-textarea::placeholder {
+  color: var(--tt-muted);
+}
+
+/* ——— Accordion ——— */
+.tt-acc-item {
+  border-bottom: 1px solid var(--tt-line);
+  background: var(--tt-surface);
+}
+
+.tt-acc-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--tt-text);
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.tt-acc-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--tt-muted);
+  font-weight: 500;
+  min-width: 28px;
+}
+
+.tt-acc-title {
+  flex: 1;
+}
+
+.tt-acc-icon {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--tt-muted);
+}
+
+.tt-acc-item.is-open {
+  background: var(--tt-text);
+  color: #fff;
+  border-bottom-color: var(--tt-text);
+}
+
+.tt-acc-item.is-open .tt-acc-trigger,
+.tt-acc-item.is-open .tt-acc-num,
+.tt-acc-item.is-open .tt-acc-icon {
+  color: #fff;
+}
+
+.tt-acc-panel {
+  display: none;
+  padding: 0 24px 28px;
+}
+
+.tt-acc-item.is-open .tt-acc-panel {
+  display: block;
+}
+
+/* ——— Motion ——— */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
